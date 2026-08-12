@@ -22,6 +22,10 @@ export type Town =
 
 export interface Listing {
   slug: string;
+  /** Optional real photo path (e.g. "/bikes/{slug}.jpg"). Falls back to the
+   * icon placeholder where absent. Only consumed by the Just5Up listings
+   * page today; other pages still render the placeholder unconditionally. */
+  photoUrl?: string;
   make: string;
   model: string;
   year: number;

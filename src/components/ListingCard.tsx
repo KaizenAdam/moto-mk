@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Listing } from "@/lib/types";
 import ListingPhoto from "./ListingPhoto";
 import PricePlate from "./PricePlate";
@@ -6,10 +5,7 @@ import { formatCc, formatMileage, timeAgo } from "@/lib/format";
 
 export default function ListingCard({ listing }: { listing: Listing }) {
   return (
-    <Link
-      href={`/listings/${listing.slug}`}
-      className="group block bg-paper border border-tarmac-line/20 rounded-xl overflow-hidden hover:border-amber transition-colors focus-visible:outline-amber"
-    >
+    <div className="bg-paper border border-tarmac-line/20 rounded-xl overflow-hidden">
       <ListingPhoto
         ridingStyle={listing.ridingStyle}
         make={listing.make}
@@ -45,6 +41,6 @@ export default function ListingCard({ listing }: { listing: Listing }) {
           {listing.sellerType === "Dealer" ? "Dealer" : "Private seller"} · {timeAgo(listing.postedDaysAgo)}
         </p>
       </div>
-    </Link>
+    </div>
   );
 }

@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Oswald, Inter, JetBrains_Mono } from "next/font/google";
+import { Oswald, Inter, JetBrains_Mono, Anton, Stardos_Stencil } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SiteChrome from "@/components/SiteChrome";
 import { CurrencyProvider } from "@/lib/currency";
 
 const oswald = Oswald({
@@ -22,6 +21,20 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500", "700"],
 });
 
+// Used only on the /listings (Just5Up) page — additive, doesn't affect
+// any other route's styling.
+const anton = Anton({
+  variable: "--font-anton",
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const stardosStencil = Stardos_Stencil({
+  variable: "--font-stardos",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
 export const metadata: Metadata = {
   title: "VoziMoto — Motorcycle Classifieds for North Macedonia",
   description:
@@ -36,13 +49,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${oswald.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${oswald.variable} ${inter.variable} ${jetbrainsMono.variable} ${anton.variable} ${stardosStencil.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-body">
         <CurrencyProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <SiteChrome>{children}</SiteChrome>
         </CurrencyProvider>
       </body>
     </html>

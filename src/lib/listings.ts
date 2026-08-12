@@ -3,6 +3,7 @@ import { Listing } from "./types";
 export const listings: Listing[] = [
   {
     slug: "yamaha-mt-07-2021-skopje",
+    photoUrl: "/bikes/yamaha-mt-07-2021-skopje.jpg",
     make: "Yamaha",
     model: "MT-07",
     year: 2021,
@@ -26,6 +27,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "honda-cbr650r-2020-bitola",
+    photoUrl: "/bikes/honda-cbr650r-2020-bitola.jpg",
     make: "Honda",
     model: "CBR650R",
     year: 2020,
@@ -47,6 +49,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "suzuki-vstrom-650-2019-ohrid",
+    photoUrl: "/bikes/suzuki-vstrom-650-2019-ohrid.jpg",
     make: "Suzuki",
     model: "V-Strom 650",
     year: 2019,
@@ -69,6 +72,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "bmw-r1250gs-2022-skopje",
+    photoUrl: "/bikes/bmw-r1250gs-2022-skopje.jpg",
     make: "BMW Motorrad",
     model: "R 1250 GS",
     year: 2022,
@@ -92,6 +96,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "ktm-390-duke-2023-tetovo",
+    photoUrl: "/bikes/ktm-390-duke-2023-tetovo.jpg",
     make: "KTM",
     model: "390 Duke",
     year: 2023,
@@ -113,6 +118,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "kawasaki-versys-x300-2018-kumanovo",
+    photoUrl: "/bikes/kawasaki-versys-x300-2018-kumanovo.jpg",
     make: "Kawasaki",
     model: "Versys-X 300",
     year: 2018,
@@ -134,6 +140,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "vespa-primavera-125-2021-skopje",
+    photoUrl: "/bikes/vespa-primavera-125-2021-skopje.jpg",
     make: "Vespa",
     model: "Primavera 125",
     year: 2021,
@@ -155,6 +162,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "ducati-monster-937-2022-skopje",
+    photoUrl: "/bikes/ducati-monster-937-2022-skopje.jpg",
     make: "Ducati",
     model: "Monster 937",
     year: 2022,
@@ -178,6 +186,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "yamaha-xmax-300-2020-prilep",
+    photoUrl: "/bikes/yamaha-xmax-300-2020-prilep.jpg",
     make: "Yamaha",
     model: "XMAX 300",
     year: 2020,
@@ -199,6 +208,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "husqvarna-701-enduro-2021-mavrovo",
+    photoUrl: "/bikes/husqvarna-701-enduro-2021-mavrovo.jpg",
     make: "Husqvarna",
     model: "701 Enduro",
     year: 2021,
@@ -220,6 +230,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "harley-sportster-s-2023-skopje",
+    photoUrl: "/bikes/harley-sportster-s-2023-skopje.jpg",
     make: "Harley-Davidson",
     model: "Sportster S",
     year: 2023,
@@ -242,6 +253,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "aprilia-rs-660-2021-strumica",
+    photoUrl: "/bikes/aprilia-rs-660-2021-strumica.jpg",
     make: "Aprilia",
     model: "RS 660",
     year: 2021,
@@ -263,6 +275,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "honda-africa-twin-2019-veles",
+    photoUrl: "/bikes/honda-africa-twin-2019-veles.jpg",
     make: "Honda",
     model: "Africa Twin",
     year: 2019,
@@ -284,6 +297,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "ktm-125-duke-2022-tetovo",
+    photoUrl: "/bikes/ktm-125-duke-2022-tetovo.jpg",
     make: "KTM",
     model: "125 Duke",
     year: 2022,
@@ -305,6 +319,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "suzuki-gsx-r750-2017-skopje",
+    photoUrl: "/bikes/suzuki-gsx-r750-2017-skopje.jpg",
     make: "Suzuki",
     model: "GSX-R750",
     year: 2017,
@@ -326,6 +341,7 @@ export const listings: Listing[] = [
   },
   {
     slug: "zero-sr-f-2022-skopje",
+    photoUrl: "/bikes/zero-sr-f-2022-skopje.jpg",
     make: "Zero Motorcycles",
     model: "SR/F",
     year: 2022,
