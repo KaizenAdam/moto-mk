@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Just 5 Up! — Motorcycles for Sale</title>
+<meta name="description" content="North Macedonia's dedicated motorcycle marketplace. Buy and sell bikes, gear and parts.">
+<link rel="icon" type="image/svg+xml" href="images/icon-gold.svg">
+<style>
+  :root{
+    --black:#0b0b0d;
+    --panel:#141417;
+    --panel2:#1b1b1f;
+    --line:#2a2a2f;
+    --gold:#d4af37;
+    --gold-bright:#f2cf5b;
+    --red:#c1272d;
+    --grey:#8a8a92;
+    --text:#f0eee8;
+    --text-dim:#b7b5b0;
+    --radius:10px;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--black); color:var(--text); line-height:1.4;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+
+  /* ===== HEADER ===== */
+  header{
+    background:linear-gradient(180deg,#111 0%, #0b0b0d 100%);
+    border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:50;
+  }
+  .header-inner{
+    max-width:1280px; margin:0 auto; padding:12px 20px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .brand{display:flex; align-items:center;}
+  .brand .wordmark{height:56px; width:auto; filter:drop-shadow(0 0 6px rgba(212,175,55,.25));}
+  nav.main-nav{display:flex; gap:26px; align-items:center;}
+  nav.main-nav a{
+    font-size:14px; font-weight:600; text-transform:uppercase; letter-spacing:0.6px;
+    color:var(--text-dim); padding:6px 2px; border-bottom:2px solid transparent;
+    transition:.15s;
+  }
+  nav.main-nav a:hover, nav.main-nav a.active{color:var(--gold-bright); border-color:var(--gold);}
+  .header-actions{display:flex; align-items:center; gap:14px;}
+  .lang-switch{display:flex; gap:6px; background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:5px;}
+  .lang-switch button{
+    background:none; border:none; padding:2px; cursor:pointer; line-height:0;
+    border-radius:4px; opacity:.5; transition:.15s;
+  }
+  .lang-switch button svg{display:block; border-radius:3px;}
+  .lang-switch button:hover{opacity:.8;}
+  .lang-switch button.active{opacity:1; box-shadow:0 0 0 2px var(--gold);}
+  .btn{
+    padding:9px 18px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer;
+    text-transform:uppercase; letter-spacing:0.5px; border:1px solid transparent; display:inline-block;
+  }
+  .btn-ghost{background:transparent; border-color:var(--line); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--gold);}
+  .btn-gold{background:linear-gradient(135deg,var(--gold-bright),var(--gold)); color:#141414; box-shadow:0 2px 10px rgba(212,175,55,.25);}
+  .btn-gold:hover{filter:brightness(1.08);}
+  .burger{display:none; background:none; border:none; color:var(--text); font-size:26px; cursor:pointer;}
+
+  /* ===== HERO / SEARCH BAR ===== */
+  .hero{
+    background: radial-gradient(circle at 80% 0%, rgba(193,39,45,.18), transparent 55%),
+                radial-gradient(circle at 10% 100%, rgba(212,175,55,.12), transparent 50%),
+                #0e0e11;
+    border-bottom:1px solid var(--line);
+    padding:34px 20px 26px;
+  }
+  .hero-inner{max-width:1280px; margin:0 auto;}
+  .hero h1{font-family:Georgia, serif; font-size:30px; margin-bottom:6px;}
+  .hero h1 em{font-style:normal; color:var(--gold);}
+  .hero p{color:var(--text-dim); font-size:14px; margin-bottom:18px;}
+  .searchbar{
+    display:flex; gap:10px; background:var(--panel); border:1px solid var(--line);
+    border-radius:8px; padding:8px;
+  }
+  .searchbar input{
+    flex:1; background:transparent; border:none; color:var(--text); font-size:15px; padding:8px 10px; outline:none;
+  }
+  .searchbar input::placeholder{color:#6f6f76;}
+
+  /* ===== FILTER BAR (compact, streamlined — replaces a tall sidebar) ===== */
+  .filterbar-wrap{
+    background:var(--panel);
+    border-bottom:1px solid var(--line);
+  }
+  .filterbar{
+    padding:14px 24px;
+    display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+  }
+  .pill-select{
+    background:var(--panel2); border:1px solid var(--line); color:var(--text);
+    padding:8px 14px; border-radius:20px; font-size:13px; cursor:pointer;
+  }
+  .pill-select:hover, .pill-select:focus{border-color:var(--gold); outline:none;}
+
+  /* ===== LAYOUT (full width) ===== */
+  .layout{padding:26px 24px 60px;}
+
+  /* ===== RESULTS ===== */
+  .results-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:10px;}
+  .results-count{font-size:14px; color:var(--text-dim);}
+  .results-count b{color:var(--text);}
+  .sort-row{display:flex; align-items:center; gap:10px; font-size:13px;}
+  .currency-toggle{display:flex; background:var(--panel2); border:1px solid var(--line); border-radius:20px; overflow:hidden;}
+  .currency-toggle button{background:none; border:none; color:var(--text-dim); font-size:12px; font-weight:700; padding:6px 12px; cursor:pointer;}
+  .currency-toggle button.active{background:var(--red); color:#fff;}
+  select.select-input{
+    background:var(--panel2); border:1px solid var(--line); border-radius:6px; color:var(--text);
+    padding:8px; font-size:13px;
+  }
+  .clear-link{font-size:12px; color:var(--grey); cursor:pointer; font-weight:400; padding:8px 4px;}
+  .clear-link:hover{color:var(--red);}
+
+  .grid{display:grid; grid-template-columns:repeat(5, 1fr); gap:16px;}
+  @media (max-width:1400px){ .grid{grid-template-columns:repeat(4,1fr);} }
+  @media (max-width:1100px){ .grid{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:800px){ .grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .grid{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+    transition:.18s; cursor:pointer;
+  }
+  .card:hover{border-color:var(--gold); transform:translateY(-3px); box-shadow:0 8px 22px rgba(0,0,0,.4);}
+  .card-img{
+    aspect-ratio:4/3; position:relative; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,#26262b,#18181b);
+    font-size:46px; overflow:hidden;
+  }
+  .card-img img{
+    width:100%; height:100%; object-fit:cover;
+    -webkit-user-drag:none; user-drag:none;
+    -webkit-user-select:none; user-select:none;
+    -webkit-touch-callout:none;
+  }
+  .badge{position:absolute; top:10px; left:10px; background:var(--gold); color:#111; font-size:11px; font-weight:800; text-transform:uppercase; padding:3px 9px; border-radius:4px; letter-spacing:0.5px;}
+  .badge.featured{background:var(--red); color:#fff;}
+  .badge-fav{position:absolute; top:10px; right:10px; background:rgba(0,0,0,.5); border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; font-size:15px; cursor:pointer; z-index:3; transition:.15s;}
+  .badge-fav:hover{background:rgba(0,0,0,.7); transform:scale(1.08);}
+  .badge-fav.active{background:var(--red); color:#fff;}
+  .no-results{grid-column:1/-1; color:var(--text-dim); text-align:center; padding:40px 20px; border:1px dashed var(--line); border-radius:var(--radius); font-size:14px;}
+  .card-body{padding:10px 12px 12px;}
+  .card-title{font-size:14px; font-weight:700; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .card-price{font-size:16px; font-weight:800; color:var(--gold-bright); margin-bottom:6px;}
+  .card-price .alt{font-size:11px; color:var(--grey); font-weight:400; margin-left:4px;}
+  .spec-row{display:flex; flex-wrap:wrap; gap:5px; margin-bottom:6px;}
+  .spec{font-size:11px; background:var(--panel2); border:1px solid var(--line); color:var(--text-dim); padding:2px 7px; border-radius:4px;}
+  .card-loc{font-size:12px; color:var(--grey); display:flex; align-items:center; gap:5px;}
+  .pin-icon{width:12px; height:12px; flex:none; fill:var(--gold);}
+
+  .pagination{display:flex; justify-content:center; gap:8px; margin-top:30px;}
+  .pagination button{background:var(--panel); border:1px solid var(--line); color:var(--text-dim); width:34px; height:34px; border-radius:6px; cursor:pointer; font-size:13px;}
+  .pagination button.active{background:var(--gold); color:#111; border-color:var(--gold); font-weight:700;}
+
+  /* ===== FOOTER ===== */
+  footer{border-top:1px solid var(--line); padding:26px 20px; text-align:center; color:var(--grey); font-size:12px;}
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:900px){
+    nav.main-nav{display:none;}
+    .burger{display:block;}
+  }
+  @media (max-width:640px){
+    .header-inner{padding:10px 14px; row-gap:10px;}
+    .brand .wordmark{height:38px;}
+    .header-actions{gap:8px; flex-wrap:wrap; justify-content:center;}
+    .header-actions > *{flex-shrink:0;}
+    .lang-switch{order:-1; width:100%; justify-content:center;}
+    .btn{padding:9px 12px; font-size:12px;}
+    .btn-ghost{display:none;}
+
+    .hero{padding:22px 14px 20px;}
+    .hero h1{font-size:22px;}
+    .hero p{font-size:13px; margin-bottom:14px;}
+    .searchbar{flex-direction:column; align-items:stretch;}
+    .searchbar .btn{width:100%;}
+
+    .filterbar{padding:10px 14px; gap:6px;}
+    .pill-select{padding:7px 12px; font-size:12px;}
+
+    .layout{padding:18px 14px 40px;}
+
+    .results-head{align-items:flex-start;}
+    .sort-row{width:100%; justify-content:space-between; flex-wrap:wrap;}
+
+    .card-title{font-size:14px;}
+    .card-price{font-size:16px;}
+
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <img class="wordmark" src="images/wordmark-white.svg" alt="Just 5 Up!">
+    </div>
+    <nav class="main-nav">
+      <a href="index.html" class="active" data-i18n="nav_buy">Buy</a>
+      <a href="parts-gear.html" data-i18n="nav_parts">Parts &amp; Gear</a>
+      <a href="events.html" data-i18n="nav_events">Events</a>
+      <a href="service-centres.html" data-i18n="nav_service">Service Centres</a>
+      <a href="dealers.html" data-i18n="nav_dealers">Dealers</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-switch" id="langSwitch">
+        <button data-lang="mk" title="Македонски">
+          <svg viewBox="0 0 900 600" width="24" height="17"><rect width="900" height="600" fill="#D20000"/><g fill="#FFE600">
+            <polygon points="1350,300 450,345 450,255"/>
+            <polygon points="1086,936 418,332 482,268"/>
+            <polygon points="450,1200 405,300 495,300"/>
+            <polygon points="-186,936 418,268 482,332"/>
+            <polygon points="-450,300 450,255 450,345"/>
+            <polygon points="-186,-336 482,268 418,332"/>
+            <polygon points="450,-600 495,300 405,300"/>
+            <polygon points="1086,-336 482,332 418,268"/>
+          </g></svg>
+        </button>
+        <button data-lang="sq" title="Shqip">
+          <svg viewBox="0 0 900 600" width="24" height="17"><rect width="900" height="600" fill="#E41E20"/><g fill="#111">
+            <path d="M450,300 L210,175 L255,300 L210,425 Z"/>
+            <path d="M450,300 L690,175 L645,300 L690,425 Z"/>
+            <ellipse cx="450" cy="300" rx="38" ry="72"/>
+            <circle cx="408" cy="205" r="30"/>
+            <circle cx="492" cy="205" r="30"/>
+          </g></svg>
+        </button>
+        <button data-lang="en" class="active" title="English">
+          <svg viewBox="0 0 900 600" width="24" height="17">
+            <rect width="900" height="600" fill="#00247D"/>
+            <line x1="0" y1="0" x2="900" y2="600" stroke="#fff" stroke-width="220"/>
+            <line x1="900" y1="0" x2="0" y2="600" stroke="#fff" stroke-width="220"/>
+            <line x1="0" y1="0" x2="900" y2="600" stroke="#CF142B" stroke-width="80"/>
+            <line x1="900" y1="0" x2="0" y2="600" stroke="#CF142B" stroke-width="80"/>
+            <rect x="0" y="240" width="900" height="120" fill="#fff"/>
+            <rect x="390" y="0" width="120" height="600" fill="#fff"/>
+            <rect x="0" y="270" width="900" height="60" fill="#CF142B"/>
+            <rect x="420" y="0" width="60" height="600" fill="#CF142B"/>
+          </svg>
+        </button>
+      </div>
+      <button class="btn btn-ghost" data-i18n="btn_login">Log in</button>
+      <a href="sell.html" class="btn btn-gold" data-i18n="btn_sell">+ Sell your bike</a>
+      <button class="burger">☰</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <h1 data-i18n="hero_title">Find your next ride in <em>North Macedonia</em></h1>
+    <p data-i18n="hero_sub">Motorcycles, gear and parts — from riders and trusted dealers across Skopje, Ohrid, Bitola and beyond.</p>
+    <div class="searchbar">
+      <input type="text" placeholder="Search make, model, e.g. Yamaha R6…" data-i18n-placeholder="search_placeholder" id="searchInput">
+      <button class="btn btn-gold" id="searchBtn" data-i18n="btn_search">Search</button>
+    </div>
+  </div>
+</section>
+
+<section class="filterbar-wrap">
+  <div class="filterbar">
+    <select class="pill-select" id="filterMake">
+      <option value="" data-i18n="f_all_makes">All makes</option>
+    </select>
+    <select class="pill-select" id="filterStyle">
+      <option value="" data-i18n="f_all_styles">All riding styles</option>
+      <option value="Sport" data-i18n="style_sport">Sport</option>
+      <option value="Enduro" data-i18n="style_enduro">Enduro</option>
+      <option value="Cruiser" data-i18n="style_cruiser">Cruiser</option>
+      <option value="Scooter" data-i18n="style_scooter">Scooter</option>
+      <option value="Naked" data-i18n="style_naked">Naked</option>
+      <option value="Touring" data-i18n="style_touring">Touring</option>
+    </select>
+    <select class="pill-select" id="filterStroke">
+      <option value="" data-i18n="f_all_stroke">All engine types</option>
+      <option value="2T" data-i18n="chip_2stroke">2-stroke</option>
+      <option value="4T" data-i18n="chip_4stroke">4-stroke</option>
+    </select>
+    <select class="pill-select" id="filterCc">
+      <option value="" data-i18n="f_all_cc">Any engine size</option>
+      <option value="≤125">≤125cc</option>
+      <option value="126–400">126–400cc</option>
+      <option value="401–650">401–650cc</option>
+      <option value="651–1000">651–1000cc</option>
+      <option value="1000+">1000cc+</option>
+    </select>
+    <select class="pill-select" id="filterPrice"></select>
+    <select class="pill-select" id="filterLocation">
+      <option value="" data-i18n="f_all_locations">All of North Macedonia</option>
+      <option>Skopje</option><option>Ohrid</option><option>Bitola</option>
+      <option>Kumanovo</option><option>Tetovo</option><option>Struga</option>
+    </select>
+    <span class="clear-link" id="clearFiltersBtn" data-i18n="filters_clear">Clear all</span>
+  </div>
+</section>
+
+<div class="layout">
+  <main>
+    <div class="results-head">
+      <div class="results-count"><b id="resultsCount">24</b> <span data-i18n="results_found">motorcycles found</span></div>
+      <div class="sort-row">
+        <div class="currency-toggle">
+          <button class="active" data-cur="EUR">EUR €</button>
+          <button data-cur="MKD">MKD</button>
+        </div>
+        <select class="select-input" style="width:auto;" id="sortSelect">
+          <option value="newest" data-i18n="sort_newest">Newest first</option>
+          <option value="price_low" data-i18n="sort_low">Price: low to high</option>
+          <option value="price_high" data-i18n="sort_high">Price: high to low</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid" id="listingGrid"></div>
+
+    <div class="pagination">
+      <button class="active">1</button><button>2</button><button>3</button><button>›</button>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <p data-i18n="footer_text">Just 5 Up! — North Macedonia's dedicated motorcycle marketplace. This is an early product demo built for review purposes.</p>
+</footer>
+
+<script>
+const EUR_TO_MKD = 61.5;
+
+/* ===== i18n (declared early — populatePriceOptions() needs it during initial setup) ===== */
+const i18n = {
+  en: {
+    nav_buy:"Buy", nav_parts:"Parts & Gear", nav_events:"Events", nav_service:"Service Centres", nav_dealers:"Dealers",
+    btn_login:"Log in", btn_sell:"+ Sell your bike", btn_search:"Search",
+    hero_title:'Find your next ride in <em>North Macedonia</em>',
+    hero_sub:"Motorcycles, gear and parts — from riders and trusted dealers across Skopje, Ohrid, Bitola and beyond.",
+    search_placeholder:"Search make, model, e.g. Yamaha R6…",
+    filters_title:"Filters", filters_clear:"Clear all",
+    f_make:"Make", f_all_makes:"All makes",
+    f_price:"Price (€)",
+    f_cc:"Engine size (cc)",
+    f_stroke:"Engine type",
+    f_style:"Riding style",
+    f_location:"Location", f_all_locations:"All of North Macedonia",
+    f_apply:"Apply filters",
+    f_all_styles:"All riding styles",
+    f_all_stroke:"All engine types",
+    f_all_cc:"Any engine size",
+    f_all_price:"Any price",
+    f_up_to:"Up to",
+    results_found:"motorcycles found",
+    sort_newest:"Newest first", sort_low:"Price: low to high", sort_high:"Price: high to low",
+    footer_text:"Just 5 Up! — North Macedonia's dedicated motorcycle marketplace. This is an early product demo built for review purposes.",
+    chip_2stroke:"2-stroke", chip_4stroke:"4-stroke",
+    style_sport:"Sport", style_enduro:"Enduro", style_cruiser:"Cruiser", style_scooter:"Scooter", style_naked:"Naked", style_touring:"Touring",
+    no_results:"No motorcycles match your filters. Try clearing a few."
+  },
+  mk: {
+    nav_buy:"Купи", nav_parts:"Делови и опрема", nav_events:"Настани", nav_service:"Сервиси", nav_dealers:"Дилери",
+    btn_login:"Најави се", btn_sell:"+ Продај го твојот мотор", btn_search:"Пребарај",
+    hero_title:'Пронајди го својот нареден мотор во <em>Северна Македонија</em>',
+    hero_sub:"Мотоцикли, опрема и делови — од возачи и проверени дилери низ Скопје, Охрид, Битола и пошироко.",
+    search_placeholder:"Пребарај марка, модел, пр. Yamaha R6…",
+    filters_title:"Филтри", filters_clear:"Исчисти",
+    f_make:"Марка", f_all_makes:"Сите марки",
+    f_price:"Цена (€)",
+    f_cc:"Кубикажа (cc)",
+    f_stroke:"Тип на мотор",
+    f_style:"Стил на возење",
+    f_location:"Локација", f_all_locations:"Цела Северна Македонија",
+    f_apply:"Примени филтри",
+    f_all_styles:"Сите стилови на возење",
+    f_all_stroke:"Сите типови мотор",
+    f_all_cc:"Која било кубикажа",
+    f_all_price:"Која било цена",
+    f_up_to:"До",
+    results_found:"мотоцикли пронајдени",
+    sort_newest:"Најнови прво", sort_low:"Цена: од ниска кон висока", sort_high:"Цена: од висока кон ниска",
+    footer_text:"Just 5 Up! — посветена пазарница за мотоцикли во Северна Македонија. Ова е рана демо-верзија изработена за преглед.",
+    chip_2stroke:"2-тактен", chip_4stroke:"4-тактен",
+    style_sport:"Спорт", style_enduro:"Ендуро", style_cruiser:"Крузер", style_scooter:"Скутер", style_naked:"Naked", style_touring:"Туристички",
+    no_results:"Нема мотоцикли што одговараат на филтрите. Обидете се да отстраните некои."
+  },
+  sq: {
+    nav_buy:"Bli", nav_parts:"Pjesë & Pajisje", nav_events:"Ngjarje", nav_service:"Qendra Shërbimi", nav_dealers:"Tregtarë",
+    btn_login:"Hyr", btn_sell:"+ Shit motorin tënd", btn_search:"Kërko",
+    hero_title:'Gjej motorin tënd të radhës në <em>Maqedoninë e Veriut</em>',
+    hero_sub:"Motoçikleta, pajisje dhe pjesë — nga motoçiklistë dhe tregtarë të besuar në Shkup, Ohër, Manastir e më gjerë.",
+    search_placeholder:"Kërko marka, modeli, p.sh. Yamaha R6…",
+    filters_title:"Filtra", filters_clear:"Pastro të gjitha",
+    f_make:"Marka", f_all_makes:"Të gjitha markat",
+    f_price:"Çmimi (€)",
+    f_cc:"Cilindrata (cc)",
+    f_stroke:"Lloji i motorit",
+    f_style:"Stili i vozitjes",
+    f_location:"Vendndodhja", f_all_locations:"E gjithë Maqedonia e Veriut",
+    f_apply:"Apliko filtrat",
+    f_all_styles:"Të gjitha stilet",
+    f_all_stroke:"Të gjitha llojet e motorit",
+    f_all_cc:"Çdo cilindratë",
+    f_all_price:"Çdo çmim",
+    f_up_to:"Deri në",
+    results_found:"motoçikleta të gjetura",
+    sort_newest:"Më të rejat së pari", sort_low:"Çmimi: nga i ulëti", sort_high:"Çmimi: nga i larti",
+    footer_text:"Just 5 Up! — tregu i dedikuar për motoçikleta në Maqedoninë e Veriut. Kjo është një demo e hershme e produktit për shqyrtim.",
+    chip_2stroke:"2-kohësh", chip_4stroke:"4-kohësh",
+    style_sport:"Sport", style_enduro:"Enduro", style_cruiser:"Cruiser", style_scooter:"Skuter", style_naked:"Naked", style_touring:"Turistik",
+    no_results:"Asnjë motoçikletë nuk përputhet me filtrat. Provo të pastrosh disa."
+  }
+};
+
+const listings = [
+  {id:1, make:"Yamaha", title:"Yamaha R6 2015", price:6200, cc:600, stroke:"4T", style:"Sport", loc:"Skopje", km:"32,000 km", img:"images/listings/yamaha-r6-2015.jpg", badge:"FEATURED"},
+  {id:2, make:"Honda", title:"Honda CBR500R 2019", price:4800, cc:471, stroke:"4T", style:"Sport", loc:"Bitola", km:"14,200 km", img:"images/listings/honda-cbr500r-2019.webp"},
+  {id:3, make:"KTM", title:"KTM 390 Duke 2021", price:4300, cc:373, stroke:"4T", style:"Naked", loc:"Skopje", km:"9,800 km", img:"images/listings/ktm-390-duke-2021.webp", badge:"NEW"},
+  {id:4, make:"Yamaha", title:"Yamaha YBR 125 2018", price:1450, cc:125, stroke:"4T", style:"Naked", loc:"Tetovo", km:"21,000 km", img:"images/listings/yamaha-ybr125-2018.jpg"},
+  {id:5, make:"Suzuki", title:"Suzuki V-Strom 650 2017", price:5600, cc:645, stroke:"4T", style:"Touring", loc:"Ohrid", km:"41,500 km", img:"images/listings/suzuki-vstrom650-2017.jpeg"},
+  {id:6, make:"Honda", title:"Honda PCX 125 2020", price:2100, cc:125, stroke:"4T", style:"Scooter", loc:"Skopje", km:"8,300 km", img:"images/listings/honda-pcx125-2020.jpg"},
+  {id:7, make:"Kawasaki", title:"Kawasaki Z650 2019", price:5100, cc:649, stroke:"4T", style:"Naked", loc:"Kumanovo", km:"18,700 km", img:"images/listings/kawasaki-z650-2019.webp", badge:"FEATURED"},
+  {id:8, make:"BMW Motorrad", title:"BMW F850GS 2020", price:9800, cc:853, stroke:"4T", style:"Enduro", loc:"Skopje", km:"22,100 km", img:"images/listings/bmw-f850gs-2020.jpeg"},
+  {id:9, make:"Ducati", title:"Ducati Monster 797 2018", price:6900, cc:803, stroke:"4T", style:"Naked", loc:"Ohrid", km:"12,900 km", img:"images/listings/ducati-monster797-2018.jpeg"},
+  {id:10, make:"Piaggio", title:"Piaggio Zip 50 2016", price:650, cc:50, stroke:"2T", style:"Scooter", loc:"Struga", km:"15,000 km", img:"images/listings/piaggio-zip50-2016.jpg"},
+  {id:11, make:"Yamaha", title:"Yamaha MT-07 2020", price:6400, cc:689, stroke:"4T", style:"Naked", loc:"Skopje", km:"11,300 km", img:"images/listings/yamaha-mt07-2020.jpeg", badge:"NEW"},
+  {id:12, make:"Honda", title:"Honda XR 250 Tornado", price:2300, cc:250, stroke:"4T", style:"Enduro", loc:"Bitola", km:"27,600 km", img:"images/listings/honda-xr250-tornado.jpg"},
+  {id:13, make:"Aprilia", title:"Aprilia RS 125 2017", price:2900, cc:125, stroke:"2T", style:"Sport", loc:"Skopje", km:"19,400 km", img:"images/listings/aprilia-rs125-2017.avif"},
+  {id:14, make:"KTM", title:"KTM 690 Enduro R", price:5800, cc:690, stroke:"4T", style:"Enduro", loc:"Kumanovo", km:"16,200 km", img:"images/listings/ktm-690-enduro.jpeg"},
+  {id:15, make:"Vespa", title:"Vespa Primavera 125", price:2600, cc:125, stroke:"4T", style:"Scooter", loc:"Ohrid", km:"6,100 km", img:"images/listings/vespa-primavera-125.jpeg", badge:"FEATURED"},
+  {id:16, make:"Suzuki", title:"Suzuki GSX-R 750 2014", price:5900, cc:750, stroke:"4T", style:"Sport", loc:"Skopje", km:"38,900 km", img:"images/listings/suzuki-gsxr750-2014.jpeg"},
+  {id:17, make:"Honda", title:"Honda CRF 450 2019", price:6100, cc:450, stroke:"4T", style:"Enduro", loc:"Tetovo", km:"5,400 mth", img:"images/listings/honda-crf450-2019.jpeg"},
+  {id:18, make:"Yamaha", title:"Yamaha Tricity 155", price:2400, cc:155, stroke:"4T", style:"Scooter", loc:"Skopje", km:"9,900 km", img:"images/listings/yamaha-tricity155.jpg"},
+  {id:19, make:"BMW Motorrad", title:"BMW R nineT 2016", price:11500, cc:1170, stroke:"4T", style:"Cruiser", loc:"Skopje", km:"24,000 km", img:"images/listings/bmw-rninet-2016.jpeg"},
+  {id:20, make:"Kymco", title:"Kymco Agility 50 2019", price:900, cc:50, stroke:"4T", style:"Scooter", loc:"Struga", km:"7,700 km", img:"images/listings/kymco-agility50-2019.webp"},
+  {id:21, make:"Honda", title:"Honda Africa Twin 2018", price:10900, cc:998, stroke:"4T", style:"Touring", loc:"Ohrid", km:"29,300 km", img:"images/listings/honda-africatwin-2018.avif"},
+  {id:22, make:"Yamaha", title:"Yamaha DT 125 (2-stroke) 2001", price:1650, cc:125, stroke:"2T", style:"Enduro", loc:"Kumanovo", km:"—", img:"images/listings/yamaha-dt125-2001.jpeg"},
+  {id:23, make:"Kawasaki", title:"Kawasaki Ninja 400 2021", price:5300, cc:399, stroke:"4T", style:"Sport", loc:"Skopje", km:"7,200 km", img:"images/listings/kawasaki-ninja400-2021.jpeg", badge:"NEW"},
+  {id:24, make:"Harley-Davidson", title:"Harley-Davidson Iron 883", price:8700, cc:883, stroke:"4T", style:"Cruiser", loc:"Bitola", km:"15,800 km", img:"images/listings/harley-iron883.jpg"}
+];
+
+const favourites = new Set();
+
+let currentCurrency = "EUR";
+
+function fmtPrice(eur){
+  if(currentCurrency === "EUR"){
+    return { main: "€" + eur.toLocaleString(), alt: "≈ " + Math.round(eur*EUR_TO_MKD).toLocaleString() + " MKD" };
+  } else {
+    return { main: Math.round(eur*EUR_TO_MKD).toLocaleString() + " ден", alt: "≈ €" + eur.toLocaleString() };
+  }
+}
+
+function ccBucket(cc){
+  if(cc <= 125) return "≤125";
+  if(cc <= 400) return "126–400";
+  if(cc <= 650) return "401–650";
+  if(cc <= 1000) return "651–1000";
+  return "1000+";
+}
+
+/* ===== Compact price band filter — currency-aware ===== */
+const PRICE_BANDS = [0, 2000, 4000, 6000, 9000, 12000];
+
+function populatePriceOptions(){
+  const sel = document.getElementById('filterPrice');
+  const current = sel.value;
+  const dict = i18n[document.documentElement.lang || 'en'];
+  sel.innerHTML = PRICE_BANDS.map((v, i) => {
+    if(i === 0) return `<option value="">${dict.f_all_price}</option>`;
+    const shown = currentCurrency === 'EUR'
+      ? ('€' + v.toLocaleString())
+      : (Math.round(v * EUR_TO_MKD).toLocaleString() + ' MKD');
+    return `<option value="${v}">${dict.f_up_to} ${shown}</option>`;
+  }).join('');
+  sel.value = current || "";
+}
+
+function getFilteredSorted(){
+  const make = document.getElementById('filterMake').value;
+  const styleVal = document.getElementById('filterStyle').value;
+  const strokeVal = document.getElementById('filterStroke').value;
+  const ccVal = document.getElementById('filterCc').value;
+  const priceVal = parseFloat(document.getElementById('filterPrice').value);
+  const loc = document.getElementById('filterLocation').value;
+  const search = document.getElementById('searchInput').value.trim().toLowerCase();
+  const sort = document.getElementById('sortSelect').value;
+
+  let result = listings.filter(l => {
+    if(make && l.make !== make) return false;
+    if(loc && l.loc !== loc) return false;
+    if(!isNaN(priceVal) && l.price > priceVal) return false;
+    if(search && !l.title.toLowerCase().includes(search)) return false;
+    if(ccVal && ccBucket(l.cc) !== ccVal) return false;
+    if(strokeVal && l.stroke !== strokeVal) return false;
+    if(styleVal && l.style !== styleVal) return false;
+    return true;
+  });
+
+  if(sort === 'price_low') result = result.slice().sort((a,b) => a.price - b.price);
+  else if(sort === 'price_high') result = result.slice().sort((a,b) => b.price - a.price);
+
+  return result;
+}
+
+function renderGrid(){
+  const grid = document.getElementById('listingGrid');
+  const list = getFilteredSorted();
+  document.getElementById('resultsCount').textContent = list.length;
+
+  if(!list.length){
+    grid.innerHTML = `<div class="no-results" data-i18n="no_results">No motorcycles match your filters. Try clearing a few.</div>`;
+    applyLang(document.documentElement.lang || 'en');
+    return;
+  }
+
+  grid.innerHTML = list.map(l => {
+    const p = fmtPrice(l.price);
+    const isFav = favourites.has(l.id);
+    return `
+    <div class="card">
+      <div class="card-img">
+        ${l.badge ? `<span class="badge ${l.badge==='FEATURED'?'featured':''}">${l.badge}</span>` : ''}
+        <span class="badge-fav ${isFav ? 'active' : ''}" data-fav-id="${l.id}">${isFav ? '♥' : '♡'}</span>
+        <img src="${l.img}" alt="${l.title}" loading="lazy" draggable="false">
+      </div>
+      <div class="card-body">
+        <div class="card-title">${l.title}</div>
+        <div class="card-price">${p.main} <span class="alt">${p.alt}</span></div>
+        <div class="spec-row">
+          <span class="spec">${l.cc}cc</span>
+          <span class="spec">${l.stroke}</span>
+          <span class="spec">${l.style}</span>
+        </div>
+        <div class="card-loc"><svg class="pin-icon" viewBox="0 0 24 24"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 7 11.5 7.3 11.7.2.2.4.3.7.3s.5-.1.7-.3C13 21.5 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z"/></svg> ${l.loc} · ${l.km}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+document.querySelectorAll('.currency-toggle button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.currency-toggle button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCurrency = btn.dataset.cur;
+    populatePriceOptions();
+    renderGrid();
+  });
+});
+
+// Populate make dropdown from the actual data so it can never fall out of sync
+const makeSelect = document.getElementById('filterMake');
+[...new Set(listings.map(l => l.make))].sort().forEach(make=>{
+  const opt = document.createElement('option');
+  opt.value = make;
+  opt.textContent = make;
+  makeSelect.appendChild(opt);
+});
+
+populatePriceOptions();
+
+['filterMake','filterStyle','filterStroke','filterCc','filterPrice','filterLocation','sortSelect'].forEach(id=>{
+  document.getElementById(id).addEventListener('change', renderGrid);
+});
+document.getElementById('searchInput').addEventListener('input', renderGrid);
+document.getElementById('searchBtn').addEventListener('click', (e)=>{ e.preventDefault(); renderGrid(); });
+document.getElementById('clearFiltersBtn').addEventListener('click', ()=>{
+  document.getElementById('filterMake').value = '';
+  document.getElementById('filterStyle').value = '';
+  document.getElementById('filterStroke').value = '';
+  document.getElementById('filterCc').value = '';
+  document.getElementById('filterPrice').value = '';
+  document.getElementById('filterLocation').value = '';
+  document.getElementById('searchInput').value = '';
+  document.getElementById('sortSelect').value = 'newest';
+  renderGrid();
+});
+
+// Favourites — delegated so it keeps working after re-renders
+document.getElementById('listingGrid').addEventListener('click', (e)=>{
+  const heart = e.target.closest('.badge-fav');
+  if(!heart) return;
+  const id = Number(heart.dataset.favId);
+  if(favourites.has(id)) favourites.delete(id);
+  else favourites.add(id);
+  heart.classList.toggle('active');
+  heart.textContent = favourites.has(id) ? '♥' : '♡';
+});
+
+renderGrid();
+
+function applyLang(lang){
+  const dict = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(dict[key] !== undefined) el.innerHTML = dict[key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+    const key = el.getAttribute('data-i18n-placeholder');
+    if(dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
+  });
+  document.documentElement.lang = lang;
+  populatePriceOptions();
+}
+
+document.querySelectorAll('#langSwitch button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('#langSwitch button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    applyLang(btn.dataset.lang);
+  });
+});
+
+</script>
+
+</body>
+</html>
