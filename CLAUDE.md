@@ -190,6 +190,32 @@ storage instead of cookies). If you're about to write a Supabase query
 directly inside a page component or Server Action, stop — put it in
 `src/lib/data/` instead, even if it's only called from one place today.
 
+**`auth.getUser()` calls are deduped per request via `getCurrentUser()`
+in `src/lib/data/auth.ts`.** It's `React.cache()`-wrapped — a plain
+`react` import, not `next/*`, so it doesn't break the principle above.
+`getUser()` is a real network round-trip (it revalidates the JWT against
+Supabase Auth, which is why it's used over the cookie-only
+`getSession()` everywhere here) — every `src/lib/data/*` function that
+needs "who's logged in" should call `getCurrentUser(supabase)` rather
+than `supabase.auth.getUser()` directly, so that a page calling several
+such functions in one request only pays for that round-trip once. This
+mattered in practice: a page render used to serialize `getOwnProfile` +
+`listSaved` (each doing their own `getUser()`) one after another instead
+of running them together, which was a real, noticeable chunk of the
+"everything feels slow" complaint that prompted this note. Independent
+data fetches in a page should also be gathered into one `Promise.all(...)`
+rather than awaited one at a time — only fetches that genuinely depend on
+a prior result (like signing photo URLs, which needs the listing ids
+first) should run after.
+
+**Currency display is pure client state, never a server round-trip.**
+`ListingsGrid` (`src/app/components/ListingsGrid.tsx`) owns `currency`
+locally — `formatPrice` (`src/lib/constants/listings.ts`) is pure
+client-side math on an already-fetched price, so there is never a reason
+to refetch from the server just to reformat a number. This used to be a
+`cur` URL param that re-ran the whole page's data fetching on every
+toggle — the single worst offender in the same latency complaint.
+
 ## Auth
 
 Email/password via Supabase Auth (`/login`, `/signup`,

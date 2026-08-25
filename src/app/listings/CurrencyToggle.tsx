@@ -1,37 +1,34 @@
 "use client";
 
-import { useRouter, usePathname } from "next/navigation";
-import { withParam, type SearchParams } from "./queryParams";
 import type { Currency } from "@/lib/constants/listings";
 
+/**
+ * Pure client-side display toggle — currency never changes which rows come
+ * back from the server, only how the same price is formatted, so this has
+ * no business touching the network (it used to push a `cur` query param,
+ * which re-ran the whole page's data fetching just to reformat a number).
+ */
 export default function CurrencyToggle({
-  current,
-  searchParams,
+  value,
+  onChange,
 }: {
-  current: Currency;
-  searchParams: SearchParams;
+  value: Currency;
+  onChange: (currency: Currency) => void;
 }) {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  function setCurrency(cur: Currency) {
-    router.push(`${pathname}?${withParam(searchParams, "cur", cur === "EUR" ? "" : cur)}`);
-  }
-
   const base = "px-3 py-1.5 text-xs font-bold";
   return (
     <div className="flex overflow-hidden rounded-full border border-line bg-panel2">
       <button
         type="button"
-        onClick={() => setCurrency("EUR")}
-        className={`${base} ${current === "EUR" ? "bg-red text-white" : "text-ink-dim"}`}
+        onClick={() => onChange("EUR")}
+        className={`${base} ${value === "EUR" ? "bg-red text-white" : "text-ink-dim"}`}
       >
         EUR €
       </button>
       <button
         type="button"
-        onClick={() => setCurrency("MKD")}
-        className={`${base} ${current === "MKD" ? "bg-red text-white" : "text-ink-dim"}`}
+        onClick={() => onChange("MKD")}
+        className={`${base} ${value === "MKD" ? "bg-red text-white" : "text-ink-dim"}`}
       >
         MKD
       </button>

@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Tables } from "@/lib/database.types";
+import { getCurrentUser } from "@/lib/data/auth";
 
 type Client = SupabaseClient<Database>;
 
@@ -7,9 +8,7 @@ export async function requestDealerStatus(
   supabase: Client,
   request: { business_name: string; address?: string; phone?: string }
 ) {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser(supabase);
   if (!user) throw new Error("Not authenticated");
 
   const { data, error } = await supabase
@@ -23,9 +22,7 @@ export async function requestDealerStatus(
 }
 
 export async function listOwnRequests(supabase: Client) {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser(supabase);
   if (!user) return [];
 
   const { data, error } = await supabase

@@ -20,13 +20,13 @@ export default async function ListingDetailPage({
   const listing = await getById(supabase, id);
   if (!listing) notFound();
 
-  const [seller, photos, profile] = await Promise.all([
+  const [seller, photos, profile, saved] = await Promise.all([
     getPublicProfile(supabase, listing.seller_id),
     listForListing(supabase, listing.id),
     getOwnProfile(supabase),
+    listSaved(supabase),
   ]);
 
-  const saved = profile ? await listSaved(supabase) : [];
   const isSaved = saved.some((s) => s.listing_id === listing.id);
   const price = formatPrice(Number(listing.price_eur), "EUR");
 

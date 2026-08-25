@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Tables, TablesInsert, TablesUpdate } from "@/lib/database.types";
+import { getCurrentUser } from "@/lib/data/auth";
 
 type Client = SupabaseClient<Database>;
 
@@ -87,9 +88,7 @@ export async function listPendingForAdmin(supabase: Client) {
 
 /** All listings owned by the current user, any status (including drafts). */
 export async function listOwn(supabase: Client) {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser(supabase);
   if (!user) return [];
 
   const { data, error } = await supabase
@@ -118,9 +117,7 @@ export async function create(
   supabase: Client,
   listing: Omit<TablesInsert<"listings">, "seller_id" | "status">
 ) {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser(supabase);
   if (!user) throw new Error("Not authenticated");
 
   const { data, error } = await supabase

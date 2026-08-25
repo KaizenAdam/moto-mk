@@ -1,12 +1,11 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Tables, TablesUpdate } from "@/lib/database.types";
+import { getCurrentUser } from "@/lib/data/auth";
 
 type Client = SupabaseClient<Database>;
 
 export async function getOwnProfile(supabase: Client) {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser(supabase);
   if (!user) return null;
 
   const { data, error } = await supabase
@@ -34,9 +33,7 @@ export async function updateOwnProfile(
   supabase: Client,
   updates: TablesUpdate<"profiles">
 ) {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser(supabase);
   if (!user) throw new Error("Not authenticated");
 
   const { data, error } = await supabase

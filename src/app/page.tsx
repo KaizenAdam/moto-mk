@@ -3,11 +3,9 @@ import { listActiveFiltered, listFilterOptions, type ListingFilters } from "@/li
 import { listSaved } from "@/lib/data/savedListings";
 import { getOwnProfile } from "@/lib/data/profiles";
 import { getCoverPhotoUrls } from "@/lib/data/listingPhotos";
-import type { Currency } from "@/lib/constants/listings";
 import ListingsFilterBar from "@/app/listings/ListingsFilterBar";
-import CurrencyToggle from "@/app/listings/CurrencyToggle";
 import SortSelect from "@/app/listings/SortSelect";
-import ListingCard from "@/app/components/ListingCard";
+import ListingsGrid from "@/app/components/ListingsGrid";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -38,17 +36,21 @@ export default async function Home({
 }) {
   const sp = await searchParams;
   const filters = parseFilters(sp);
-  const currency: Currency = first(sp.cur) === "MKD" ? "MKD" : "EUR";
 
   const supabase = await createClient();
-  const [listings, filterOptions, profile] = await Promise.all([
+
+  // Independent fetches run together — listSaved doesn't actually depend on
+  // `profile` (it does its own user lookup and returns [] when logged out),
+  // so it used to be a wasted extra serial round-trip after this group.
+  // getCoverPhotoUrls is the one thing that genuinely can't start until
+  // `listings` resolves (it needs the ids), so it stays after.
+  const [listings, filterOptions, profile, saved] = await Promise.all([
     listActiveFiltered(supabase, filters),
     listFilterOptions(supabase),
     getOwnProfile(supabase),
+    listSaved(supabase),
   ]);
 
-  const saved = profile ? await listSaved(supabase) : [];
-  const savedIds = new Set(saved.map((s) => s.listing_id));
   const coverPhotoUrls = await getCoverPhotoUrls(
     supabase,
     listings.map((l) => l.id)
@@ -95,36 +97,13 @@ export default async function Home({
         </div>
       </section>
 
-      <div className="px-6 py-6 pb-14">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-2.5">
-          <div className="text-sm text-ink-dim">
-            <b className="text-ink">{listings.length}</b> motorcycles found
-          </div>
-          <div className="flex items-center gap-2.5 text-[13px]">
-            <CurrencyToggle current={currency} searchParams={sp} />
-            <SortSelect current={filters.sort ?? "newest"} searchParams={sp} />
-          </div>
-        </div>
-
-        {listings.length === 0 ? (
-          <div className="rounded-[10px] border border-dashed border-line px-5 py-10 text-center text-sm text-ink-dim">
-            No motorcycles match your filters. Try clearing a few.
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-            {listings.map((listing) => (
-              <ListingCard
-                key={listing.id}
-                listing={listing}
-                currency={currency}
-                initiallySaved={savedIds.has(listing.id)}
-                isLoggedIn={!!profile}
-                photoUrl={coverPhotoUrls.get(listing.id)}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      <ListingsGrid
+        listings={listings}
+        savedIds={saved.map((s) => s.listing_id)}
+        isLoggedIn={!!profile}
+        photoUrls={Object.fromEntries(coverPhotoUrls)}
+        sortSelect={<SortSelect current={filters.sort ?? "newest"} searchParams={sp} />}
+      />
     </main>
   );
 }
