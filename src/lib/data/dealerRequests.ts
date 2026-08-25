@@ -39,6 +39,21 @@ export async function listOwnRequests(supabase: Client) {
 }
 
 /**
+ * Every pending dealer request, for the admin review queue. Relies on the
+ * admin arm of dealer_requests_select — a non-admin caller gets [] back.
+ */
+export async function listPendingForAdmin(supabase: Client) {
+  const { data, error } = await supabase
+    .from("dealer_requests")
+    .select("*")
+    .eq("status", "pending")
+    .order("created_at", { ascending: true });
+
+  if (error) throw error;
+  return data;
+}
+
+/**
  * Only succeeds for a caller whose profile has account_type = 'admin' —
  * enforced by the dealer_requests_admin_update RLS policy via is_admin().
  */

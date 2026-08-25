@@ -142,3 +142,48 @@ Email/password via Supabase Auth (`/login`, `/signup`,
 `middleware.ts` → `proxy.ts`) refreshes the session cookie on every
 request — this is an **optimistic check only**, per Next's own guidance;
 the real authorization boundary is Postgres RLS, not the proxy.
+
+## Pages
+
+- **`/listings`** — public browse page. Server Component, reads filters
+  from `searchParams` (`make`, `style`, `engineType`, `town`, `priceMax`,
+  `ccMax`) and calls `listActiveFiltered`/`listFilterOptions` in
+  `src/lib/data/listings.ts` — a real server-side refetch per filter
+  change, not client-side array filtering. `make`/`town` options are
+  derived from real data; riding style and engine type come from the
+  fixed lists in `src/lib/constants/listings.ts`. Engine type values are
+  the schema's real `2-stroke`/`4-stroke`/`electric` — not the `2T`/`4T`
+  shorthand the original static HTML demo (`index.html`, still in this
+  repo's git history) used. There's no licence-category filter — the
+  static demo dropped it earlier ("they don't have those licences in
+  Macedonia") and this page follows that call, not the schema's original
+  full field list.
+- **`/listings/[id]`** — detail page, `getById` (RLS already scopes this
+  to active-or-owner-or-admin).
+- **`/sell`** — list-a-bike form. `createListingAction`
+  (`src/app/actions/listings.ts`) never accepts a `status` field from the
+  client — `create()`'s type signature omits it entirely, so the DB
+  default (`pending`) is structurally the only possible outcome. On
+  success the form is replaced with a "pending review" message, not a
+  "you're live" one.
+- **`/admin`** — pending-listing and pending-dealer-request review queue.
+  Gated on `profiles.account_type === 'admin'` — this check is a UX
+  nicety, not the security boundary; `listPendingForAdmin` in
+  `listings.ts`/`dealerRequests.ts` and the approve/reject actions in
+  `src/app/actions/admin.ts` are safe to call regardless, because RLS
+  (`OR private.is_admin()`) is what actually filters/blocks a non-admin.
+  Deliberately unstyled/unpaginated — a working tool, not a client-facing
+  page.
+
+## Testing real auth flows locally
+
+Manually-inserted `auth.users` rows (for role/JWT-claim RLS testing, or
+for a real `signInWithPassword()` walkthrough) need their token columns
+(`confirmation_token`, `recovery_token`, `email_change`,
+`email_change_token_new`, `email_change_token_current`, `phone_change`,
+`phone_change_token`, `reauthentication_token`) set to `''`, not left
+`NULL`. GoTrue's Go structs scan these as non-nullable strings — a `NULL`
+row fails login with an opaque "Database error querying schema" that has
+nothing to do with the password or RLS. Only surfaces once you test a
+*real* login instead of the role-simulation approach used for RLS
+verification.

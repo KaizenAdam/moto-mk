@@ -15,6 +15,61 @@ export async function listActive(supabase: Client) {
   return data;
 }
 
+export type ListingFilters = {
+  make?: string;
+  ridingStyle?: string;
+  engineType?: string;
+  town?: string;
+  priceMaxEur?: number;
+  ccMax?: number;
+};
+
+/** Active listings, narrowed by the browse page's filter bar. */
+export async function listActiveFiltered(supabase: Client, filters: ListingFilters) {
+  let query = supabase.from("listings").select("*").eq("status", "active");
+
+  if (filters.make) query = query.eq("make", filters.make);
+  if (filters.ridingStyle) query = query.eq("riding_style", filters.ridingStyle);
+  if (filters.engineType) query = query.eq("engine_type", filters.engineType);
+  if (filters.town) query = query.eq("town", filters.town);
+  if (filters.priceMaxEur != null) query = query.lte("price_eur", filters.priceMaxEur);
+  if (filters.ccMax != null) query = query.lte("engine_cc", filters.ccMax);
+
+  const { data, error } = await query.order("created_at", { ascending: false });
+  if (error) throw error;
+  return data;
+}
+
+/** Distinct make/town values across active listings, to populate filter dropdowns from real data. */
+export async function listFilterOptions(supabase: Client) {
+  const { data, error } = await supabase
+    .from("listings")
+    .select("make, town")
+    .eq("status", "active");
+
+  if (error) throw error;
+
+  const makes = Array.from(new Set(data.map((l) => l.make))).sort();
+  const towns = Array.from(new Set(data.map((l) => l.town).filter((t): t is string => !!t))).sort();
+  return { makes, towns };
+}
+
+/**
+ * Every pending listing, for the admin review queue. RLS's listings_read
+ * policy only surfaces these to a caller where private.is_admin() is true —
+ * a non-admin calling this simply gets [] back, not an error.
+ */
+export async function listPendingForAdmin(supabase: Client) {
+  const { data, error } = await supabase
+    .from("listings")
+    .select("*")
+    .eq("status", "pending")
+    .order("created_at", { ascending: true });
+
+  if (error) throw error;
+  return data;
+}
+
 /** All listings owned by the current user, any status (including drafts). */
 export async function listOwn(supabase: Client) {
   const {
@@ -46,7 +101,7 @@ export async function getById(supabase: Client, id: string) {
 
 export async function create(
   supabase: Client,
-  listing: Omit<TablesInsert<"listings">, "seller_id">
+  listing: Omit<TablesInsert<"listings">, "seller_id" | "status">
 ) {
   const {
     data: { user },
