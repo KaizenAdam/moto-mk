@@ -91,7 +91,7 @@ export default function SellForm() {
           <PreviewCard data={preview} />
         </div>
         <Link
-          href="/listings"
+          href="/"
           className="inline-block rounded-md bg-gradient-to-br from-gold-bright to-gold px-5 py-2.5 text-sm font-bold tracking-wide text-[#141414] uppercase"
         >
           Back to listings

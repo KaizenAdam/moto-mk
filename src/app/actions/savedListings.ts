@@ -13,6 +13,6 @@ export async function toggleSavedAction(listingId: string, currentlySaved: boole
     await save(supabase, listingId);
   }
 
-  revalidatePath("/listings");
+  revalidatePath("/");
   revalidatePath(`/listings/${listingId}`);
 }

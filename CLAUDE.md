@@ -200,19 +200,37 @@ the real authorization boundary is Postgres RLS, not the proxy.
 
 ## Pages
 
-- **`/listings`** — public browse page. Server Component, reads filters
-  from `searchParams` (`make`, `style`, `engineType`, `town`, `priceMax`,
-  `ccMax`) and calls `listActiveFiltered`/`listFilterOptions` in
-  `src/lib/data/listings.ts` — a real server-side refetch per filter
-  change, not client-side array filtering. `make`/`town` options are
-  derived from real data; riding style and engine type come from the
-  fixed lists in `src/lib/constants/listings.ts`. Engine type values are
-  the schema's real `2-stroke`/`4-stroke`/`electric` — not the `2T`/`4T`
-  shorthand the original static HTML demo (`index.html`, still in this
-  repo's git history) used. There's no licence-category filter — the
-  static demo dropped it earlier ("they don't have those licences in
-  Macedonia") and this page follows that call, not the schema's original
-  full field list.
+- **`/` is the browse page** — matches the static demo, where
+  `index.html` was always hero + filter bar + grid on one URL, never a
+  separate marketing homepage. `/listings` (below) is a thin redirect to
+  `/` that preserves query params, kept only for old links/bookmarks —
+  the real implementation lives at `src/app/page.tsx`. The filter bar and
+  results grid are intentionally **not** width-capped (no `max-w-*`
+  wrapper) — only the header and hero text are, matching `index.html`'s
+  `.layout`/`.filterbar` (full width) vs `.header-inner`/`.hero-inner`
+  (capped at 1280px) split exactly. Don't reintroduce a `max-w-[1280px]`
+  around the grid/filter bar — that was tried once during the design
+  pass and had to be reverted.
+- **Nav is the full 5-item menu** (Buy, Parts & Gear, Events, Service
+  Centres, Dealers), matching the demo — `/parts-gear`, `/events`,
+  `/service-centres`, `/dealers` are minimal `ComingSoon`-component pages
+  (ported from the demo's own "Coming Soon" placeholder pages), not dead
+  links. No mobile hamburger — the demo's own burger button was
+  non-functional (CSS-only, no JS behind it); the nav just wraps on
+  narrow screens instead.
+- **The browse page** (`/`, redirected to from `/listings`) — Server
+  Component, reads filters from `searchParams` (`make`, `style`,
+  `engineType`, `town`, `priceMax`, `ccMax`) and calls
+  `listActiveFiltered`/`listFilterOptions` in `src/lib/data/listings.ts`
+  — a real server-side refetch per filter change, not client-side array
+  filtering. `make`/`town` options are derived from real data; riding
+  style and engine type come from the fixed lists in
+  `src/lib/constants/listings.ts`. Engine type values are the schema's
+  real `2-stroke`/`4-stroke`/`electric` — not the `2T`/`4T` shorthand the
+  original static HTML demo (`index.html`, still in this repo's git
+  history) used. There's no licence-category filter — the static demo
+  dropped it earlier ("they don't have those licences in Macedonia") and
+  this page follows that call, not the schema's original full field list.
 - **`/listings/[id]`** — detail page, `getById` (RLS already scopes this
   to active-or-owner-or-admin).
 - **`/sell`** — list-a-bike form. `createListingAction`

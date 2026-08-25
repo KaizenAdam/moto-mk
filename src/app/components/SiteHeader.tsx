@@ -19,13 +19,22 @@ export default async function SiteHeader() {
           />
         </Link>
 
-        <nav className="flex items-center gap-6">
-          <Link
-            href="/listings"
-            className="border-b-2 border-transparent pb-1.5 text-sm font-semibold tracking-wide text-ink-dim uppercase transition hover:border-gold hover:text-gold-bright"
-          >
-            Buy
-          </Link>
+        <nav className="flex flex-wrap items-center gap-6">
+          {[
+            { href: "/", label: "Buy" },
+            { href: "/parts-gear", label: "Parts & Gear" },
+            { href: "/events", label: "Events" },
+            { href: "/service-centres", label: "Service Centres" },
+            { href: "/dealers", label: "Dealers" },
+          ].map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="border-b-2 border-transparent pb-1.5 text-sm font-semibold tracking-wide text-ink-dim uppercase transition hover:border-gold hover:text-gold-bright"
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
