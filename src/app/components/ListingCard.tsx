@@ -9,19 +9,33 @@ export default function ListingCard({
   currency,
   initiallySaved,
   isLoggedIn,
+  photoUrl,
 }: {
   listing: Tables<"listings">;
   currency: Currency;
   initiallySaved: boolean;
   isLoggedIn: boolean;
+  photoUrl?: string;
 }) {
   const price = formatPrice(Number(listing.price_eur), currency);
 
   return (
     <div className="overflow-hidden rounded-[10px] border border-line bg-panel transition hover:-translate-y-0.5 hover:border-gold hover:shadow-[0_8px_22px_rgba(0,0,0,0.4)]">
       <div className="relative aspect-[4/3]">
-        <Link href={`/listings/${listing.id}`} className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#26262b] to-[#18181b] text-xs text-grey">
-          No photo yet
+        <Link href={`/listings/${listing.id}`} className="absolute inset-0 block">
+          {photoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element -- signed URL rotates per request, not a next/image candidate
+            <img
+              src={photoUrl}
+              alt={`${listing.make} ${listing.model}`}
+              className="h-full w-full object-cover"
+              draggable={false}
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#26262b] to-[#18181b] text-xs text-grey">
+              No photo yet
+            </div>
+          )}
         </Link>
         <div className="absolute top-2.5 right-2.5 z-10">
           <SaveButton listingId={listing.id} initiallySaved={initiallySaved} isLoggedIn={isLoggedIn} variant="badge" />

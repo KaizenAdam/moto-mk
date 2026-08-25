@@ -98,9 +98,24 @@ Every table has RLS enabled, no exceptions. The pattern throughout:
 - **Storage RLS mirrors table RLS.** `storage.objects` policies for the
   `listing-photos` bucket re-derive the listing from
   `storage.foldername(name)[1]` and apply the exact same
-  active-or-owner / owner-only logic as `listing_photos`. The bucket is
-  **private** — a public bucket serves any object to anyone with the URL
-  and skips RLS entirely, which would leak draft-listing photos.
+  active-or-owner-or-admin / owner-only logic as `listing_photos`. The
+  bucket is **private** — a public bucket serves any object to anyone
+  with the URL and skips RLS entirely, which would leak draft-listing
+  photos. (The storage read policy originally shipped without the
+  `OR private.is_admin()` arm that the table-row policy already had —
+  an admin could see a pending listing had photos but not load the
+  bytes. Fixed in `fix_listing_photos_storage_admin_read`; same bug
+  class as the two SELECT-visibility issues above, just one layer
+  further out.)
+- **Private-bucket photos are served via signed URLs, generated
+  server-side per request.** A private bucket has no public URL to link
+  to, so `src/lib/data/listingPhotos.ts` exchanges each row's
+  `storage_path` for a `createSignedUrl`/`createSignedUrls` (batched,
+  not one call per photo) result — this still goes through the same
+  Storage RLS as everything else, it just also hands back a time-boxed
+  token (1 hour) alongside the URL. Pages render these as plain `<img>`
+  tags (not `next/image` — the URL's token rotates every request, so
+  it's not a stable optimization target).
 - All policies wrap `auth.uid()` as `(select auth.uid())` — current
   Supabase guidance, lets the planner evaluate it once per statement
   instead of once per row.
@@ -109,6 +124,20 @@ Migrations are applied via the Supabase MCP tools and mirrored as SQL
 files in `supabase/migrations/` for version control — that folder is the
 source of truth for schema history even though there's no local Supabase
 CLI in the loop.
+
+## Seed content
+
+The live database has 24 real listings + photos, ported from the static
+demo's mock `listings` array (`index.html`) and its `images/listings/`
+photos, all owned by one seed account — `demo-seller@example.test` /
+profile name **"Just5Up Demo"**. This is real, permanent data in the
+live project (not test-user scaffolding that gets cleaned up), so it's
+safe to treat as a normal seller when testing — don't delete it as
+leftover test residue. It was inserted as `status: 'active'` by
+temporarily flipping the account to `admin` for the insert (bypassing
+`enforce_listing_activation` legitimately, the same way an admin
+approving a real submission would) and flipping it back to `user`
+immediately after — it has no standing admin privileges.
 
 ## Brand direction
 

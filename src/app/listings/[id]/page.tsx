@@ -43,8 +43,20 @@ export default async function ListingDetailPage({
       )}
 
       <div className="overflow-hidden rounded-[10px] border border-line bg-panel">
-        <div className="relative flex aspect-video items-center justify-center bg-gradient-to-br from-[#26262b] to-[#18181b] text-sm text-grey">
-          {photos.length === 0 ? "No photos yet" : `${photos.length} photo${photos.length > 1 ? "s" : ""}`}
+        <div className="relative aspect-video">
+          {photos[0]?.url ? (
+            // eslint-disable-next-line @next/next/no-img-element -- signed URL rotates per request, not a next/image candidate
+            <img
+              src={photos[0].url}
+              alt={`${listing.make} ${listing.model}`}
+              className="h-full w-full object-cover"
+              draggable={false}
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#26262b] to-[#18181b] text-sm text-grey">
+              No photos yet
+            </div>
+          )}
           <div className="absolute top-3 right-3">
             <SaveButton listingId={listing.id} initiallySaved={isSaved} isLoggedIn={!!profile} variant="badge" />
           </div>

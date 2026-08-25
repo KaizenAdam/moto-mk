@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { listActiveFiltered, listFilterOptions, type ListingFilters } from "@/lib/data/listings";
 import { listSaved } from "@/lib/data/savedListings";
 import { getOwnProfile } from "@/lib/data/profiles";
+import { getCoverPhotoUrls } from "@/lib/data/listingPhotos";
 import type { Currency } from "@/lib/constants/listings";
 import ListingsFilterBar from "./ListingsFilterBar";
 import CurrencyToggle from "./CurrencyToggle";
@@ -48,6 +49,10 @@ export default async function ListingsPage({
 
   const saved = profile ? await listSaved(supabase) : [];
   const savedIds = new Set(saved.map((s) => s.listing_id));
+  const coverPhotoUrls = await getCoverPhotoUrls(
+    supabase,
+    listings.map((l) => l.id)
+  );
 
   return (
     <main>
@@ -111,6 +116,7 @@ export default async function ListingsPage({
                 currency={currency}
                 initiallySaved={savedIds.has(listing.id)}
                 isLoggedIn={!!profile}
+                photoUrl={coverPhotoUrls.get(listing.id)}
               />
             ))}
           </div>
