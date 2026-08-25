@@ -25,7 +25,10 @@ application behind that design.
 - **`profiles`** — one row per `auth.users` row (`name`, `phone`, `town`,
   `account_type: user|dealer|admin`). Auto-created by a trigger on signup.
 - **`listings`** — a bike for sale (`seller_id → profiles`, spec fields,
-  `price_eur`, `status: active|sold|draft|removed`).
+  `price_eur`, `status: pending|active|sold|draft|removed|rejected`,
+  **defaults to `pending`** — new listings sit in a moderation queue and
+  only an admin can move one to `active` (enforced by a trigger, not just
+  a policy — see below).
 - **`listing_photos`** — `listing_id → listings`, `storage_path`, `sort_order`.
 - **`saved_listings`** — `(profile_id, listing_id)` favourites, composite PK.
 - **`dealer_requests`** — a user's request to become a dealer
@@ -51,14 +54,49 @@ Every table has RLS enabled, no exceptions. The pattern throughout:
   that's expected and correct; it's exactly this bypass that makes the
   view work, and it only ever exposes the three safe columns above.
 - **Role checks use a `security definer` function**, not inline
-  subqueries. `private.is_admin()` is the one example (gates the `update`
-  policy on `dealer_requests`) — checking a role by directly subquerying
-  `profiles` from another table's policy is the standard way to hit RLS
-  recursion/perf issues; the security-definer function sidesteps that.
-  It lives in a **`private` schema** (not `public`) specifically so
-  PostgREST never auto-exposes it as a callable `/rest/v1/rpc/is_admin`
-  endpoint — `authenticated`/`anon` have `USAGE`/`EXECUTE` on it so the
-  RLS policy check still works, but nothing can call it directly.
+  subqueries. `private.is_admin()` gates the admin half of the `listings`
+  and `dealer_requests` update policies — checking a role by directly
+  subquerying `profiles` from another table's policy is the standard way
+  to hit RLS recursion/perf issues; the security-definer function
+  sidesteps that. It lives in a **`private` schema** (not `public`)
+  specifically so PostgREST never auto-exposes it as a callable
+  `/rest/v1/rpc/is_admin` endpoint — `authenticated`/`anon` have
+  `USAGE`/`EXECUTE` on it so the RLS policy check still works, but
+  nothing can call it directly.
+- **Owner-or-admin is one policy, not two.** `listings_read`,
+  `listings_update`, and `dealer_requests_select` each read
+  `owner_condition OR private.is_admin()` in a single permissive policy.
+  Two separate policies (one owner, one admin) are logically equivalent
+  but make Postgres evaluate both per row — the linter flags this as
+  `multiple_permissive_policies`. Keep it merged.
+- **A permission an admin needs must exist as a SELECT policy too, or
+  it's dead.** Postgres requires a row to be visible under some SELECT
+  policy before UPDATE/DELETE can target it at all — an UPDATE policy
+  alone is not enough. This bit twice during verification: `is_admin()`
+  correctly gated the `dealer_requests` and `listings` UPDATE policies,
+  but with no matching SELECT policy an admin's UPDATE silently matched
+  zero rows, because `dealer_requests_owner_select`/`listings_read`
+  (pre-fix) only covered the requester's/seller's own rows. Whenever you
+  add an admin (or any non-owner) write policy, check whether the
+  matching read policy needs the same `OR private.is_admin()` clause —
+  including on any table whose visibility derives from the one you just
+  changed (`listing_photos` needed it too, once `listings` did).
+- **Status transitions an admin must gate go in a trigger, not just a
+  policy.** RLS policies control *whether a row can be touched at all*;
+  they can't cheaply express "this UPDATE is fine except when it changes
+  this one column to this one value." `enforce_listing_activation()` is a
+  `before update` trigger that raises an exception if `new.status =
+  'active'` and the transition wasn't already `'active'` and the caller
+  isn't `private.is_admin()` — so a seller can freely edit their own
+  pending listing (price, description, etc.) but self-approving it is a
+  hard error, not a silently-ignored no-op.
+
+  **Known gap, not yet closed:** the trigger only fires `before update`.
+  `listings_owner_insert`'s `with check` doesn't restrict `status`, so a
+  non-admin can currently `insert` a new listing with `status: 'active'`
+  directly, skipping the queue entirely — the `pending` default only
+  applies when the column is omitted. If moderation needs to be
+  airtight, extend the same check to `before insert`.
 - **Storage RLS mirrors table RLS.** `storage.objects` policies for the
   `listing-photos` bucket re-derive the listing from
   `storage.foldername(name)[1]` and apply the exact same
