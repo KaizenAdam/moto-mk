@@ -22,6 +22,8 @@ export type ListingFilters = {
   town?: string;
   priceMaxEur?: number;
   ccMax?: number;
+  search?: string;
+  sort?: "newest" | "price_low" | "price_high";
 };
 
 /** Active listings, narrowed by the browse page's filter bar. */
@@ -34,8 +36,21 @@ export async function listActiveFiltered(supabase: Client, filters: ListingFilte
   if (filters.town) query = query.eq("town", filters.town);
   if (filters.priceMaxEur != null) query = query.lte("price_eur", filters.priceMaxEur);
   if (filters.ccMax != null) query = query.lte("engine_cc", filters.ccMax);
+  if (filters.search) {
+    // Strip characters that are meaningful in PostgREST's or()-filter syntax
+    // (commas separate conditions, parens group them) so a raw search term
+    // can never be misread as a filter expression.
+    const term = filters.search.replace(/[,()]/g, " ").trim();
+    if (term) {
+      query = query.or(`title.ilike.%${term}%,make.ilike.%${term}%,model.ilike.%${term}%`);
+    }
+  }
 
-  const { data, error } = await query.order("created_at", { ascending: false });
+  if (filters.sort === "price_low") query = query.order("price_eur", { ascending: true });
+  else if (filters.sort === "price_high") query = query.order("price_eur", { ascending: false });
+  else query = query.order("created_at", { ascending: false });
+
+  const { data, error } = await query;
   if (error) throw error;
   return data;
 }

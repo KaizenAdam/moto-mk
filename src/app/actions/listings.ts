@@ -32,14 +32,19 @@ export async function createListingAction(
   } = await supabase.auth.getUser();
   if (!user) return { error: "You need to log in to list a bike.", listing: null };
 
-  const title = str(formData, "title");
   const make = str(formData, "make");
   const model = str(formData, "model");
   const priceEur = num(formData, "price_eur");
+  const year = num(formData, "year");
 
-  if (!title || !make || !model || priceEur == null) {
-    return { error: "Title, make, model and price are required.", listing: null };
+  if (!make || !model || priceEur == null) {
+    return { error: "Make, model and price are required.", listing: null };
   }
+
+  // The sell form doesn't ask for a headline — a title is derived from the
+  // spec fields buyers actually browse by, same as how listing cards
+  // display "{make} {model}" rather than a free-text title.
+  const title = [year, make, model].filter(Boolean).join(" ");
 
   try {
     const listing = await create(supabase, {
@@ -47,7 +52,7 @@ export async function createListingAction(
       make,
       model,
       price_eur: priceEur,
-      year: num(formData, "year") ?? null,
+      year: year ?? null,
       engine_cc: num(formData, "engine_cc") ?? null,
       engine_type: str(formData, "engine_type") ?? null,
       licence_category: str(formData, "licence_category") ?? null,

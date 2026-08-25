@@ -13,3 +13,20 @@ export const ENGINE_TYPES = [
 export const CC_THRESHOLDS = [125, 400, 650, 1000] as const;
 
 export const PRICE_THRESHOLDS_EUR = [2000, 4000, 6000, 9000, 12000] as const;
+
+export const EUR_TO_MKD = 61.5;
+
+export type Currency = "EUR" | "MKD";
+
+export function formatPrice(eur: number, currency: Currency) {
+  if (currency === "MKD") {
+    return {
+      main: `${Math.round(eur * EUR_TO_MKD).toLocaleString()} MKD`,
+      alt: `≈ €${eur.toLocaleString()}`,
+    };
+  }
+  return {
+    main: `€${eur.toLocaleString()}`,
+    alt: `≈ ${Math.round(eur * EUR_TO_MKD).toLocaleString()} MKD`,
+  };
+}

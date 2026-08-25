@@ -1,50 +1,35 @@
-import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
-import { getOwnProfile } from "@/lib/data/profiles";
-import { signOut } from "@/app/actions/auth";
-
-export default async function Home() {
-  const supabase = await createClient();
-  const profile = await getOwnProfile(supabase);
-
+export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-black px-4 text-center">
-      <h1 className="text-3xl font-bold text-amber-400">Just5Up!</h1>
-      <p className="max-w-sm text-sm text-zinc-400">
-        North Macedonia&rsquo;s motorcycle marketplace — backend scaffold.
-      </p>
-
-      {profile ? (
-        <div className="rounded-lg border border-zinc-800 bg-zinc-950 px-6 py-4 text-left text-sm text-zinc-300">
-          <p>
-            Signed in as <span className="text-white">{profile.name ?? "(no name set)"}</span>
-          </p>
-          <p className="text-zinc-500">Account type: {profile.account_type}</p>
-          <form action={signOut} className="mt-4">
-            <button
-              type="submit"
-              className="rounded bg-zinc-800 px-3 py-1.5 text-xs font-medium text-white hover:bg-zinc-700"
-            >
-              Sign out
-            </button>
-          </form>
-        </div>
-      ) : (
-        <div className="flex gap-3">
-          <Link
-            href="/login"
-            className="rounded bg-amber-400 px-4 py-2 text-sm font-semibold text-black hover:bg-amber-300"
+    <section
+      className="border-b border-line px-5 py-9"
+      style={{
+        background:
+          "radial-gradient(circle at 80% 0%, rgba(193,39,45,.18), transparent 55%), radial-gradient(circle at 10% 100%, rgba(212,175,55,.12), transparent 50%), #0e0e11",
+      }}
+    >
+      <div className="mx-auto max-w-[1280px]">
+        <h1 className="font-display mb-1.5 text-3xl">
+          Find your next ride in <em className="not-italic text-gold">North Macedonia</em>
+        </h1>
+        <p className="mb-4 text-sm text-ink-dim">
+          Motorcycles, gear and parts — from riders and trusted dealers across Skopje, Ohrid,
+          Bitola and beyond.
+        </p>
+        <form action="/listings" method="GET" className="flex gap-2.5 rounded-lg border border-line bg-panel p-2">
+          <input
+            type="text"
+            name="search"
+            placeholder="Search make, model, e.g. Yamaha R6…"
+            className="flex-1 bg-transparent px-2.5 py-2 text-[15px] text-ink outline-none placeholder:text-[#6f6f76]"
+          />
+          <button
+            type="submit"
+            className="rounded-md bg-gradient-to-br from-gold-bright to-gold px-[18px] py-[9px] text-[13px] font-bold tracking-wide text-[#141414] uppercase shadow-[0_2px_10px_rgba(212,175,55,0.25)] transition hover:brightness-110"
           >
-            Log in
-          </Link>
-          <Link
-            href="/signup"
-            className="rounded border border-zinc-700 px-4 py-2 text-sm font-semibold text-white hover:border-amber-400"
-          >
-            Sign up
-          </Link>
-        </div>
-      )}
-    </main>
+            Search
+          </button>
+        </form>
+      </div>
+    </section>
   );
 }

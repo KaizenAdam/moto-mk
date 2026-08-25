@@ -2,12 +2,7 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import { RIDING_STYLES, ENGINE_TYPES, CC_THRESHOLDS, PRICE_THRESHOLDS_EUR } from "@/lib/constants/listings";
-
-type SearchParams = Record<string, string | string[] | undefined>;
-
-function toStringParam(v: string | string[] | undefined) {
-  return Array.isArray(v) ? v[0] ?? "" : v ?? "";
-}
+import { toStringParam, withParam, type SearchParams } from "./queryParams";
 
 export default function ListingsFilterBar({
   makes,
@@ -22,26 +17,19 @@ export default function ListingsFilterBar({
   const pathname = usePathname();
 
   function setParam(key: string, value: string) {
-    const params = new URLSearchParams();
-    for (const [k, v] of Object.entries(current)) {
-      const s = toStringParam(v);
-      if (s) params.set(k, s);
-    }
-    if (value) params.set(key, value);
-    else params.delete(key);
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${withParam(current, key, value)}`);
   }
 
-  const selectClass =
-    "rounded border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-white outline-none focus:border-amber-400";
+  function clearAll() {
+    router.push(pathname);
+  }
+
+  const pillClass =
+    "rounded-full border border-line bg-panel2 px-3.5 py-2 text-[13px] text-ink outline-none focus:border-gold";
 
   return (
-    <div className="flex flex-wrap gap-3">
-      <select
-        className={selectClass}
-        value={toStringParam(current.make)}
-        onChange={(e) => setParam("make", e.target.value)}
-      >
+    <div className="flex flex-wrap items-center gap-2">
+      <select className={pillClass} value={toStringParam(current.make)} onChange={(e) => setParam("make", e.target.value)}>
         <option value="">All makes</option>
         {makes.map((m) => (
           <option key={m} value={m}>
@@ -50,11 +38,7 @@ export default function ListingsFilterBar({
         ))}
       </select>
 
-      <select
-        className={selectClass}
-        value={toStringParam(current.style)}
-        onChange={(e) => setParam("style", e.target.value)}
-      >
+      <select className={pillClass} value={toStringParam(current.style)} onChange={(e) => setParam("style", e.target.value)}>
         <option value="">All riding styles</option>
         {RIDING_STYLES.map((s) => (
           <option key={s} value={s}>
@@ -64,7 +48,7 @@ export default function ListingsFilterBar({
       </select>
 
       <select
-        className={selectClass}
+        className={pillClass}
         value={toStringParam(current.engineType)}
         onChange={(e) => setParam("engineType", e.target.value)}
       >
@@ -76,25 +60,8 @@ export default function ListingsFilterBar({
         ))}
       </select>
 
-      <select
-        className={selectClass}
-        value={toStringParam(current.town)}
-        onChange={(e) => setParam("town", e.target.value)}
-      >
-        <option value="">All towns</option>
-        {towns.map((t) => (
-          <option key={t} value={t}>
-            {t}
-          </option>
-        ))}
-      </select>
-
-      <select
-        className={selectClass}
-        value={toStringParam(current.ccMax)}
-        onChange={(e) => setParam("ccMax", e.target.value)}
-      >
-        <option value="">Any cc</option>
+      <select className={pillClass} value={toStringParam(current.ccMax)} onChange={(e) => setParam("ccMax", e.target.value)}>
+        <option value="">Any engine size</option>
         {CC_THRESHOLDS.map((cc) => (
           <option key={cc} value={cc}>
             Up to {cc}cc
@@ -103,7 +70,7 @@ export default function ListingsFilterBar({
       </select>
 
       <select
-        className={selectClass}
+        className={pillClass}
         value={toStringParam(current.priceMax)}
         onChange={(e) => setParam("priceMax", e.target.value)}
       >
@@ -114,6 +81,19 @@ export default function ListingsFilterBar({
           </option>
         ))}
       </select>
+
+      <select className={pillClass} value={toStringParam(current.town)} onChange={(e) => setParam("town", e.target.value)}>
+        <option value="">All of North Macedonia</option>
+        {towns.map((t) => (
+          <option key={t} value={t}>
+            {t}
+          </option>
+        ))}
+      </select>
+
+      <span onClick={clearAll} className="cursor-pointer px-1 py-2 text-xs text-grey hover:text-red">
+        Clear all
+      </span>
     </div>
   );
 }

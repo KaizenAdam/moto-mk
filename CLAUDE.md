@@ -114,10 +114,36 @@ CLI in the loop.
 
 **Punk/rock, not premium-fintech.** Primary: black + gold. Secondary:
 red + grey. Bold condensed display type, high contrast, deliberately
-rougher than a typical SaaS look — see the static demo's design system
-(`index.html` et al. still in this repo's history) for the fully realized
-version. Auth pages in this pass use a plain black/amber Tailwind
-treatment as a placeholder, not the final visual system.
+rougher than a typical SaaS look. The static demo (`index.html`,
+`sell.html`, still at the repo root) is the approved reference design —
+its palette and component vocabulary now live for real in
+`src/app/globals.css` (`--black`/`--panel`/`--panel2`/`--line`/`--gold`/
+`--gold-bright`/`--red`/`--grey`/`--text`/`--text-dim`, mirrored into
+`@theme inline` as `bg-panel`/`text-gold`/etc. Tailwind utilities) and in
+shared components: `SiteHeader`/`SiteFooter` (wrapped around every route
+in `layout.tsx`), `ListingCard` (the `.card` unit — photo placeholder,
+save-heart badge, spec chips, price), and `SaveButton`'s `badge`/`inline`
+variants. Body font is the demo's system stack; the `.font-display`
+class gives headings the demo's Georgia serif. Every real page
+(`/`, `/listings`, `/listings/[id]`, `/sell`, `/login`, `/signup`) now
+uses this system — the old ad-hoc black/amber Tailwind on the auth pages
+is gone.
+
+Two things the demo has that were deliberately **not** ported: the MK/SQ
+language switcher (decorative in the demo — real i18n would mean
+authoring and maintaining actual translated copy, a separate piece of
+work) and the FEATURED/NEW card badges (mock-data flourishes with no
+backing column in the real schema). The EUR/MKD currency toggle **was**
+ported, since it's pure client-side math on the real `price_eur` value,
+not decoration. `/listings` also gained working free-text search
+(`search` param on `listActiveFiltered`, `.ilike` across
+title/make/model) and sort (`sort` param), both small additive pieces
+needed for real parity with the demo's search bar and sort dropdown.
+
+`/sell` is now gated server-side (`redirect('/login')` if there's no
+session) rather than only failing at submit time — it's the one real
+protected page in the app now, so it got the redirect-to-login guard
+that was previously deferred as unnecessary.
 
 ## Mobile-readiness principle
 

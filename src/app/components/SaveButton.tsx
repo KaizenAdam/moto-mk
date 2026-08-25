@@ -8,19 +8,50 @@ export default function SaveButton({
   listingId,
   initiallySaved,
   isLoggedIn,
+  variant = "inline",
 }: {
   listingId: string;
   initiallySaved: boolean;
   isLoggedIn: boolean;
+  /** "badge" — circular overlay for a card's photo corner. "inline" — labelled text/button for a detail page. */
+  variant?: "badge" | "inline";
 }) {
   const [saved, setSaved] = useState(initiallySaved);
   const [pending, startTransition] = useTransition();
 
+  const badgeClass =
+    "flex h-[30px] w-[30px] items-center justify-center rounded-full bg-black/50 text-base transition hover:bg-black/70 hover:scale-105";
+
   if (!isLoggedIn) {
-    return (
-      <Link href="/login" className="text-sm text-zinc-500 hover:text-amber-400">
+    return variant === "badge" ? (
+      <Link href="/login" className={badgeClass} title="Log in to save">
+        ♡
+      </Link>
+    ) : (
+      <Link href="/login" className="text-sm text-grey hover:text-gold-bright">
         Log in to save
       </Link>
+    );
+  }
+
+  function toggle() {
+    const next = !saved;
+    setSaved(next);
+    startTransition(async () => {
+      await toggleSavedAction(listingId, saved);
+    });
+  }
+
+  if (variant === "badge") {
+    return (
+      <button
+        type="button"
+        disabled={pending}
+        onClick={toggle}
+        className={`${badgeClass} ${saved ? "bg-red text-white hover:bg-red" : ""} disabled:opacity-60`}
+      >
+        {saved ? "♥" : "♡"}
+      </button>
     );
   }
 
@@ -28,16 +59,10 @@ export default function SaveButton({
     <button
       type="button"
       disabled={pending}
-      onClick={() => {
-        const next = !saved;
-        setSaved(next);
-        startTransition(async () => {
-          await toggleSavedAction(listingId, saved);
-        });
-      }}
-      className="text-sm text-zinc-400 hover:text-amber-400 disabled:opacity-60"
+      onClick={toggle}
+      className="text-sm text-ink-dim hover:text-gold-bright disabled:opacity-60"
     >
-      {saved ? "★ Saved" : "☆ Save"}
+      {saved ? "♥ Saved" : "♡ Save"}
     </button>
   );
 }
