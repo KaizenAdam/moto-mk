@@ -85,18 +85,16 @@ Every table has RLS enabled, no exceptions. The pattern throughout:
   policy.** RLS policies control *whether a row can be touched at all*;
   they can't cheaply express "this UPDATE is fine except when it changes
   this one column to this one value." `enforce_listing_activation()` is a
-  `before update` trigger that raises an exception if `new.status =
-  'active'` and the transition wasn't already `'active'` and the caller
-  isn't `private.is_admin()` — so a seller can freely edit their own
-  pending listing (price, description, etc.) but self-approving it is a
-  hard error, not a silently-ignored no-op.
-
-  **Known gap, not yet closed:** the trigger only fires `before update`.
-  `listings_owner_insert`'s `with check` doesn't restrict `status`, so a
-  non-admin can currently `insert` a new listing with `status: 'active'`
-  directly, skipping the queue entirely — the `pending` default only
-  applies when the column is omitted. If moderation needs to be
-  airtight, extend the same check to `before insert`.
+  single `before insert or update` trigger that raises an exception if
+  `new.status = 'active'`, the caller isn't `private.is_admin()`, and
+  either it's an `insert` or the row's status is actually changing
+  (`tg_op = 'INSERT' or old.status is distinct from new.status` — the
+  `tg_op` check short-circuits before `OLD` is referenced, since `OLD`
+  doesn't exist on insert). One function covers both paths rather than
+  duplicating the check: a seller can freely edit their own pending
+  listing (price, description, etc.) or create a new one, but setting
+  `status: 'active'` themselves — at insert or update — is a hard error,
+  not a silently-ignored no-op or a quietly-coerced value.
 - **Storage RLS mirrors table RLS.** `storage.objects` policies for the
   `listing-photos` bucket re-derive the listing from
   `storage.foldername(name)[1]` and apply the exact same
