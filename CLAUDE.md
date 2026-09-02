@@ -153,9 +153,11 @@ immediately after — it has no standing admin privileges.
 Two plain profiles also exist for client-demo purposes — **Adam Harvey**
 (`adam@kaizensolutionsuk.com` — a real inbox, switched from the initial
 `adam.harvey@example.test` placeholder so it's a usable login for the
-demo) and **Billy Monsey** (`billy.monsey@example.test`), both
-`account_type: 'user'`, password `DemoProfile123!`, no listings of their
-own. Real permanent rows, not test residue — don't delete them either.
+demo; now `account_type: 'admin'`, so this is also the real admin login
+for `/admin`) and **Billy Monsey** (`billy.monsey@example.test`,
+`account_type: 'user'`). Password for both: `DemoProfile123!`. Neither
+has listings of their own. Real permanent rows, not test residue — don't
+delete them either.
 
 ## Brand direction
 
