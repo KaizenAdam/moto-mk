@@ -159,6 +159,18 @@ for `/admin`) and **Billy Monsey** (`billy.monsey@example.test`,
 has listings of their own. Real permanent rows, not test residue — don't
 delete them either.
 
+For a client walkthrough, the admin portal was also seeded with
+in-progress-looking state: 3 of "Just5Up Demo"'s listings (the Honda
+CBR500R, KTM 390 Duke, and Yamaha YBR 125) are `status: 'pending'`
+rather than `active`, so the pending-listings queue isn't empty. Two
+more real accounts exist as approved dealers — **Elena Petrova**
+(`elena.petrova@example.test`, Skopje Moto Garage) and **Goran
+Ivanovski** (`goran.ivanovski@example.test`, Ohrid Bike Centre) — each
+with a matching `approved` `dealer_requests` row for their business
+name. Billy Monsey has one *pending* `dealer_requests` row ("Monsey
+Motorcycles") so that queue isn't empty either. All real, permanent
+demo state — not test residue to clean up.
+
 ## Brand direction
 
 **Punk/rock, not premium-fintech.** Primary: black + gold. Secondary:
