@@ -29,6 +29,21 @@ export async function getPublicProfile(supabase: Client, id: string) {
   return data;
 }
 
+/**
+ * Every profile, full columns (including phone) — for the admin portal's
+ * user roster. Relies on the profiles_select policy's OR private.is_admin()
+ * arm; a non-admin caller gets back only their own row, never an error.
+ */
+export async function listAllForAdmin(supabase: Client) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return data;
+}
+
 export async function updateOwnProfile(
   supabase: Client,
   updates: TablesUpdate<"profiles">

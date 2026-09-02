@@ -51,6 +51,21 @@ export async function listPendingForAdmin(supabase: Client) {
 }
 
 /**
+ * Approved dealer requests, so the admin portal's "current dealers"
+ * section can show which business each dealer profile runs.
+ */
+export async function listApprovedForAdmin(supabase: Client) {
+  const { data, error } = await supabase
+    .from("dealer_requests")
+    .select("*")
+    .eq("status", "approved")
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return data;
+}
+
+/**
  * Only succeeds for a caller whose profile has account_type = 'admin' —
  * enforced by the dealer_requests_admin_update RLS policy via is_admin().
  */

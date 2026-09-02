@@ -33,6 +33,11 @@ application behind that design.
 - **`saved_listings`** — `(profile_id, listing_id)` favourites, composite PK.
 - **`dealer_requests`** — a user's request to become a dealer
   (`status: pending|approved|rejected`), approved only by an admin.
+- **`events`** — admin-authored marketing content (`title`, `description`,
+  `event_date`, `location`, `created_by → profiles`). No moderation
+  lifecycle like listings — public read, admin-only write. No public
+  `/events` listing page reads from it yet (still the static "Coming
+  Soon" placeholder) — only `/admin` can create/delete rows so far.
 - Storage bucket **`listing-photos`** (private) — objects live at
   `{listing_id}/{filename}`.
 
@@ -80,7 +85,13 @@ Every table has RLS enabled, no exceptions. The pattern throughout:
   add an admin (or any non-owner) write policy, check whether the
   matching read policy needs the same `OR private.is_admin()` clause —
   including on any table whose visibility derives from the one you just
-  changed (`listing_photos` needed it too, once `listings` did).
+  changed (`listing_photos` needed it too, once `listings` did — and its
+  own Storage-layer read policy needed the same fix separately, since
+  `storage.objects` policies are independent of the table-row policies
+  they parallel). `profiles` went the longest without this: it had no
+  admin arm at all until the admin portal needed one (`profiles_select`),
+  because nothing before that ever needed an admin to see another user's
+  full row.
 - **Status transitions an admin must gate go in a trigger, not just a
   policy.** RLS policies control *whether a row can be touched at all*;
   they can't cheaply express "this UPDATE is fine except when it changes
@@ -272,14 +283,21 @@ the real authorization boundary is Postgres RLS, not the proxy.
   default (`pending`) is structurally the only possible outcome. On
   success the form is replaced with a "pending review" message, not a
   "you're live" one.
-- **`/admin`** — pending-listing and pending-dealer-request review queue.
-  Gated on `profiles.account_type === 'admin'` — this check is a UX
-  nicety, not the security boundary; `listPendingForAdmin` in
-  `listings.ts`/`dealerRequests.ts` and the approve/reject actions in
-  `src/app/actions/admin.ts` are safe to call regardless, because RLS
+- **`/admin`** — the full admin portal: pending-listing and
+  pending-dealer-request review queues, a roster of every user
+  (`listAllForAdmin` in `profiles.ts` — needs the `profiles_select` admin
+  RLS arm noted above), a dealers section (profiles where
+  `account_type = 'dealer'`, cross-referenced against
+  `listApprovedForAdmin` in `dealerRequests.ts` for each one's business
+  name), and event create/delete (`src/lib/data/events.ts`). Gated on
+  `profiles.account_type === 'admin'` — this check is a UX nicety, not
+  the security boundary; every `*ForAdmin` function and admin action in
+  `src/app/actions/admin.ts` is safe to call regardless, because RLS
   (`OR private.is_admin()`) is what actually filters/blocks a non-admin.
-  Deliberately unstyled/unpaginated — a working tool, not a client-facing
-  page.
+  The all-users table can't show email addresses — those live in
+  `auth.users`, only reachable via the Admin API, and this project has no
+  service-role key by design. Deliberately unstyled/unpaginated — a
+  working tool, not a client-facing page.
 
 ## Testing real auth flows locally
 
