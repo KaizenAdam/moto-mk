@@ -139,6 +139,12 @@ temporarily flipping the account to `admin` for the insert (bypassing
 approving a real submission would) and flipping it back to `user`
 immediately after — it has no standing admin privileges.
 
+Two plain profiles also exist for client-demo purposes — **Adam Harvey**
+(`adam.harvey@example.test`) and **Billy Monsey**
+(`billy.monsey@example.test`), both `account_type: 'user'`, password
+`DemoProfile123!`, no listings of their own. Real permanent rows, not
+test residue — don't delete them either.
+
 ## Brand direction
 
 **Punk/rock, not premium-fintech.** Primary: black + gold. Secondary:
