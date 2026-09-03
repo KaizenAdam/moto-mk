@@ -35,9 +35,8 @@ application behind that design.
   (`status: pending|approved|rejected`), approved only by an admin.
 - **`events`** — admin-authored marketing content (`title`, `description`,
   `event_date`, `location`, `created_by → profiles`). No moderation
-  lifecycle like listings — public read, admin-only write. No public
-  `/events` listing page reads from it yet (still the static "Coming
-  Soon" placeholder) — only `/admin` can create/delete rows so far.
+  lifecycle like listings — public read, admin-only write. Managed from
+  `/admin` (create/delete), shown publicly at `/events`.
 - Storage bucket **`listing-photos`** (private) — objects live at
   `{listing_id}/{filename}`.
 
@@ -270,12 +269,20 @@ the real authorization boundary is Postgres RLS, not the proxy.
   around the grid/filter bar — that was tried once during the design
   pass and had to be reverted.
 - **Nav is the full 5-item menu** (Buy, Parts & Gear, Events, Service
-  Centres, Dealers), matching the demo — `/parts-gear`, `/events`,
-  `/service-centres`, `/dealers` are minimal `ComingSoon`-component pages
-  (ported from the demo's own "Coming Soon" placeholder pages), not dead
-  links. No mobile hamburger — the demo's own burger button was
-  non-functional (CSS-only, no JS behind it); the nav just wraps on
-  narrow screens instead.
+  Centres, Dealers), matching the demo. `/parts-gear`, `/service-centres`,
+  `/dealers` are still minimal `ComingSoon`-component pages (ported from
+  the demo's own "Coming Soon" placeholder pages), not dead links.
+  `/events` is real (see below). No mobile hamburger — the demo's own
+  burger button was non-functional (CSS-only, no JS behind it); the nav
+  just wraps on narrow screens instead.
+- **`/events`** — public read via `listUpcoming` in
+  `src/lib/data/events.ts`, which filters to `event_date >= today OR
+  event_date IS NULL` (an `.or()` filter, since Postgrest has no single
+  operator for "gte or null") — a past rally shouldn't linger at the top
+  of a public events page. The admin portal's own list
+  (`listEvents`) deliberately shows everything, past included, since
+  managing old rows is a real admin need past events shouldn't need
+  archiving to fix. No RLS beyond what already exists (`events_public_read`).
 - **The browse page** (`/`, redirected to from `/listings`) — Server
   Component, reads filters from `searchParams` (`make`, `style`,
   `engineType`, `town`, `priceMax`, `ccMax`) and calls
