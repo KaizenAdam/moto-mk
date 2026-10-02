@@ -133,7 +133,21 @@ Every table has RLS enabled, no exceptions. The pattern throughout:
 Migrations are applied via the Supabase MCP tools and mirrored as SQL
 files in `supabase/migrations/` for version control — that folder is the
 source of truth for schema history even though there's no local Supabase
-CLI in the loop.
+CLI in the loop. If `apply_migration` times out (it does on statements
+the tool wants confirmed, like `drop policy`), run the SQL with
+`execute_sql`, prefer `alter policy` over drop/create, and insert the
+version row into `supabase_migrations.schema_migrations` yourself so the
+file name and the database agree.
+
+- **Column-level grants guard columns users must never write.**
+  `profiles` allows `authenticated` to update only `name`, `phone`,
+  `town`. A row-level "owner can update" policy covers every column, so
+  before this (fixed 2 Oct 2026) any user could set their own
+  `account_type` to `admin`. When you add a column a user must not
+  control, leave it out of the grant. `account_type` changes only in
+  security-definer code: approving a `dealer_requests` row makes the user
+  a dealer (`apply_dealer_request_decision()` trigger), and new requests
+  must be inserted as `pending`.
 
 ## Seed content
 
@@ -154,8 +168,12 @@ Two plain profiles also exist for client-demo purposes — **Adam Harvey**
 `adam.harvey@example.test` placeholder so it's a usable login for the
 demo; now `account_type: 'admin'`, so this is also the real admin login
 for `/admin`) and **Billy Monsey** (`billy.monsey@example.test`,
-`account_type: 'user'`). Password for both: `DemoProfile123!`. Neither
-has listings of their own. Real permanent rows, not test residue — don't
+`account_type: 'user'`). Neither has listings of their own.
+
+**Never write a password, key or token into this repo.** It is public on
+GitHub. The demo passwords used to be listed here, which meant the real
+admin login was public; they were rotated on 2 Oct 2026 and are kept
+outside the repo. Real permanent rows, not test residue — don't
 delete them either.
 
 For a client walkthrough, the admin portal was also seeded with
@@ -166,8 +184,9 @@ more real accounts exist as approved dealers — **Elena Petrova**
 (`elena.petrova@example.test`, Skopje Moto Garage) and **Goran
 Ivanovski** (`goran.ivanovski@example.test`, Ohrid Bike Centre) — each
 with a matching `approved` `dealer_requests` row for their business
-name. Billy Monsey has one *pending* `dealer_requests` row ("Monsey
-Motorcycles") so that queue isn't empty either. All real, permanent
+name. Billy Monsey's `dealer_requests` row ("Monsey Motorcycles") was
+seeded *pending* but has since been approved, before approval updated
+`account_type`, so his profile is still `user`. All real, permanent
 demo state — not test residue to clean up.
 
 ## Brand direction

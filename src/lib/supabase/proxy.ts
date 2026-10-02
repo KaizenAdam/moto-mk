@@ -31,8 +31,14 @@ export async function updateSession(request: NextRequest) {
   );
 
   // Triggers a token refresh if the session is stale, which fires
-  // setAll above and rewrites the response cookies.
-  await supabase.auth.getUser();
+  // setAll above and rewrites the response cookies. A failure here (Supabase
+  // unreachable) must not fail the request: the page renders, and its own
+  // error boundary handles any data it can't load.
+  try {
+    await supabase.auth.getUser();
+  } catch (e) {
+    console.error("proxy: session refresh failed", e);
+  }
 
   return response;
 }

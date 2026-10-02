@@ -5,7 +5,10 @@ import { signOut } from "@/app/actions/auth";
 
 export default async function SiteHeader() {
   const supabase = await createClient();
-  const profile = await getOwnProfile(supabase);
+  // The header wraps every page, including ones that need no data. If
+  // Supabase is unreachable, show the logged-out header rather than taking
+  // the whole site down with it.
+  const profile = await getOwnProfile(supabase).catch(() => null);
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-gradient-to-b from-[#111] to-black">
