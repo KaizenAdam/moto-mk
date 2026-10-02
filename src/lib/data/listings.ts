@@ -155,7 +155,26 @@ export async function update(
   return data as Tables<"listings">;
 }
 
+/**
+ * Deletes a listing and its photo files. Files go first: Storage's delete
+ * policy checks the caller owns the listing, which stops being checkable
+ * once the row is gone — and the row's cascade only removes listing_photos
+ * rows, never the files, so deleting the row first would orphan them.
+ */
 export async function remove(supabase: Client, id: string) {
+  const { data: photos, error: photosError } = await supabase
+    .from("listing_photos")
+    .select("storage_path")
+    .eq("listing_id", id);
+  if (photosError) throw photosError;
+
+  if (photos.length > 0) {
+    const { error: storageError } = await supabase.storage
+      .from("listing-photos")
+      .remove(photos.map((p) => p.storage_path));
+    if (storageError) throw storageError;
+  }
+
   const { error } = await supabase.from("listings").delete().eq("id", id);
   if (error) throw error;
 }

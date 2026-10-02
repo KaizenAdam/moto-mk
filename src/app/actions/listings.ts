@@ -2,6 +2,8 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { create } from "@/lib/data/listings";
+import { getOwnProfile, updateOwnProfile } from "@/lib/data/profiles";
+import { toInternationalDigits } from "@/lib/contact/phone";
 import type { Tables } from "@/lib/database.types";
 
 export type CreateListingState = {
@@ -54,12 +56,27 @@ export async function createListingAction(
     return { error: "Engine size and mileage can't be negative.", listing: null };
   }
 
+  const description = str(formData, "description");
+  if (description && description.length > 3000) {
+    return { error: "Description is too long — keep it under 3,000 characters.", listing: null };
+  }
+
+  // Buyers contact sellers by phone/WhatsApp, so a listing needs one. It's
+  // kept on the profile (not the listing) so it's entered once.
+  const phone = str(formData, "phone");
+  if (!phone || !toInternationalDigits(phone)) {
+    return { error: "Add a phone number buyers can call or WhatsApp.", listing: null };
+  }
+
   // The sell form doesn't ask for a headline — a title is derived from the
   // spec fields buyers actually browse by, same as how listing cards
   // display "{make} {model}" rather than a free-text title.
   const title = [year, make, model].filter(Boolean).join(" ");
 
   try {
+    const profile = await getOwnProfile(supabase);
+    if (profile?.phone !== phone) await updateOwnProfile(supabase, { phone });
+
     const listing = await create(supabase, {
       title,
       make,
@@ -72,6 +89,7 @@ export async function createListingAction(
       riding_style: str(formData, "riding_style") ?? null,
       mileage_km: mileageKm ?? null,
       town: str(formData, "town") ?? null,
+      description: description ?? null,
     });
     return { error: null, listing };
   } catch (e) {

@@ -43,9 +43,9 @@ export default async function SiteHeader() {
         <div className="flex flex-wrap items-center justify-center gap-3">
           {profile ? (
             <div className="flex items-center gap-3 text-sm text-ink-dim">
-              <span>
-                Signed in as <span className="text-ink">{profile.name ?? "you"}</span>
-              </span>
+              <Link href="/garage" className="font-semibold text-ink hover:text-gold-bright">
+                My Garage
+              </Link>
               <form action={signOut}>
                 <button
                   type="submit"

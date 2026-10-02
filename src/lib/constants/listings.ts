@@ -9,6 +9,10 @@ export const ENGINE_TYPES = [
   { value: "electric", label: "Electric" },
 ] as const;
 
+// Towns offered when listing a bike. Free text in the schema; this is the
+// app's list, shared by the sell and edit forms.
+export const TOWNS = ["Skopje", "Ohrid", "Bitola", "Kumanovo", "Tetovo", "Struga"] as const;
+
 // engine_cc is a plain integer column — these are "up to" thresholds, not buckets.
 export const CC_THRESHOLDS = [125, 400, 650, 1000] as const;
 

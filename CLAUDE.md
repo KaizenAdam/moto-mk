@@ -343,7 +343,29 @@ is 8, checked in the server actions.
   client — `create()`'s type signature omits it entirely, so the DB
   default (`pending`) is structurally the only possible outcome. On
   success the form is replaced with a "pending review" message, not a
-  "you're live" one.
+  "you're live" one. A phone number is required (saved to the profile).
+  **Photos upload from the browser, after the listing is created**:
+  `uploadListingPhotos()` (`src/app/components/uploadPhotos.ts`)
+  compresses each to a ≤1600px JPEG (`src/lib/images/compress.ts`, which
+  also strips EXIF/GPS) and calls `addPhotos()` in
+  `src/lib/data/listingPhotos.ts`. They go direct to Storage because a
+  server action's body is capped at 1 MB; Storage RLS still enforces
+  ownership. Max 10 photos per listing (`MAX_PHOTOS`).
+- **Contacting a seller** — the listing page shows WhatsApp and Call
+  buttons to signed-in visitors only. The phone comes from the
+  `get_seller_contact(listing_id)` security-definer RPC, executable by
+  `authenticated` only, and only for a listing the caller can see. It is
+  the one way a phone leaves `profiles` — don't add phone to
+  `public_profiles` or a select policy. Numbers are normalised to
+  international form (leading 0 → 389) in `src/lib/contact/phone.ts`.
+- **`/garage`** ("My Garage") — the user's own listings with status,
+  rejection reason, Edit / Mark sold / Delete; saved bikes; profile
+  (name, phone, town); dealer-account request. **`/listings/[id]/edit`**
+  edits details and adds/removes photos; saving a rejected listing
+  resubmits it as pending. Deleting a listing removes its Storage files
+  first (`remove()` in `listings.ts`) — the row cascade only removes
+  `listing_photos` rows, never the files. Seller actions live in
+  `src/app/actions/garage.ts`; ownership is RLS, not code.
 - **`/admin`** — the full admin portal: pending-listing and
   pending-dealer-request review queues, a roster of every user
   (`listAllForAdmin` in `profiles.ts` — needs the `profiles_select` admin

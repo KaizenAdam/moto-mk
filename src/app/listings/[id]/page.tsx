@@ -1,13 +1,16 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getById } from "@/lib/data/listings";
 import { listForListing } from "@/lib/data/listingPhotos";
-import { getOwnProfile, getPublicProfile } from "@/lib/data/profiles";
+import { getOwnProfile, getPublicProfile, getSellerContact } from "@/lib/data/profiles";
 import { listSaved } from "@/lib/data/savedListings";
 import { formatPrice } from "@/lib/constants/listings";
 import { PinIcon } from "@/app/components/icons";
 import SaveButton from "@/app/components/SaveButton";
+import ContactSeller from "./ContactSeller";
+import PhotoGallery from "./PhotoGallery";
 
 export default async function ListingDetailPage({
   params,
@@ -20,12 +23,17 @@ export default async function ListingDetailPage({
   const listing = await getById(supabase, id);
   if (!listing) notFound();
 
-  const [seller, photos, profile, saved] = await Promise.all([
+  const [seller, photos, profile, saved, contact, h] = await Promise.all([
     getPublicProfile(supabase, listing.seller_id),
     listForListing(supabase, listing.id),
     getOwnProfile(supabase),
     listSaved(supabase),
+    getSellerContact(supabase, listing.id),
+    headers(),
   ]);
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? `https://${h.get("host")}`;
+  const bikeName = [listing.year, listing.make, listing.model].filter(Boolean).join(" ");
 
   const isSaved = saved.some((s) => s.listing_id === listing.id);
   const price = formatPrice(Number(listing.price_eur), "EUR");
@@ -46,20 +54,11 @@ export default async function ListingDetailPage({
       )}
 
       <div className="overflow-hidden rounded-[10px] border border-line bg-panel">
-        <div className="relative aspect-video">
-          {photos[0]?.url ? (
-            // eslint-disable-next-line @next/next/no-img-element -- signed URL rotates per request, not a next/image candidate
-            <img
-              src={photos[0].url}
-              alt={`${listing.make} ${listing.model}`}
-              className="h-full w-full object-cover"
-              draggable={false}
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#26262b] to-[#18181b] text-sm text-grey">
-              No photos yet
-            </div>
-          )}
+        <div className="relative">
+          <PhotoGallery
+            urls={photos.map((p) => p.url).filter((u): u is string => !!u)}
+            alt={`${listing.make} ${listing.model}`}
+          />
           <div className="absolute top-3 right-3">
             <SaveButton listingId={listing.id} initiallySaved={isSaved} isLoggedIn={!!profile} variant="badge" />
           </div>
@@ -89,11 +88,22 @@ export default async function ListingDetailPage({
             {listing.town ?? "—"}
           </div>
 
-          <div className="rounded-md border border-line bg-panel2 p-4 text-sm">
-            <p className="text-ink-dim">Seller</p>
-            <p className="text-ink">{seller?.name ?? "—"}</p>
-            {seller?.town && <p className="text-grey">{seller.town}</p>}
-          </div>
+          {listing.description && (
+            <p className="mb-5 text-sm leading-relaxed whitespace-pre-line text-ink">
+              {listing.description}
+            </p>
+          )}
+
+          <ContactSeller
+            sellerName={seller?.name ?? null}
+            sellerTown={seller?.town ?? null}
+            contact={contact}
+            isLoggedIn={!!profile}
+            isOwnListing={profile?.id === listing.seller_id}
+            bikeName={bikeName}
+            listingUrl={`${siteUrl}/listings/${listing.id}`}
+            editHref={`/listings/${listing.id}/edit`}
+          />
         </div>
       </div>
     </main>

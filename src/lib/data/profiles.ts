@@ -61,3 +61,21 @@ export async function updateOwnProfile(
   if (error) throw error;
   return data as Tables<"profiles">;
 }
+
+/**
+ * The seller's name and phone for one listing, via the get_seller_contact
+ * RPC — the only way a phone number leaves `profiles`. Returns null when
+ * signed out, when the listing isn't visible to the caller, or when the
+ * seller hasn't given a phone.
+ */
+export async function getSellerContact(supabase: Client, listingId: string) {
+  // The RPC isn't executable by anon at all — calling it signed out is a
+  // permission error, not an empty result. Don't ask.
+  const user = await getCurrentUser(supabase);
+  if (!user) return null;
+
+  const { data, error } = await supabase.rpc("get_seller_contact", { p_listing_id: listingId });
+  if (error) throw error;
+  const row = data?.[0];
+  return row?.phone ? { name: row.name, phone: row.phone } : null;
+}

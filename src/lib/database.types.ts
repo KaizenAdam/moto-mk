@@ -136,6 +136,7 @@ export type Database = {
       listings: {
         Row: {
           created_at: string
+          description: string | null
           engine_cc: number | null
           engine_type: string | null
           id: string
@@ -155,6 +156,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          description?: string | null
           engine_cc?: number | null
           engine_type?: string | null
           id?: string
@@ -174,6 +176,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          description?: string | null
           engine_cc?: number | null
           engine_type?: string | null
           id?: string
@@ -300,7 +303,13 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      get_seller_contact: {
+        Args: { p_listing_id: string }
+        Returns: {
+          name: string
+          phone: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
