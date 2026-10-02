@@ -23,7 +23,7 @@ export async function getPublicProfile(supabase: Client, id: string) {
     .from("public_profiles")
     .select("*")
     .eq("id", id)
-    .single();
+    .maybeSingle();
 
   if (error) throw error;
   return data;

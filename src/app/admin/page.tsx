@@ -6,6 +6,7 @@ import {
   listApprovedForAdmin as listApprovedDealerRequests,
 } from "@/lib/data/dealerRequests";
 import { listEvents } from "@/lib/data/events";
+import { getCoverPhotoUrls } from "@/lib/data/listingPhotos";
 import {
   approveListingAction,
   rejectListingAction,
@@ -14,6 +15,7 @@ import {
   deleteEventAction,
 } from "@/app/actions/admin";
 import AddEventForm from "./AddEventForm";
+import AdminAction from "./AdminAction";
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -50,12 +52,15 @@ export default async function AdminPage() {
       listEvents(supabase),
     ]);
 
-  const sellers = await Promise.all(
-    pendingListings.map((l) => getPublicProfile(supabase, l.seller_id))
-  );
-  const requesters = await Promise.all(
-    pendingRequests.map((r) => getPublicProfile(supabase, r.profile_id))
-  );
+  // These depend on the rows above but not on each other — run them together.
+  const [sellers, requesters, coverPhotos] = await Promise.all([
+    Promise.all(pendingListings.map((l) => getPublicProfile(supabase, l.seller_id))),
+    Promise.all(pendingRequests.map((r) => getPublicProfile(supabase, r.profile_id))),
+    getCoverPhotoUrls(
+      supabase,
+      pendingListings.map((l) => l.id)
+    ),
+  ]);
 
   const dealerProfiles = allProfiles.filter((p) => p.account_type === "dealer");
   const businessNameByProfileId = new Map(
@@ -76,7 +81,22 @@ export default async function AdminPage() {
           )}
           <div className="space-y-3">
             {pendingListings.map((listing, i) => (
-              <div key={listing.id} className="rounded border border-zinc-800 bg-zinc-950 p-4 text-sm">
+              <div key={listing.id} className="flex gap-4 rounded border border-zinc-800 bg-zinc-950 p-4 text-sm">
+                <a href={`/listings/${listing.id}`} className="shrink-0" title="Open listing">
+                  {coverPhotos.get(listing.id) ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- signed URL rotates per request
+                    <img
+                      src={coverPhotos.get(listing.id)}
+                      alt=""
+                      className="h-20 w-28 rounded object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-20 w-28 items-center justify-center rounded bg-zinc-900 text-xs text-zinc-500">
+                      No photo
+                    </div>
+                  )}
+                </a>
+                <div className="min-w-0 flex-1">
                 <p className="font-semibold text-white">
                   {listing.make} {listing.model} — {listing.title}
                 </p>
@@ -86,17 +106,10 @@ export default async function AdminPage() {
                   {Number(listing.price_eur).toLocaleString()} · {listing.town ?? "—"}
                 </p>
                 <p className="text-zinc-500">Seller: {sellers[i]?.name ?? "—"}</p>
-                <div className="mt-3 flex gap-2">
-                  <form action={approveListingAction.bind(null, listing.id)}>
-                    <button className="rounded bg-green-700 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-600">
-                      Approve
-                    </button>
-                  </form>
-                  <form action={rejectListingAction.bind(null, listing.id)}>
-                    <button className="rounded bg-red-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-800">
-                      Reject
-                    </button>
-                  </form>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <AdminAction action={approveListingAction.bind(null, listing.id)} label="Approve" tone="approve" />
+                  <AdminAction action={rejectListingAction.bind(null, listing.id)} label="Reject" tone="reject" withReason />
+                </div>
                 </div>
               </div>
             ))}
@@ -118,17 +131,9 @@ export default async function AdminPage() {
                   {req.address ?? "—"} · {req.phone ?? "—"}
                 </p>
                 <p className="text-zinc-500">Requested by: {requesters[i]?.name ?? "—"}</p>
-                <div className="mt-3 flex gap-2">
-                  <form action={approveDealerRequestAction.bind(null, req.id)}>
-                    <button className="rounded bg-green-700 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-600">
-                      Approve
-                    </button>
-                  </form>
-                  <form action={rejectDealerRequestAction.bind(null, req.id)}>
-                    <button className="rounded bg-red-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-800">
-                      Reject
-                    </button>
-                  </form>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <AdminAction action={approveDealerRequestAction.bind(null, req.id)} label="Approve" tone="approve" />
+                  <AdminAction action={rejectDealerRequestAction.bind(null, req.id)} label="Reject" tone="reject" />
                 </div>
               </div>
             ))}
@@ -163,11 +168,9 @@ export default async function AdminPage() {
                   {event.event_date ?? "No date"} · {event.location ?? "No location"}
                 </p>
                 {event.description && <p className="text-zinc-500">{event.description}</p>}
-                <form action={deleteEventAction.bind(null, event.id)} className="mt-2">
-                  <button className="rounded bg-red-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-800">
-                    Delete
-                  </button>
-                </form>
+                <div className="mt-2">
+                  <AdminAction action={deleteEventAction.bind(null, event.id)} label="Delete" tone="reject" />
+                </div>
               </div>
             ))}
           </div>

@@ -6,28 +6,54 @@ import { update as updateListing } from "@/lib/data/listings";
 import { setRequestStatus } from "@/lib/data/dealerRequests";
 import { createEvent, deleteEvent } from "@/lib/data/events";
 
-export async function approveListingAction(id: string) {
-  const supabase = await createClient();
-  await updateListing(supabase, id, { status: "active" });
+/**
+ * Every admin action reports back instead of throwing, so a failure shows
+ * next to the button that caused it rather than on the site's error page.
+ * Each is bound to its row id and used with useActionState
+ * (src/app/admin/AdminAction.tsx).
+ */
+export type AdminActionState = { error: string | null; done: boolean };
+
+async function run(task: () => Promise<unknown>): Promise<AdminActionState> {
+  try {
+    await task();
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Something went wrong.", done: false };
+  }
   revalidatePath("/admin");
+  return { error: null, done: true };
 }
 
-export async function rejectListingAction(id: string) {
+export async function approveListingAction(id: string) {
   const supabase = await createClient();
-  await updateListing(supabase, id, { status: "rejected" });
-  revalidatePath("/admin");
+  return run(() => updateListing(supabase, id, { status: "active", rejection_reason: null }));
+}
+
+export async function rejectListingAction(
+  id: string,
+  _prev: AdminActionState,
+  formData: FormData
+) {
+  const reason = String(formData.get("reason") ?? "").trim();
+  const supabase = await createClient();
+  return run(() =>
+    updateListing(supabase, id, { status: "rejected", rejection_reason: reason || null })
+  );
 }
 
 export async function approveDealerRequestAction(id: string) {
   const supabase = await createClient();
-  await setRequestStatus(supabase, id, "approved");
-  revalidatePath("/admin");
+  return run(() => setRequestStatus(supabase, id, "approved"));
 }
 
 export async function rejectDealerRequestAction(id: string) {
   const supabase = await createClient();
-  await setRequestStatus(supabase, id, "rejected");
-  revalidatePath("/admin");
+  return run(() => setRequestStatus(supabase, id, "rejected"));
+}
+
+export async function deleteEventAction(id: string) {
+  const supabase = await createClient();
+  return run(() => deleteEvent(supabase, id));
 }
 
 export type CreateEventState = { error: string | null };
@@ -57,10 +83,4 @@ export async function createEventAction(
 
   revalidatePath("/admin");
   return { error: null };
-}
-
-export async function deleteEventAction(id: string) {
-  const supabase = await createClient();
-  await deleteEvent(supabase, id);
-  revalidatePath("/admin");
 }

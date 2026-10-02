@@ -13,17 +13,22 @@ function first(v: string | string[] | undefined) {
   return Array.isArray(v) ? v[0] : v;
 }
 
+// A hand-edited URL (?priceMax=abc) must not reach the query as NaN —
+// PostgREST rejects it and the whole page errors. Ignore anything non-numeric.
+function positiveNumber(v: string | undefined) {
+  const n = Number(v);
+  return v && Number.isFinite(n) && n > 0 ? n : undefined;
+}
+
 function parseFilters(sp: SearchParams): ListingFilters {
-  const priceMax = first(sp.priceMax);
-  const ccMax = first(sp.ccMax);
   const sort = first(sp.sort);
   return {
     make: first(sp.make) || undefined,
     ridingStyle: first(sp.style) || undefined,
     engineType: first(sp.engineType) || undefined,
     town: first(sp.town) || undefined,
-    priceMaxEur: priceMax ? Number(priceMax) : undefined,
-    ccMax: ccMax ? Number(ccMax) : undefined,
+    priceMaxEur: positiveNumber(first(sp.priceMax)),
+    ccMax: positiveNumber(first(sp.ccMax)),
     search: first(sp.search) || undefined,
     sort: sort === "price_low" || sort === "price_high" ? sort : "newest",
   };

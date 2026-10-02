@@ -144,6 +144,7 @@ export type Database = {
           mileage_km: number | null
           model: string
           price_eur: number
+          rejection_reason: string | null
           riding_style: string | null
           seller_id: string
           status: string
@@ -162,6 +163,7 @@ export type Database = {
           mileage_km?: number | null
           model: string
           price_eur: number
+          rejection_reason?: string | null
           riding_style?: string | null
           seller_id: string
           status?: string
@@ -180,6 +182,7 @@ export type Database = {
           mileage_km?: number | null
           model?: string
           price_eur?: number
+          rejection_reason?: string | null
           riding_style?: string | null
           seller_id?: string
           status?: string

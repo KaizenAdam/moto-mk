@@ -105,6 +105,17 @@ Every table has RLS enabled, no exceptions. The pattern throughout:
   listing (price, description, etc.) or create a new one, but setting
   `status: 'active'` themselves — at insert or update — is a hard error,
   not a silently-ignored no-op or a quietly-coerced value.
+- **Editing a live listing sends it back to review.** A non-admin
+  change to any descriptive column of an `active` listing flips it to
+  `pending` (`require_rereview_on_edit()`), and so does adding or
+  replacing a photo (`require_rereview_on_photo_change()`). Price is
+  exempt on purpose. **When you add a column a buyer reads (e.g. a
+  description), add it to that trigger's column list**, or sellers can
+  change it after approval unseen. Rejecting sets `rejection_reason`,
+  which the seller sees on their listing page; approving clears it.
+- **Check constraints back the sell form:** price > 0, year 1900–2100,
+  mileage and engine size ≥ 0. The photo bucket takes JPEG/PNG/WebP/AVIF
+  only, 10 MB max.
 - **Storage RLS mirrors table RLS.** `storage.objects` policies for the
   `listing-photos` bucket re-derive the listing from
   `storage.foldername(name)[1]` and apply the exact same
@@ -273,6 +284,15 @@ Email/password via Supabase Auth (`/login`, `/signup`,
 `middleware.ts` → `proxy.ts`) refreshes the session cookie on every
 request — this is an **optimistic check only**, per Next's own guidance;
 the real authorization boundary is Postgres RLS, not the proxy.
+
+Password reset: `/forgot-password` → email → `/auth/confirm` (swaps the
+link's `code` or `token_hash` for a session) → `/reset-password`. Signup
+confirmation links land on `/auth/confirm` too; with confirmation on,
+signup shows "check your email" instead of redirecting. Email links
+are built from `NEXT_PUBLIC_SITE_URL` (falling back to the request
+origin), and **Supabase only follows them if `<site>/auth/confirm` is
+on Auth → URL Configuration → Redirect URLs**. Minimum password length
+is 8, checked in the server actions.
 
 ## Pages
 

@@ -35,10 +35,14 @@ export default function SaveButton({
   }
 
   function toggle() {
-    const next = !saved;
-    setSaved(next);
+    const wasSaved = saved;
+    setSaved(!wasSaved);
     startTransition(async () => {
-      await toggleSavedAction(listingId, saved);
+      try {
+        await toggleSavedAction(listingId, wasSaved);
+      } catch {
+        setSaved(wasSaved); // the heart shouldn't claim a save that didn't happen
+      }
     });
   }
 

@@ -134,7 +134,7 @@ export default function SellForm() {
           <div className="mb-3.5 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
             <label className={labelClass}>
               Year
-              <input name="year" type="number" min="1970" max="2026" placeholder="2020" className={inputClass} />
+              <input name="year" type="number" min="1970" max={new Date().getFullYear() + 1} placeholder="2020" className={inputClass} />
             </label>
             <label className={labelClass}>
               Engine size (cc)

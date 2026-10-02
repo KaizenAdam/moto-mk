@@ -41,6 +41,19 @@ export async function createListingAction(
     return { error: "Make, model and price are required.", listing: null };
   }
 
+  // The form's min/max are only a browser hint, and the database's check
+  // constraints would reject these with an unreadable error. Say it plainly.
+  const engineCc = num(formData, "engine_cc");
+  const mileageKm = num(formData, "mileage_km");
+  const maxYear = new Date().getFullYear() + 1;
+  if (priceEur <= 0) return { error: "Price must be more than €0.", listing: null };
+  if (year != null && (year < 1900 || year > maxYear)) {
+    return { error: `Year must be between 1900 and ${maxYear}.`, listing: null };
+  }
+  if ((engineCc ?? 0) < 0 || (mileageKm ?? 0) < 0) {
+    return { error: "Engine size and mileage can't be negative.", listing: null };
+  }
+
   // The sell form doesn't ask for a headline — a title is derived from the
   // spec fields buyers actually browse by, same as how listing cards
   // display "{make} {model}" rather than a free-text title.
@@ -53,11 +66,11 @@ export async function createListingAction(
       model,
       price_eur: priceEur,
       year: year ?? null,
-      engine_cc: num(formData, "engine_cc") ?? null,
+      engine_cc: engineCc ?? null,
       engine_type: str(formData, "engine_type") ?? null,
       licence_category: str(formData, "licence_category") ?? null,
       riding_style: str(formData, "riding_style") ?? null,
-      mileage_km: num(formData, "mileage_km") ?? null,
+      mileage_km: mileageKm ?? null,
       town: str(formData, "town") ?? null,
     });
     return { error: null, listing };

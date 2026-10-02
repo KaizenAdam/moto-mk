@@ -39,9 +39,11 @@ export async function listActiveFiltered(supabase: Client, filters: ListingFilte
   if (filters.ccMax != null) query = query.lte("engine_cc", filters.ccMax);
   if (filters.search) {
     // Strip characters that are meaningful in PostgREST's or()-filter syntax
-    // (commas separate conditions, parens group them) so a raw search term
-    // can never be misread as a filter expression.
-    const term = filters.search.replace(/[,()]/g, " ").trim();
+    // (commas separate conditions, parens group, quotes wrap values) or in an ilike pattern
+    // (% and _ are wildcards, * is PostgREST's alias for %, \ escapes), so a
+    // raw search term is only ever matched as plain text. Nobody searches
+    // for a bike by those characters.
+    const term = filters.search.replace(/[,()"%_*\\]/g, " ").trim();
     if (term) {
       query = query.or(`title.ilike.%${term}%,make.ilike.%${term}%,model.ilike.%${term}%`);
     }
@@ -101,8 +103,15 @@ export async function listOwn(supabase: Client) {
   return data;
 }
 
-/** RLS returns this only if the listing is active or owned by the caller. */
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * RLS returns this only if the listing is active or owned by the caller.
+ * A malformed id is "not found", not a Postgres uuid-syntax error.
+ */
 export async function getById(supabase: Client, id: string) {
+  if (!UUID.test(id)) return null;
+
   const { data, error } = await supabase
     .from("listings")
     .select("*")

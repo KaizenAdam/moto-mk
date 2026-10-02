@@ -37,9 +37,12 @@ export default async function ListingDetailPage({
       </Link>
 
       {listing.status !== "active" && (
-        <p className="mb-4 rounded-md bg-red/20 px-3 py-2 text-sm text-gold-bright">
-          This listing is {listing.status} — only you (or an admin) can see this page.
-        </p>
+        <div className="mb-4 rounded-md bg-red/20 px-3 py-2 text-sm text-gold-bright">
+          <p>This listing is {listing.status} — only you (or an admin) can see this page.</p>
+          {listing.status === "rejected" && listing.rejection_reason && (
+            <p className="mt-1 text-ink">Reason: {listing.rejection_reason}</p>
+          )}
+        </div>
       )}
 
       <div className="overflow-hidden rounded-[10px] border border-line bg-panel">
@@ -88,8 +91,8 @@ export default async function ListingDetailPage({
 
           <div className="rounded-md border border-line bg-panel2 p-4 text-sm">
             <p className="text-ink-dim">Seller</p>
-            <p className="text-ink">{seller.name ?? "—"}</p>
-            {seller.town && <p className="text-grey">{seller.town}</p>}
+            <p className="text-ink">{seller?.name ?? "—"}</p>
+            {seller?.town && <p className="text-grey">{seller.town}</p>}
           </div>
         </div>
       </div>
