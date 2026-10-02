@@ -5,6 +5,7 @@ import { getOwnProfile } from "@/lib/data/profiles";
 import { listOwn } from "@/lib/data/listings";
 import { listSaved } from "@/lib/data/savedListings";
 import { listOwnRequests } from "@/lib/data/dealerRequests";
+import { getOwnDealer } from "@/lib/data/dealers";
 import { getCoverPhotoUrls } from "@/lib/data/listingPhotos";
 import { formatPrice } from "@/lib/constants/listings";
 import { deleteListingAction, markSoldAction } from "@/app/actions/garage";
@@ -12,6 +13,7 @@ import ActionButton from "@/app/components/ActionButton";
 import ListingCard from "@/app/components/ListingCard";
 import ProfileForm from "./ProfileForm";
 import DealerRequestForm from "./DealerRequestForm";
+import StorefrontForm from "./StorefrontForm";
 
 const STATUS: Record<string, { label: string; className: string }> = {
   active: { label: "Live", className: "bg-green-700 text-white" },
@@ -27,11 +29,12 @@ const sectionTitle = "mb-4 border-b border-line pb-2.5 text-[15px] font-bold tra
 /** The signed-in user's own space: their listings, saved bikes and profile. */
 export default async function GaragePage() {
   const supabase = await createClient();
-  const [profile, mine, saved, dealerRequests] = await Promise.all([
+  const [profile, mine, saved, dealerRequests, dealer] = await Promise.all([
     getOwnProfile(supabase),
     listOwn(supabase),
     listSaved(supabase),
     listOwnRequests(supabase),
+    getOwnDealer(supabase),
   ]);
   if (!profile) redirect("/login");
 
@@ -147,9 +150,11 @@ export default async function GaragePage() {
           <ProfileForm name={profile.name} phone={profile.phone} town={profile.town} />
         </section>
 
-        <section>
-          <h2 className={sectionTitle}>Dealer account</h2>
-          {profile.account_type === "dealer" || profile.account_type === "admin" ? (
+        <section id="storefront">
+          <h2 className={sectionTitle}>{dealer ? "Your storefront" : "Dealer account"}</h2>
+          {dealer ? (
+            <StorefrontForm dealer={dealer} />
+          ) : profile.account_type === "dealer" || profile.account_type === "admin" ? (
             <p className="text-sm text-ink-dim">
               Your account is a <strong className="text-ink">{profile.account_type}</strong> account.
             </p>

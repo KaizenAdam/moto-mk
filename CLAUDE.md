@@ -159,6 +159,22 @@ file name and the database agree.
   security-definer code: approving a `dealer_requests` row makes the user
   a dealer (`apply_dealer_request_decision()` trigger), and new requests
   must be inserted as `pending`.
+- **A new table starts with ALL privileges for `anon` and
+  `authenticated`** (Supabase's default privileges). A column-level
+  `grant update (a, b)` on its own changes nothing — the table-wide grant
+  still allows every column. Always `revoke all ... from anon,
+  authenticated` first, then grant exactly what's needed. Found when a
+  dealer could rewrite their own storefront `slug` and `active` flag
+  despite a column grant; `dealers` now does it properly. Test column
+  restrictions by actually attempting the write as the role.
+- **Dealer storefronts (`dealers`).** One row per dealer, created by
+  the same approval trigger (slug from `private.slugify()`, which
+  transliterates Macedonian Cyrillic; `-2`, `-3` on clashes). Revoking
+  an approval sets `active = false` and keeps the row, so edits survive
+  re-approval. Public read when active. Dealers edit only
+  `business_name`, `town`, `address`, `phone`, `about` — never `slug` or
+  `active`. Users can't insert rows. The shop `phone` is public by
+  design, unlike a profile phone.
 
 ## Seed content
 
@@ -366,6 +382,13 @@ is 8, checked in the server actions.
   first (`remove()` in `listings.ts`) — the row cascade only removes
   `listing_photos` rows, never the files. Seller actions live in
   `src/app/actions/garage.ts`; ownership is RLS, not code.
+- **`/dealers`** — directory of live storefronts, most stock first.
+  **`/dealers/[slug]`** — a storefront: business details, public
+  WhatsApp/Call to the shop line, Google Maps link for the address, and
+  the dealer's live listings. Dealer listings carry a badge on cards
+  (`dealerNames` into `ListingsGrid`), and their listing pages show the
+  business, a storefront link and the shop line to everyone. Dealers
+  edit their storefront from My Garage (`#storefront`).
 - **`/admin`** — the full admin portal: pending-listing and
   pending-dealer-request review queues, a roster of every user
   (`listAllForAdmin` in `profiles.ts` — needs the `profiles_select` admin

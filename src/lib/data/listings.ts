@@ -58,6 +58,35 @@ export async function listActiveFiltered(supabase: Client, filters: ListingFilte
   return data;
 }
 
+/** One seller's live listings, newest first — a dealer storefront's stock. */
+export async function listActiveBySeller(supabase: Client, sellerId: string) {
+  const { data, error } = await supabase
+    .from("listings")
+    .select("*")
+    .eq("status", "active")
+    .eq("seller_id", sellerId)
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return data;
+}
+
+/** How many live listings each of these sellers has (missing = 0). */
+export async function countActiveBySeller(supabase: Client, sellerIds: string[]) {
+  const counts = new Map<string, number>();
+  if (sellerIds.length === 0) return counts;
+
+  const { data, error } = await supabase
+    .from("listings")
+    .select("seller_id")
+    .eq("status", "active")
+    .in("seller_id", sellerIds);
+
+  if (error) throw error;
+  for (const row of data) counts.set(row.seller_id, (counts.get(row.seller_id) ?? 0) + 1);
+  return counts;
+}
+
 /** Distinct make/town values across active listings, to populate filter dropdowns from real data. */
 export async function listFilterOptions(supabase: Client) {
   const { data, error } = await supabase

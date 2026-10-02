@@ -6,6 +6,7 @@ import { getById, remove, update } from "@/lib/data/listings";
 import { removePhoto } from "@/lib/data/listingPhotos";
 import { updateOwnProfile } from "@/lib/data/profiles";
 import { requestDealerStatus } from "@/lib/data/dealerRequests";
+import { getOwnDealer, updateOwnDealer } from "@/lib/data/dealers";
 import { toInternationalDigits } from "@/lib/contact/phone";
 
 /**
@@ -135,5 +136,32 @@ export async function updateListingAction(id: string, _prev: FormState, formData
       : "Saved."
   );
   revalidatePath(`/listings/${id}`);
+  return result;
+}
+
+export async function updateStorefrontAction(_prev: FormState, formData: FormData) {
+  const businessName = text(formData, "business_name");
+  const phone = text(formData, "phone");
+  const about = text(formData, "about");
+  if (!businessName) return { error: "Business name is required." };
+  if (businessName.length > 120) return { error: "Business name is too long." };
+  if (phone && !toInternationalDigits(phone)) return { error: "That phone number doesn't look right." };
+  if (about && about.length > 2000) return { error: "Keep the description under 2,000 characters." };
+
+  const supabase = await createClient();
+  const dealer = await getOwnDealer(supabase);
+  const result = await attempt(
+    () =>
+      updateOwnDealer(supabase, {
+        business_name: businessName,
+        town: text(formData, "town"),
+        address: text(formData, "address"),
+        phone,
+        about,
+      }),
+    "Storefront saved."
+  );
+  if (dealer) revalidatePath(`/dealers/${dealer.slug}`);
+  revalidatePath("/dealers");
   return result;
 }

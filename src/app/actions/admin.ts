@@ -41,14 +41,20 @@ export async function rejectListingAction(
   );
 }
 
+// Approving opens a storefront and rejecting an approved dealer closes it
+// (database trigger), so the public dealer pages change too.
 export async function approveDealerRequestAction(id: string) {
   const supabase = await createClient();
-  return run(() => setRequestStatus(supabase, id, "approved"));
+  const result = await run(() => setRequestStatus(supabase, id, "approved"));
+  revalidatePath("/dealers", "layout");
+  return result;
 }
 
 export async function rejectDealerRequestAction(id: string) {
   const supabase = await createClient();
-  return run(() => setRequestStatus(supabase, id, "rejected"));
+  const result = await run(() => setRequestStatus(supabase, id, "rejected"));
+  revalidatePath("/dealers", "layout");
+  return result;
 }
 
 export async function deleteEventAction(id: string) {

@@ -12,12 +12,15 @@ export default function ListingsGrid({
   isLoggedIn,
   photoUrls,
   sortSelect,
+  dealerNames = {},
 }: {
   listings: Tables<"listings">[];
   savedIds: string[];
   isLoggedIn: boolean;
   photoUrls: Record<string, string>;
   sortSelect: ReactNode;
+  /** seller_id → business name, for sellers who are verified dealers. */
+  dealerNames?: Record<string, string>;
 }) {
   const [currency, setCurrency] = useState<Currency>("EUR");
   const savedIdSet = new Set(savedIds);
@@ -48,6 +51,7 @@ export default function ListingsGrid({
               initiallySaved={savedIdSet.has(listing.id)}
               isLoggedIn={isLoggedIn}
               photoUrl={photoUrls[listing.id]}
+              dealerName={dealerNames[listing.seller_id]}
             />
           ))}
         </div>

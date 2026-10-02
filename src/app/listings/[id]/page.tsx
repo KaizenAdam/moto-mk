@@ -6,6 +6,7 @@ import { getById } from "@/lib/data/listings";
 import { listForListing } from "@/lib/data/listingPhotos";
 import { getOwnProfile, getPublicProfile, getSellerContact } from "@/lib/data/profiles";
 import { listSaved } from "@/lib/data/savedListings";
+import { getActiveBySeller } from "@/lib/data/dealers";
 import { formatPrice } from "@/lib/constants/listings";
 import { PinIcon } from "@/app/components/icons";
 import SaveButton from "@/app/components/SaveButton";
@@ -23,13 +24,14 @@ export default async function ListingDetailPage({
   const listing = await getById(supabase, id);
   if (!listing) notFound();
 
-  const [seller, photos, profile, saved, contact, h] = await Promise.all([
+  const [seller, photos, profile, saved, contact, h, dealer] = await Promise.all([
     getPublicProfile(supabase, listing.seller_id),
     listForListing(supabase, listing.id),
     getOwnProfile(supabase),
     listSaved(supabase),
     getSellerContact(supabase, listing.id),
     headers(),
+    getActiveBySeller(supabase, listing.seller_id),
   ]);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? `https://${h.get("host")}`;
@@ -103,6 +105,7 @@ export default async function ListingDetailPage({
             bikeName={bikeName}
             listingUrl={`${siteUrl}/listings/${listing.id}`}
             editHref={`/listings/${listing.id}/edit`}
+            dealer={dealer}
           />
         </div>
       </div>

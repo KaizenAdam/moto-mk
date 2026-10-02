@@ -10,12 +10,15 @@ export default function ListingCard({
   initiallySaved,
   isLoggedIn,
   photoUrl,
+  dealerName,
 }: {
   listing: Tables<"listings">;
   currency: Currency;
   initiallySaved: boolean;
   isLoggedIn: boolean;
   photoUrl?: string;
+  /** Set when the seller is a verified dealer — shown as a badge. */
+  dealerName?: string;
 }) {
   const price = formatPrice(Number(listing.price_eur), currency);
 
@@ -69,6 +72,11 @@ export default function ListingCard({
         <div className="flex items-center gap-1.5 text-xs text-grey">
           <PinIcon />
           {listing.town ?? "—"}
+          {dealerName && (
+            <span className="ml-auto truncate rounded bg-gold/15 px-1.5 py-0.5 text-[10px] font-bold text-gold-bright uppercase">
+              {dealerName}
+            </span>
+          )}
         </div>
       </Link>
     </div>

@@ -24,7 +24,7 @@ export default function DealerRequestForm() {
         <input name="address" className={inputClass} />
       </label>
       <label className={labelClass}>
-        Business phone
+        Business phone (shown on your storefront)
         <input name="phone" type="tel" className={inputClass} />
       </label>
       <div className="flex items-center gap-3">

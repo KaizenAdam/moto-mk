@@ -59,6 +59,60 @@ export type Database = {
           },
         ]
       }
+      dealers: {
+        Row: {
+          about: string | null
+          active: boolean
+          address: string | null
+          business_name: string
+          created_at: string
+          phone: string | null
+          profile_id: string
+          slug: string
+          town: string | null
+          updated_at: string
+        }
+        Insert: {
+          about?: string | null
+          active?: boolean
+          address?: string | null
+          business_name: string
+          created_at?: string
+          phone?: string | null
+          profile_id: string
+          slug: string
+          town?: string | null
+          updated_at?: string
+        }
+        Update: {
+          about?: string | null
+          active?: boolean
+          address?: string | null
+          business_name?: string
+          created_at?: string
+          phone?: string | null
+          profile_id?: string
+          slug?: string
+          town?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dealers_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dealers_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       events: {
         Row: {
           created_at: string

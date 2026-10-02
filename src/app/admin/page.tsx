@@ -7,6 +7,7 @@ import {
 } from "@/lib/data/dealerRequests";
 import { listEvents } from "@/lib/data/events";
 import { getCoverPhotoUrls } from "@/lib/data/listingPhotos";
+import { listActiveDealers } from "@/lib/data/dealers";
 import {
   approveListingAction,
   rejectListingAction,
@@ -43,14 +44,16 @@ export default async function AdminPage() {
     );
   }
 
-  const [pendingListings, pendingRequests, approvedDealerRequests, allProfiles, events] =
+  const [pendingListings, pendingRequests, approvedDealerRequests, allProfiles, events, storefronts] =
     await Promise.all([
       listPendingListings(supabase),
       listPendingDealerRequests(supabase),
       listApprovedDealerRequests(supabase),
       listAllForAdmin(supabase),
       listEvents(supabase),
+      listActiveDealers(supabase),
     ]);
+  const storefrontSlugByProfileId = new Map(storefronts.map((d) => [d.profile_id, d.slug]));
 
   // These depend on the rows above but not on each other — run them together.
   const [sellers, requesters, coverPhotos] = await Promise.all([
@@ -148,7 +151,17 @@ export default async function AdminPage() {
           <div className="space-y-2">
             {dealerProfiles.map((p) => (
               <div key={p.id} className="rounded border border-zinc-800 bg-zinc-950 p-3 text-sm">
-                <p className="font-semibold text-white">{p.name ?? "—"}</p>
+                <p className="font-semibold text-white">
+                  {p.name ?? "—"}
+                  {storefrontSlugByProfileId.has(p.id) && (
+                    <a
+                      href={`/dealers/${storefrontSlugByProfileId.get(p.id)}`}
+                      className="ml-2 text-xs font-normal text-amber-400 hover:underline"
+                    >
+                      storefront →
+                    </a>
+                  )}
+                </p>
                 <p className="text-zinc-400">
                   {businessNameByProfileId.get(p.id) ?? "—"} · {p.town ?? "—"} · {p.phone ?? "—"}
                 </p>

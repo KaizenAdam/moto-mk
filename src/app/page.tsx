@@ -3,6 +3,7 @@ import { listActiveFiltered, listFilterOptions, type ListingFilters } from "@/li
 import { listSaved } from "@/lib/data/savedListings";
 import { getOwnProfile } from "@/lib/data/profiles";
 import { getCoverPhotoUrls } from "@/lib/data/listingPhotos";
+import { listActiveDealers } from "@/lib/data/dealers";
 import ListingsFilterBar from "@/app/listings/ListingsFilterBar";
 import SortSelect from "@/app/listings/SortSelect";
 import ListingsGrid from "@/app/components/ListingsGrid";
@@ -49,11 +50,12 @@ export default async function Home({
   // so it used to be a wasted extra serial round-trip after this group.
   // getCoverPhotoUrls is the one thing that genuinely can't start until
   // `listings` resolves (it needs the ids), so it stays after.
-  const [listings, filterOptions, profile, saved] = await Promise.all([
+  const [listings, filterOptions, profile, saved, dealers] = await Promise.all([
     listActiveFiltered(supabase, filters),
     listFilterOptions(supabase),
     getOwnProfile(supabase),
     listSaved(supabase),
+    listActiveDealers(supabase),
   ]);
 
   const coverPhotoUrls = await getCoverPhotoUrls(
@@ -108,6 +110,7 @@ export default async function Home({
         isLoggedIn={!!profile}
         photoUrls={Object.fromEntries(coverPhotoUrls)}
         sortSelect={<SortSelect current={filters.sort ?? "newest"} searchParams={sp} />}
+        dealerNames={Object.fromEntries(dealers.map((d) => [d.profile_id, d.business_name]))}
       />
     </main>
   );
