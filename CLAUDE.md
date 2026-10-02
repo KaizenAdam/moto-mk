@@ -205,7 +205,8 @@ demo state — not test residue to clean up.
 **Punk/rock, not premium-fintech.** Primary: black + gold. Secondary:
 red + grey. Bold condensed display type, high contrast, deliberately
 rougher than a typical SaaS look. The static demo (`index.html`,
-`sell.html`, still at the repo root) is the approved reference design —
+`sell.html`; removed from the tree on 2 Oct 2026, still in git history
+up to commit `86c068b`) is the approved reference design —
 its palette and component vocabulary now live for real in
 `src/app/globals.css` (`--black`/`--panel`/`--panel2`/`--line`/`--gold`/
 `--gold-bright`/`--red`/`--grey`/`--text`/`--text-dim`, mirrored into
