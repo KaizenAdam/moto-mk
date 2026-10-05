@@ -31,7 +31,7 @@ export default function PhotoGallery({ urls, alt }: { urls: string[]; alt: strin
               className={`h-14 w-20 shrink-0 overflow-hidden rounded border-2 ${i === current ? "border-gold" : "border-transparent opacity-70 hover:opacity-100"}`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element -- signed URL */}
-              <img src={url} alt="" className="h-full w-full object-cover" />
+              <img src={url} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
             </button>
           ))}
         </div>

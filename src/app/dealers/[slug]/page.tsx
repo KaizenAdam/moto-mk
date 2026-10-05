@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getBySlug } from "@/lib/data/dealers";
 import { listActiveBySeller } from "@/lib/data/listings";
 import { getCoverPhotoUrls } from "@/lib/data/listingPhotos";
+import { cachedPhotoSigner } from "@/lib/photos/signer";
 import { getOwnProfile } from "@/lib/data/profiles";
 import { listSaved } from "@/lib/data/savedListings";
 import { formatPhone, telHref, whatsAppHref } from "@/lib/contact/phone";
@@ -43,7 +44,8 @@ export default async function DealerStorefrontPage({ params }: Props) {
   ]);
   const covers = await getCoverPhotoUrls(
     supabase,
-    listings.map((l) => l.id)
+    listings.map((l) => l.id),
+    cachedPhotoSigner(supabase)
   );
 
   const wa = dealer.phone

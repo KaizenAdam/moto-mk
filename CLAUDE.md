@@ -268,23 +268,32 @@ storage instead of cookies). If you're about to write a Supabase query
 directly inside a page component or Server Action, stop — put it in
 `src/lib/data/` instead, even if it's only called from one place today.
 
-**`auth.getUser()` calls are deduped per request via `getCurrentUser()`
-in `src/lib/data/auth.ts`.** It's `React.cache()`-wrapped — a plain
-`react` import, not `next/*`, so it doesn't break the principle above.
-`getUser()` is a real network round-trip (it revalidates the JWT against
-Supabase Auth, which is why it's used over the cookie-only
-`getSession()` everywhere here) — every `src/lib/data/*` function that
-needs "who's logged in" should call `getCurrentUser(supabase)` rather
-than `supabase.auth.getUser()` directly, so that a page calling several
-such functions in one request only pays for that round-trip once. This
-mattered in practice: a page render used to serialize `getOwnProfile` +
-`listSaved` (each doing their own `getUser()`) one after another instead
-of running them together, which was a real, noticeable chunk of the
-"everything feels slow" complaint that prompted this note. Independent
-data fetches in a page should also be gathered into one `Promise.all(...)`
-rather than awaited one at a time — only fetches that genuinely depend on
-a prior result (like signing photo URLs, which needs the listing ids
-first) should run after.
+**"Who's logged in" is `getCurrentUser()` in `src/lib/data/auth.ts`**,
+returning `{ id }` or null. It uses `auth.getClaims()`, which verifies the
+session JWT's signature locally against the project's signing keys, not
+`getUser()` (a network round trip to Supabase Auth per call) and never
+`getSession()` (reads the cookie unverified). The proxy uses `getClaims()`
+too. This only decides what to show; RLS re-checks the JWT on every
+query. It's `React.cache()`-wrapped (a plain `react` import, not
+`next/*`), so several data functions in one render share one check.
+Every `src/lib/data/*` function that needs the user must call it rather
+than touching `supabase.auth` directly. Independent fetches in a page go
+in one `Promise.all(...)`; only genuinely dependent ones (signing photo
+URLs needs the listing ids) run after.
+
+**Speed checklist (from the Oct 2026 "every click is slow" pass).**
+- **Vercel runs in `fra1`** (`vercel.json` `regions`), next to the
+  Supabase project in `eu-central-1`. The default (Washington DC) put an
+  Atlantic crossing on every query. Never remove it, and if the database
+  ever moves, move this with it.
+- **Every route has a `loading.tsx`** (shapes in
+  `src/app/components/Skeletons.tsx`), so a click shows the page's
+  outline at once. Add one with any new route.
+- **Public photo URLs are cached** (`cachedPhotoSigner()` in
+  `src/lib/photos/signer.ts`): signed as anon, reused for 50 minutes,
+  so browsers can cache the images. Private photos (pending listings,
+  admin review) are still signed fresh as the viewer. Use it on
+  public-facing pages; the default signer is right for admin/edit pages.
 
 **Currency display is pure client state, never a server round-trip.**
 `ListingsGrid` (`src/app/components/ListingsGrid.tsx`) owns `currency`

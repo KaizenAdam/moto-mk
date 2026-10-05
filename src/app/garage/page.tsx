@@ -7,6 +7,7 @@ import { listSaved } from "@/lib/data/savedListings";
 import { listOwnRequests } from "@/lib/data/dealerRequests";
 import { getOwnDealer } from "@/lib/data/dealers";
 import { getCoverPhotoUrls } from "@/lib/data/listingPhotos";
+import { cachedPhotoSigner } from "@/lib/photos/signer";
 import { formatPrice } from "@/lib/constants/listings";
 import { deleteListingAction, markSoldAction } from "@/app/actions/garage";
 import ActionButton from "@/app/components/ActionButton";
@@ -44,7 +45,7 @@ export default async function GaragePage() {
   const covers = await getCoverPhotoUrls(supabase, [
     ...mine.map((l) => l.id),
     ...savedListings.map((l) => l.id),
-  ]);
+  ], cachedPhotoSigner(supabase));
   const pendingRequest = dealerRequests.find((r) => r.status === "pending");
 
   return (

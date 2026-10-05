@@ -3,6 +3,7 @@ import { listActiveFiltered, listFilterOptions, type ListingFilters } from "@/li
 import { listSaved } from "@/lib/data/savedListings";
 import { getOwnProfile } from "@/lib/data/profiles";
 import { getCoverPhotoUrls } from "@/lib/data/listingPhotos";
+import { cachedPhotoSigner } from "@/lib/photos/signer";
 import { listActiveDealers } from "@/lib/data/dealers";
 import ListingsFilterBar from "@/app/listings/ListingsFilterBar";
 import SortSelect from "@/app/listings/SortSelect";
@@ -60,7 +61,8 @@ export default async function Home({
 
   const coverPhotoUrls = await getCoverPhotoUrls(
     supabase,
-    listings.map((l) => l.id)
+    listings.map((l) => l.id),
+    cachedPhotoSigner(supabase)
   );
 
   return (

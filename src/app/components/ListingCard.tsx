@@ -31,6 +31,8 @@ export default function ListingCard({
             <img
               src={photoUrl}
               alt={`${listing.make} ${listing.model}`}
+              loading="lazy"
+              decoding="async"
               className="h-full w-full object-cover"
               draggable={false}
             />

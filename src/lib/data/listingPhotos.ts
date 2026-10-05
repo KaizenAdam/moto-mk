@@ -6,11 +6,35 @@ type Client = SupabaseClient<Database>;
 const SIGNED_URL_TTL_SECONDS = 60 * 60; // 1 hour — plenty for a single page render
 
 /**
+ * Turns storage paths into URLs, one result per path, in order (null where
+ * a path couldn't be signed). The default signs with the caller's own
+ * client: correct for every visibility rule, but a fresh URL each time, so
+ * browsers can't cache the image. Pages pass a caching signer for
+ * public photos instead — see src/lib/photos/signer.ts.
+ */
+export type PhotoSigner = (paths: string[]) => Promise<(string | null)[]>;
+
+export function signWith(supabase: Client): PhotoSigner {
+  return async (paths) => {
+    if (paths.length === 0) return [];
+    const { data, error } = await supabase.storage
+      .from("listing-photos")
+      .createSignedUrls(paths, SIGNED_URL_TTL_SECONDS);
+    if (error) throw error;
+    return paths.map((_, i) => data[i]?.signedUrl ?? null);
+  };
+}
+
+/**
  * RLS mirrors listings visibility: active-or-owner-or-admin. The bucket is
  * private, so each row's storage_path is exchanged for a signed URL (one
  * batched call) rather than a plain public URL.
  */
-export async function listForListing(supabase: Client, listingId: string) {
+export async function listForListing(
+  supabase: Client,
+  listingId: string,
+  sign: PhotoSigner = signWith(supabase)
+) {
   const { data, error } = await supabase
     .from("listing_photos")
     .select("*")
@@ -20,22 +44,19 @@ export async function listForListing(supabase: Client, listingId: string) {
   if (error) throw error;
   if (data.length === 0) return [];
 
-  const { data: signed, error: signError } = await supabase.storage
-    .from("listing-photos")
-    .createSignedUrls(
-      data.map((p) => p.storage_path),
-      SIGNED_URL_TTL_SECONDS
-    );
-  if (signError) throw signError;
-
-  return data.map((photo, i) => ({ ...photo, url: signed[i]?.signedUrl ?? null }));
+  const urls = await sign(data.map((p) => p.storage_path));
+  return data.map((photo, i) => ({ ...photo, url: urls[i] }));
 }
 
 /**
  * The lowest-sort_order photo per listing, for a grid of cards. One query
- * plus one batched createSignedUrls call, not N round trips.
+ * plus one signing pass, not N round trips.
  */
-export async function getCoverPhotoUrls(supabase: Client, listingIds: string[]) {
+export async function getCoverPhotoUrls(
+  supabase: Client,
+  listingIds: string[],
+  sign: PhotoSigner = signWith(supabase)
+) {
   const urls = new Map<string, string>();
   if (listingIds.length === 0) return urls;
 
@@ -54,12 +75,8 @@ export async function getCoverPhotoUrls(supabase: Client, listingIds: string[]) 
   if (coverByListing.size === 0) return urls;
 
   const paths = [...coverByListing.values()];
-  const { data: signed, error: signError } = await supabase.storage
-    .from("listing-photos")
-    .createSignedUrls(paths, SIGNED_URL_TTL_SECONDS);
-  if (signError) throw signError;
-
-  const urlByPath = new Map(paths.map((path, i) => [path, signed[i]?.signedUrl]));
+  const signed = await sign(paths);
+  const urlByPath = new Map(paths.map((path, i) => [path, signed[i]]));
   for (const [listingId, path] of coverByListing) {
     const url = urlByPath.get(path);
     if (url) urls.set(listingId, url);

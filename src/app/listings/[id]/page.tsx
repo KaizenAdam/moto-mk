@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getById } from "@/lib/data/listings";
 import { listForListing } from "@/lib/data/listingPhotos";
+import { cachedPhotoSigner } from "@/lib/photos/signer";
 import { getOwnProfile, getPublicProfile, getSellerContact } from "@/lib/data/profiles";
 import { listSaved } from "@/lib/data/savedListings";
 import { getActiveBySeller } from "@/lib/data/dealers";
@@ -26,7 +27,7 @@ export default async function ListingDetailPage({
 
   const [seller, photos, profile, saved, contact, h, dealer] = await Promise.all([
     getPublicProfile(supabase, listing.seller_id),
-    listForListing(supabase, listing.id),
+    listForListing(supabase, listing.id, cachedPhotoSigner(supabase)),
     getOwnProfile(supabase),
     listSaved(supabase),
     getSellerContact(supabase, listing.id),
