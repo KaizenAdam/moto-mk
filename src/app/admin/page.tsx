@@ -22,6 +22,7 @@ import AddEventForm from "./AddEventForm";
 import AdminAction from "./AdminAction";
 import AddServiceCentreForm from "./AddServiceCentreForm";
 import LocationPicker from "./LocationPicker";
+import LocateAll from "./LocateAll";
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -213,6 +214,11 @@ export default async function AdminPage() {
             Unverified entries show a &ldquo;call ahead to confirm&rdquo; note on the public page. Mark one
             verified once you&rsquo;ve confirmed it by phone or visit.
           </p>
+          <LocateAll
+            centres={serviceCentres
+              .filter((c) => c.lat == null)
+              .map((c) => ({ id: c.id, name: c.name, address: c.address, town: c.town }))}
+          />
           <div className="space-y-2">
             {serviceCentres.map((c) => (
               <div key={c.id} className="rounded border border-zinc-800 bg-zinc-950 p-3 text-sm">

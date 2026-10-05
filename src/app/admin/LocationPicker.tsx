@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useState, useTransition } from "react";
 import { setServiceCentreLocationAction } from "@/app/actions/admin";
+import { geocodePlace } from "@/lib/map/geocode";
 
 const LeafletMap = dynamic(() => import("@/app/components/map/LeafletMap"), { ssr: false });
 
@@ -35,30 +36,21 @@ export default function LocationPicker({
 
   async function geocode() {
     setNote("Searching…");
-    // Most specific first; a bare town is the last resort.
-    const queries = [address && `${address}, ${town}`, `${name}, ${town}`, town].filter(Boolean) as string[];
-    for (const q of queries) {
-      try {
-        const res = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=mk&q=${encodeURIComponent(q)}`,
-          { headers: { Accept: "application/json" } }
-        );
-        const [hit] = (await res.json()) as { lat: string; lon: string; display_name: string }[];
-        if (hit) {
-          setPoint({ lat: Number(hit.lat), lng: Number(hit.lon) });
-          setNote(
-            q === town
-              ? `Only found the town (${town}) — drag the pin to the workshop.`
-              : `Found "${hit.display_name}". Check it, drag the pin if needed, then save.`
-          );
-          return;
-        }
-      } catch {
-        setNote("Address search failed — click the map to place the pin.");
+    try {
+      const hit = await geocodePlace({ name, address, town });
+      if (!hit) {
+        setNote("Couldn't find it — click the map to place the pin.");
         return;
       }
+      setPoint({ lat: hit.lat, lng: hit.lng });
+      setNote(
+        hit.precision === "town"
+          ? `Only found the town (${town}) — drag the pin to the workshop.`
+          : `Found "${hit.label}". Check it, drag the pin if needed, then save.`
+      );
+    } catch {
+      setNote("Address search failed — click the map to place the pin.");
     }
-    setNote("Couldn't find it — click the map to place the pin.");
   }
 
   function save(location: Point | null) {

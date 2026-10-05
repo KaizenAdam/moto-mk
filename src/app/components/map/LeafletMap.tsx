@@ -49,19 +49,23 @@ function ClickToPlace({ onPick }: { onPick: (lat: number, lng: number) => void }
  * The one Leaflet map on the site. Browser-only — import it through
  * next/dynamic with { ssr: false } (Leaflet touches `window` on load).
  * With `onPick`, clicking the map or dragging a pin reports a position
- * (the admin's pin placer); without it, it's a read-only map of pins.
+ * (the admin's single-pin placer). With `onPinDrag`, every pin can be
+ * dragged and reports which one moved (the admin's bulk review). Without
+ * either, it's a read-only map of pins.
  */
 export default function LeafletMap({
   pins,
   selectedId = null,
   onSelect,
   onPick,
+  onPinDrag,
   className = "h-[420px]",
 }: {
   pins: Pin[];
   selectedId?: string | null;
   onSelect?: (id: string) => void;
   onPick?: (lat: number, lng: number) => void;
+  onPinDrag?: (id: string, lat: number, lng: number) => void;
   className?: string;
 }) {
   return (
@@ -79,12 +83,13 @@ export default function LeafletMap({
           key={p.id}
           position={[p.lat, p.lng]}
           icon={icon(p.id === selectedId)}
-          draggable={!!onPick}
+          draggable={!!onPick || !!onPinDrag}
           eventHandlers={{
             click: () => onSelect?.(p.id),
             dragend: (e) => {
               const { lat, lng } = (e.target as L.Marker).getLatLng();
-              onPick?.(lat, lng);
+              if (onPinDrag) onPinDrag(p.id, lat, lng);
+              else onPick?.(lat, lng);
             },
           }}
         >

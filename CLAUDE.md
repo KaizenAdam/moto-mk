@@ -392,9 +392,11 @@ is 8, checked in the server actions.
 - **`/service-centres`** — a map (Leaflet) beside a list of workshops,
   brand service centres and importers (`service_centres` table: public
   read, admin-only write). Pins come from `lat`/`lng`, which are **only
-  ever set by an admin** with Admin → Service centres → Set location
-  (OpenStreetMap address search from the admin's browser, then drag or
-  click to correct, then save). Unplaced centres are listed under "Not on
+  ever set by an admin**: Admin → Service centres → "Locate all" looks
+  up every unplaced centre (one request per second, Nominatim's limit;
+  `src/lib/map/geocode.ts`) and shows the suggestions on one map to drag
+  and save, or "Set location" does one centre. A town-only match can't be
+  saved until its pin has been moved. Unplaced centres are listed under "Not on
   the map yet" — never pinned at a guessed spot. The one map component is
   `src/app/components/map/LeafletMap.tsx`; load it with `next/dynamic`
   and `{ ssr: false }` (Leaflet needs `window`). Pins are CSS (`.j5-pin`),
