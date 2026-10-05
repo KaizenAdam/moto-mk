@@ -8,15 +8,19 @@ import {
 import { listEvents } from "@/lib/data/events";
 import { getCoverPhotoUrls } from "@/lib/data/listingPhotos";
 import { listActiveDealers } from "@/lib/data/dealers";
+import { listServiceCentres } from "@/lib/data/serviceCentres";
 import {
   approveListingAction,
   rejectListingAction,
   approveDealerRequestAction,
   rejectDealerRequestAction,
   deleteEventAction,
+  deleteServiceCentreAction,
+  setServiceCentreVerifiedAction,
 } from "@/app/actions/admin";
 import AddEventForm from "./AddEventForm";
 import AdminAction from "./AdminAction";
+import AddServiceCentreForm from "./AddServiceCentreForm";
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -44,7 +48,15 @@ export default async function AdminPage() {
     );
   }
 
-  const [pendingListings, pendingRequests, approvedDealerRequests, allProfiles, events, storefronts] =
+  const [
+    pendingListings,
+    pendingRequests,
+    approvedDealerRequests,
+    allProfiles,
+    events,
+    storefronts,
+    serviceCentres,
+  ] =
     await Promise.all([
       listPendingListings(supabase),
       listPendingDealerRequests(supabase),
@@ -52,6 +64,7 @@ export default async function AdminPage() {
       listAllForAdmin(supabase),
       listEvents(supabase),
       listActiveDealers(supabase),
+      listServiceCentres(supabase),
     ]);
   const storefrontSlugByProfileId = new Map(storefronts.map((d) => [d.profile_id, d.slug]));
 
@@ -188,6 +201,45 @@ export default async function AdminPage() {
             ))}
           </div>
           <AddEventForm />
+        </section>
+
+        <section>
+          <h2 className="mb-3 text-lg font-semibold">
+            Service centres ({serviceCentres.length}, {serviceCentres.filter((c) => c.verified).length} verified)
+          </h2>
+          <p className="mb-3 text-xs text-zinc-500">
+            Unverified entries show a &ldquo;call ahead to confirm&rdquo; note on the public page. Mark one
+            verified once you&rsquo;ve confirmed it by phone or visit.
+          </p>
+          <div className="space-y-2">
+            {serviceCentres.map((c) => (
+              <div key={c.id} className="rounded border border-zinc-800 bg-zinc-950 p-3 text-sm">
+                <p className="font-semibold text-white">
+                  {c.name}{" "}
+                  <span className={c.verified ? "text-xs text-green-500" : "text-xs text-zinc-500"}>
+                    {c.verified ? "verified" : "unverified"}
+                  </span>
+                </p>
+                <p className="text-zinc-400">
+                  {c.town} · {c.address ?? "no address"} · {c.phone ?? "no phone"}
+                </p>
+                {c.source_url && (
+                  <a href={c.source_url} target="_blank" rel="noopener noreferrer" className="text-xs text-amber-400 hover:underline">
+                    source
+                  </a>
+                )}
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <AdminAction
+                    action={setServiceCentreVerifiedAction.bind(null, c.id, !c.verified)}
+                    label={c.verified ? "Mark unverified" : "Mark verified"}
+                    tone="approve"
+                  />
+                  <AdminAction action={deleteServiceCentreAction.bind(null, c.id)} label="Delete" tone="reject" />
+                </div>
+              </div>
+            ))}
+          </div>
+          <AddServiceCentreForm />
         </section>
 
         <section>

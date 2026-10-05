@@ -332,6 +332,48 @@ export type Database = {
           },
         ]
       }
+      service_centres: {
+        Row: {
+          address: string | null
+          created_at: string
+          id: string
+          name: string
+          phone: string | null
+          source_url: string | null
+          specialties: string | null
+          town: string
+          updated_at: string
+          verified: boolean
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          phone?: string | null
+          source_url?: string | null
+          specialties?: string | null
+          town: string
+          updated_at?: string
+          verified?: boolean
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          phone?: string | null
+          source_url?: string | null
+          specialties?: string | null
+          town?: string
+          updated_at?: string
+          verified?: boolean
+          website?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       public_profiles: {

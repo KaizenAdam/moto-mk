@@ -389,6 +389,18 @@ is 8, checked in the server actions.
   (`dealerNames` into `ListingsGrid`), and their listing pages show the
   business, a storefront link and the shop line to everyone. Dealers
   edit their storefront from My Garage (`#storefront`).
+- **`/service-centres`** — directory of workshops, brand service
+  centres and importers (`service_centres` table: public read, admin-only
+  write). Filter by town (`?town=`); Call, plus WhatsApp only for mobile
+  numbers (`canWhatsApp()` — MK landlines can't take WhatsApp), Google
+  Maps link, website. **`verified`** means someone confirmed the
+  details by phone or visit; unverified cards say "call ahead". The 8
+  seed rows (5 Oct 2026) came from public directories (zk.mk,
+  motori.com.mk, brand pages), each with its `source_url`. Fields where
+  sources disagreed were left empty, not guessed. Coverage outside Skopje
+  is thin — the admin portal has an add / verify / delete section.
+  Motocentar (motocentar.com.mk) is a car-tyre chain, not a bike
+  service: don't add it.
 - **`/admin`** — the full admin portal: pending-listing and
   pending-dealer-request review queues, a roster of every user
   (`listAllForAdmin` in `profiles.ts` — needs the `profiles_select` admin

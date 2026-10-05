@@ -30,3 +30,14 @@ export function formatPhone(raw: string) {
   }
   return `+${d}`;
 }
+
+/**
+ * WhatsApp only works on mobiles. North Macedonian mobiles are 07x
+ * (international 3897x); 02/03/04 numbers are landlines. Foreign numbers
+ * can't be told apart, so they get the benefit of the doubt.
+ */
+export function canWhatsApp(raw: string) {
+  const d = toInternationalDigits(raw);
+  if (!d) return false;
+  return d.startsWith("389") ? d.startsWith("3897") : true;
+}

@@ -5,6 +5,11 @@ import { createClient } from "@/lib/supabase/server";
 import { update as updateListing } from "@/lib/data/listings";
 import { setRequestStatus } from "@/lib/data/dealerRequests";
 import { createEvent, deleteEvent } from "@/lib/data/events";
+import {
+  createServiceCentre,
+  deleteServiceCentre,
+  setServiceCentreVerified,
+} from "@/lib/data/serviceCentres";
 
 /**
  * Every admin action reports back instead of throwing, so a failure shows
@@ -88,5 +93,57 @@ export async function createEventAction(
   }
 
   revalidatePath("/admin");
+  return { error: null };
+}
+
+// --- Service centres (/service-centres) ---
+
+export async function setServiceCentreVerifiedAction(id: string, verified: boolean) {
+  const supabase = await createClient();
+  const result = await run(() => setServiceCentreVerified(supabase, id, verified));
+  revalidatePath("/service-centres");
+  return result;
+}
+
+export async function deleteServiceCentreAction(id: string) {
+  const supabase = await createClient();
+  const result = await run(() => deleteServiceCentre(supabase, id));
+  revalidatePath("/service-centres");
+  return result;
+}
+
+export async function createServiceCentreAction(
+  _prev: CreateEventState,
+  formData: FormData
+): Promise<CreateEventState> {
+  const field = (k: string) => {
+    const v = String(formData.get(k) ?? "").trim();
+    return v || null;
+  };
+  const name = field("name");
+  const town = field("town");
+  const website = field("website");
+  if (!name || !town) return { error: "Name and town are required." };
+  if (website && !/^https?:\/\//.test(website)) {
+    return { error: "Website must start with http:// or https://" };
+  }
+
+  const supabase = await createClient();
+  try {
+    await createServiceCentre(supabase, {
+      name,
+      town,
+      address: field("address"),
+      phone: field("phone"),
+      website,
+      specialties: field("specialties"),
+      source_url: field("source_url"),
+      verified: formData.get("verified") === "on",
+    });
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Failed to add service centre." };
+  }
+  revalidatePath("/admin");
+  revalidatePath("/service-centres");
   return { error: null };
 }
