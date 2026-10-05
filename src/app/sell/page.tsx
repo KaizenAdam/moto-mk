@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getOwnProfile } from "@/lib/data/profiles";
 import SellForm from "./SellForm";
+import { heroBackground } from "@/app/components/ui";
 
 export default async function SellPage() {
   const supabase = await createClient();
@@ -14,8 +15,7 @@ export default async function SellPage() {
       <section
         className="border-b border-line px-5 py-8"
         style={{
-          background:
-            "radial-gradient(circle at 80% 0%, rgba(193,39,45,.18), transparent 55%), radial-gradient(circle at 10% 100%, rgba(212,175,55,.12), transparent 50%), #0e0e11",
+          background: heroBackground,
         }}
       >
         <div className="mx-auto max-w-[1100px]">

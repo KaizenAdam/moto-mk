@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useState, useTransition } from "react";
 import { setServiceCentreLocationAction } from "@/app/actions/admin";
 import { geocodePlace } from "@/lib/map/geocode";
+import { button } from "@/app/components/ui";
 
 const LeafletMap = dynamic(() => import("@/app/components/map/LeafletMap"), { ssr: false });
 
@@ -69,7 +70,7 @@ export default function LocationPicker({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="rounded bg-zinc-800 px-3 py-1.5 text-xs font-medium text-white hover:bg-zinc-700"
+        className={button("outline", "sm")}
       >
         {initial ? "Move pin" : "Set location"}
       </button>
@@ -84,32 +85,32 @@ export default function LocationPicker({
         className="h-[300px]"
       />
       <div className="flex flex-wrap items-center gap-2">
-        <button type="button" onClick={geocode} className="rounded bg-zinc-800 px-3 py-1.5 text-xs text-white hover:bg-zinc-700">
+        <button type="button" onClick={geocode} className={button("outline", "sm")}>
           Find address
         </button>
         <button
           type="button"
           disabled={!point || saving}
           onClick={() => point && save(point)}
-          className="rounded bg-green-700 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-600 disabled:opacity-50"
+          className={button("success", "sm")}
         >
           {saving ? "Saving…" : "Save pin"}
         </button>
         {initial && (
-          <button type="button" disabled={saving} onClick={() => save(null)} className="rounded bg-red-900 px-3 py-1.5 text-xs text-white hover:bg-red-800">
+          <button type="button" disabled={saving} onClick={() => save(null)} className={button("danger", "sm")}>
             Remove pin
           </button>
         )}
-        <button type="button" onClick={() => setOpen(false)} className="text-xs text-zinc-400 hover:text-white">
+        <button type="button" onClick={() => setOpen(false)} className="text-xs text-ink-dim hover:text-gold-bright">
           Close
         </button>
         {point && (
-          <span className="text-xs text-zinc-500">
+          <span className="text-xs text-grey">
             {point.lat.toFixed(5)}, {point.lng.toFixed(5)}
           </span>
         )}
       </div>
-      <p className="text-xs text-zinc-400">{note ?? "Click the map to drop the pin, or try Find address."}</p>
+      <p className="text-xs text-ink-dim">{note ?? "Click the map to drop the pin, or try Find address."}</p>
     </div>
   );
 }

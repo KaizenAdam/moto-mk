@@ -15,6 +15,7 @@ import ListingCard from "@/app/components/ListingCard";
 import ProfileForm from "./ProfileForm";
 import DealerRequestForm from "./DealerRequestForm";
 import StorefrontForm from "./StorefrontForm";
+import { sectionTitle, button } from "@/app/components/ui";
 
 const STATUS: Record<string, { label: string; className: string }> = {
   active: { label: "Live", className: "bg-green-700 text-white" },
@@ -25,7 +26,6 @@ const STATUS: Record<string, { label: string; className: string }> = {
   draft: { label: "Draft", className: "bg-panel2 text-ink-dim border border-line" },
 };
 
-const sectionTitle = "mb-4 border-b border-line pb-2.5 text-[15px] font-bold tracking-wide text-gold uppercase";
 
 /** The signed-in user's own space: their listings, saved bikes and profile. */
 export default async function GaragePage() {
@@ -98,7 +98,7 @@ export default async function GaragePage() {
                       {l.status !== "sold" && (
                         <Link
                           href={`/listings/${l.id}/edit`}
-                          className="rounded-md border border-line px-3 py-1.5 text-xs font-bold tracking-wide text-ink uppercase hover:border-gold"
+                          className={button("outline", "sm")}
                         >
                           Edit
                         </Link>
@@ -108,6 +108,7 @@ export default async function GaragePage() {
                           action={markSoldAction.bind(null, l.id)}
                           label="Mark sold"
                           confirm="Mark this bike as sold? It will come off the site."
+                          successMessage="Marked as sold"
                         />
                       )}
                       <ActionButton
@@ -115,6 +116,7 @@ export default async function GaragePage() {
                         label="Delete"
                         tone="danger"
                         confirm="Delete this listing and its photos for good?"
+                        successMessage="Listing deleted"
                       />
                     </div>
                   </div>

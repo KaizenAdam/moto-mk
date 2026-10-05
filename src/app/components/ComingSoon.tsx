@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { button } from "@/app/components/ui";
 
 export default function ComingSoon({ title, description }: { title: string; description: string }) {
   return (
@@ -14,7 +15,7 @@ export default function ComingSoon({ title, description }: { title: string; desc
       </p>
       <Link
         href="/"
-        className="inline-block rounded-md bg-gradient-to-br from-gold-bright to-gold px-5 py-2.5 text-sm font-bold tracking-wide text-[#141414] uppercase"
+        className={button("primary", "lg")}
       >
         ← Back to Buy
       </Link>

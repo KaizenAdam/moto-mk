@@ -1,4 +1,6 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+import { cache } from "react";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -14,6 +16,39 @@ import SaveButton from "@/app/components/SaveButton";
 import ContactSeller from "./ContactSeller";
 import PhotoGallery from "./PhotoGallery";
 
+// generateMetadata and the page both need the listing; cache() makes it one query per request.
+const loadListing = cache(async (id: string) => getById(await createClient(), id));
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const listing = await loadListing(id);
+  if (!listing) return { title: "Listing not found" };
+
+  const name = [listing.year, listing.make, listing.model].filter(Boolean).join(" ");
+  const price = `€${Number(listing.price_eur).toLocaleString("en-GB")}`;
+  const title = `${name} — ${price}${listing.town ? `, ${listing.town}` : ""}`;
+  const specs = [
+    listing.engine_cc != null ? `${listing.engine_cc}cc` : null,
+    listing.mileage_km != null ? `${listing.mileage_km.toLocaleString("en-GB")} km` : null,
+    listing.riding_style,
+  ].filter(Boolean).join(" · ");
+  const description = (listing.description?.replace(/\s+/g, " ").slice(0, 155) ||
+    `${name} for sale${listing.town ? ` in ${listing.town}` : ""}${specs ? ` — ${specs}` : ""}. On Just5Up!, North Macedonia's motorcycle marketplace.`);
+
+  return {
+    title,
+    description,
+    // Only live listings should be indexed; the page itself is visible to
+    // its seller/admins in other states.
+    robots: listing.status === "active" ? undefined : { index: false },
+    openGraph: { title, description, type: "website" },
+  };
+}
+
 export default async function ListingDetailPage({
   params,
 }: {
@@ -22,7 +57,7 @@ export default async function ListingDetailPage({
   const { id } = await params;
   const supabase = await createClient();
 
-  const listing = await getById(supabase, id);
+  const listing = await loadListing(id);
   if (!listing) notFound();
 
   const [seller, photos, profile, saved, contact, h, dealer] = await Promise.all([

@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { Tables } from "@/lib/database.types";
 import { canWhatsApp, formatPhone, telHref, whatsAppHref } from "@/lib/contact/phone";
 import { PinIcon } from "@/app/components/icons";
+import { button } from "@/app/components/ui";
 
 const LeafletMap = dynamic(() => import("@/app/components/map/LeafletMap"), {
   ssr: false,
@@ -98,7 +99,7 @@ function CentreCard({ centre: c, active, onClick }: { centre: Centre; active: bo
             href={wa}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-md bg-[#25D366] px-3 py-1.5 text-[11px] font-bold tracking-wide text-[#0b0b0d] uppercase hover:brightness-110"
+            className={button("whatsapp", "sm")}
           >
             WhatsApp
           </a>
@@ -106,7 +107,7 @@ function CentreCard({ centre: c, active, onClick }: { centre: Centre; active: bo
         {tel && c.phone && (
           <a
             href={tel}
-            className="rounded-md border border-line px-3 py-1.5 text-[11px] font-bold tracking-wide text-ink uppercase hover:border-gold"
+            className={button("outline", "sm")}
           >
             Call {formatPhone(c.phone)}
           </a>

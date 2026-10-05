@@ -3,9 +3,10 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { listServiceCentres } from "@/lib/data/serviceCentres";
 import ServiceCentresExplorer from "./ServiceCentresExplorer";
+import { heroBackground } from "@/app/components/ui";
 
 export const metadata: Metadata = {
-  title: "Motorcycle service centres in North Macedonia — Just5Up!",
+  title: "Motorcycle service centres in North Macedonia",
   description:
     "Motorcycle and scooter workshops, official brand service centres and importers across North Macedonia.",
 };
@@ -30,8 +31,7 @@ export default async function ServiceCentresPage({ searchParams }: { searchParam
       <section
         className="border-b border-line px-5 py-8"
         style={{
-          background:
-            "radial-gradient(circle at 80% 0%, rgba(193,39,45,.18), transparent 55%), radial-gradient(circle at 10% 100%, rgba(212,175,55,.12), transparent 50%), #0e0e11",
+          background: heroBackground,
         }}
       >
         <div className="mx-auto max-w-[1280px]">

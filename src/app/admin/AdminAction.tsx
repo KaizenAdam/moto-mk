@@ -2,13 +2,13 @@
 
 import { useActionState } from "react";
 import type { AdminActionState } from "@/app/actions/admin";
+import { toast } from "@/app/components/Toaster";
+import { button } from "@/app/components/ui";
 
 const initialState: AdminActionState = { error: null, done: false };
 
-const tones = {
-  approve: "bg-green-700 hover:bg-green-600",
-  reject: "bg-red-900 hover:bg-red-800",
-};
+const tones = { approve: "success", reject: "danger" } as const;
+
 
 /**
  * One admin button (approve / reject / delete) with its own pending and
@@ -26,7 +26,14 @@ export default function AdminAction({
   tone: keyof typeof tones;
   withReason?: boolean;
 }) {
-  const [state, formAction, pending] = useActionState(action, initialState);
+  const [state, formAction, pending] = useActionState(
+    async (prev: AdminActionState, formData: FormData) => {
+      const result = await action(prev, formData);
+      if (result.done) toast(`${label} — done`);
+      return result;
+    },
+    initialState
+  );
 
   return (
     <form action={formAction} className="flex flex-wrap items-center gap-2">
@@ -35,17 +42,17 @@ export default function AdminAction({
           name="reason"
           placeholder="Reason (shown to the seller)"
           maxLength={300}
-          className="w-56 rounded border border-zinc-700 bg-zinc-900 px-2 py-1.5 text-xs text-white outline-none focus:border-amber-400"
+          className="w-56 rounded-md border border-line bg-panel2 px-3 py-1.5 text-xs text-ink outline-none focus:border-gold"
         />
       )}
       <button
         type="submit"
         disabled={pending}
-        className={`rounded px-3 py-1.5 text-xs font-medium text-white disabled:opacity-60 ${tones[tone]}`}
+        className={button(tones[tone], "sm")}
       >
         {pending ? "Working…" : label}
       </button>
-      {state.error && <span className="text-xs text-red-400">{state.error}</span>}
+      {state.error && <span className="text-xs text-red">{state.error}</span>}
     </form>
   );
 }

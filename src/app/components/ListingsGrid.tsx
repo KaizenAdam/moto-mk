@@ -13,6 +13,7 @@ export default function ListingsGrid({
   photoUrls,
   sortSelect,
   dealerNames = {},
+  total,
 }: {
   listings: Tables<"listings">[];
   savedIds: string[];
@@ -21,6 +22,8 @@ export default function ListingsGrid({
   sortSelect: ReactNode;
   /** seller_id → business name, for sellers who are verified dealers. */
   dealerNames?: Record<string, string>;
+  /** Total matches across all pages; defaults to the listings shown. */
+  total?: number;
 }) {
   const [currency, setCurrency] = useState<Currency>("EUR");
   const savedIdSet = new Set(savedIds);
@@ -29,7 +32,7 @@ export default function ListingsGrid({
     <div className="px-6 py-6 pb-14">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2.5">
         <div className="text-sm text-ink-dim">
-          <b className="text-ink">{listings.length}</b> motorcycles found
+          <b className="text-ink">{total ?? listings.length}</b> motorcycles found
         </div>
         <div className="flex items-center gap-2.5 text-[13px]">
           <CurrencyToggle value={currency} onChange={setCurrency} />

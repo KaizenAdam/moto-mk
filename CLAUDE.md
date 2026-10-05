@@ -211,10 +211,44 @@ more real accounts exist as approved dealers — **Elena Petrova**
 (`elena.petrova@example.test`, Skopje Moto Garage) and **Goran
 Ivanovski** (`goran.ivanovski@example.test`, Ohrid Bike Centre) — each
 with a matching `approved` `dealer_requests` row for their business
-name. Billy Monsey's `dealer_requests` row ("Monsey Motorcycles") was
+name. Each dealer has 4 of the demo bikes moved to them (same towns),
+and a demo "about" text. Billy Monsey's `dealer_requests` row ("Monsey Motorcycles") was
 seeded *pending* but has since been approved, before approval updated
 `account_type`, so his profile is still `user`. All real, permanent
 demo state — not test residue to clean up.
+
+## UI building blocks (Oct 2026 polish pass)
+
+- **Shared styles: `src/app/components/ui.ts`.** `button(variant, size)`
+  (primary / outline / danger / success / whatsapp × sm / md / lg),
+  `input`, `label`, `sectionTitle`, `card`, `errorBox`, `heroBackground`.
+  Use these instead of writing button or input classes inline; every page
+  and the admin portal now do.
+- **Header:** `SiteHeader` + `NavLinks` (current section highlighted) +
+  `MobileMenu` (☰ below `lg`). Nav items live in `NAV_ITEMS` in
+  `NavLinks.tsx`. "Parts & Gear" is out of the nav until it's built (the
+  route still exists).
+- **Toasts:** `toast("Saved")` from any client component
+  (`components/Toaster.tsx`, mounted once in the root layout). For
+  successes only; errors stay next to what failed.
+  `ActionButton` takes `successMessage`.
+- **`not-found.tsx`** and **`SiteFooter`** are branded. Legal links
+  (privacy, terms) and a contact email go in the footer once the client
+  supplies the details.
+- **Brand images:** `public/brand/*.svg` are huge raster-in-SVG originals
+  (1 MB / 650 KB). The site uses pre-sized PNGs made from them with sharp:
+  `wordmark-white.png` (621×168) and `icon-gold-{32,180,512}.png`. Don't
+  reference the SVGs from pages.
+- **Share previews:** `metadataBase` comes from `SITE_URL` in
+  `src/lib/site.ts` (`NEXT_PUBLIC_SITE_URL`, else Vercel's production
+  URL). Page titles use the layout template (`%s — Just5Up!`), so don't
+  add the suffix yourself. `app/opengraph-image.tsx` is the default card.
+  `app/listings/[id]/opengraph-image.tsx` renders the bike's photo,
+  price and town, fetched as anon so only live listings get one. Listing
+  pages set their own title/description, and non-live ones are `noindex`.
+- **Browse paging:** `BROWSE_PAGE_SIZE` (24) in `listings.ts`;
+  `listActiveFiltered` returns `{ listings, total }`. `?page=` is dropped
+  whenever a filter or sort changes (`withParam`).
 
 ## Brand direction
 
@@ -436,8 +470,8 @@ is 8, checked in the server actions.
   (`OR private.is_admin()`) is what actually filters/blocks a non-admin.
   The all-users table can't show email addresses — those live in
   `auth.users`, only reachable via the Admin API, and this project has no
-  service-role key by design. Deliberately unstyled/unpaginated — a
-  working tool, not a client-facing page.
+  service-role key by design. Uses the same shared styles as the rest of
+  the site (restyled Oct 2026); still unpaginated.
 
 ## Testing real auth flows locally
 

@@ -2,15 +2,11 @@
 
 import { useActionState } from "react";
 import type { FormState } from "@/app/actions/garage";
+import { toast } from "./Toaster";
+import { button } from "./ui";
 
 const initialState: FormState = { error: null };
 
-const tones = {
-  primary:
-    "bg-gradient-to-br from-gold-bright to-gold text-[#141414] hover:brightness-110",
-  outline: "border border-line text-ink hover:border-gold",
-  danger: "border border-red/60 text-red hover:bg-red hover:text-white",
-};
 
 /**
  * A single-click seller action (mark sold, delete, remove photo) with its
@@ -22,13 +18,20 @@ export default function ActionButton({
   label,
   tone = "outline",
   confirm,
+  successMessage,
 }: {
   action: () => Promise<FormState>;
   label: string;
-  tone?: keyof typeof tones;
+  tone?: "primary" | "outline" | "danger";
   confirm?: string;
+  /** Shown as a toast when the action succeeds. */
+  successMessage?: string;
 }) {
-  const [state, formAction, pending] = useActionState(() => action(), initialState);
+  const [state, formAction, pending] = useActionState(async () => {
+    const result = await action();
+    if (!result.error && successMessage) toast(successMessage);
+    return result;
+  }, initialState);
 
   return (
     <form
@@ -41,7 +44,7 @@ export default function ActionButton({
       <button
         type="submit"
         disabled={pending}
-        className={`rounded-md px-3 py-1.5 text-xs font-bold tracking-wide uppercase transition disabled:opacity-60 ${tones[tone]}`}
+        className={button(tone, "sm")}
       >
         {pending ? "…" : label}
       </button>

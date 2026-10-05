@@ -1,5 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
-import { listActiveFiltered, listFilterOptions, type ListingFilters } from "@/lib/data/listings";
+import {
+  BROWSE_PAGE_SIZE,
+  listActiveFiltered,
+  listFilterOptions,
+  type ListingFilters,
+} from "@/lib/data/listings";
+import Pagination from "@/app/components/Pagination";
 import { listSaved } from "@/lib/data/savedListings";
 import { getOwnProfile } from "@/lib/data/profiles";
 import { getCoverPhotoUrls } from "@/lib/data/listingPhotos";
@@ -8,6 +14,7 @@ import { listActiveDealers } from "@/lib/data/dealers";
 import ListingsFilterBar from "@/app/listings/ListingsFilterBar";
 import SortSelect from "@/app/listings/SortSelect";
 import ListingsGrid from "@/app/components/ListingsGrid";
+import { heroBackground, button } from "@/app/components/ui";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -32,6 +39,7 @@ function parseFilters(sp: SearchParams): ListingFilters {
     priceMaxEur: positiveNumber(first(sp.priceMax)),
     ccMax: positiveNumber(first(sp.ccMax)),
     search: first(sp.search) || undefined,
+    page: positiveNumber(first(sp.page)),
     sort: sort === "price_low" || sort === "price_high" ? sort : "newest",
   };
 }
@@ -51,7 +59,7 @@ export default async function Home({
   // so it used to be a wasted extra serial round-trip after this group.
   // getCoverPhotoUrls is the one thing that genuinely can't start until
   // `listings` resolves (it needs the ids), so it stays after.
-  const [listings, filterOptions, profile, saved, dealers] = await Promise.all([
+  const [{ listings, total }, filterOptions, profile, saved, dealers] = await Promise.all([
     listActiveFiltered(supabase, filters),
     listFilterOptions(supabase),
     getOwnProfile(supabase),
@@ -70,8 +78,7 @@ export default async function Home({
       <section
         className="border-b border-line px-5 py-9"
         style={{
-          background:
-            "radial-gradient(circle at 80% 0%, rgba(193,39,45,.18), transparent 55%), radial-gradient(circle at 10% 100%, rgba(212,175,55,.12), transparent 50%), #0e0e11",
+          background: heroBackground,
         }}
       >
         <div className="mx-auto max-w-[1280px]">
@@ -92,7 +99,7 @@ export default async function Home({
             />
             <button
               type="submit"
-              className="rounded-md bg-gradient-to-br from-gold-bright to-gold px-[18px] py-[9px] text-[13px] font-bold tracking-wide text-[#141414] uppercase shadow-[0_2px_10px_rgba(212,175,55,0.25)] transition hover:brightness-110"
+              className={button("primary")}
             >
               Search
             </button>
@@ -107,6 +114,7 @@ export default async function Home({
       </section>
 
       <ListingsGrid
+        total={total}
         listings={listings}
         savedIds={saved.map((s) => s.listing_id)}
         isLoggedIn={!!profile}
@@ -114,6 +122,13 @@ export default async function Home({
         sortSelect={<SortSelect current={filters.sort ?? "newest"} searchParams={sp} />}
         dealerNames={Object.fromEntries(dealers.map((d) => [d.profile_id, d.business_name]))}
       />
+      <div className="-mt-10 px-6 pb-14">
+        <Pagination
+          page={filters.page ?? 1}
+          pageCount={Math.ceil(total / BROWSE_PAGE_SIZE)}
+          searchParams={sp}
+        />
+      </div>
     </main>
   );
 }

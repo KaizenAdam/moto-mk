@@ -25,11 +25,18 @@ export type ListingFilters = {
   ccMax?: number;
   search?: string;
   sort?: "newest" | "price_low" | "price_high";
+  /** 1-based page of BROWSE_PAGE_SIZE results. */
+  page?: number;
 };
 
-/** Active listings, narrowed by the browse page's filter bar. */
+export const BROWSE_PAGE_SIZE = 24;
+
+/**
+ * One page of active listings, narrowed by the browse page's filter bar,
+ * plus the total matching count (for "N motorcycles found" and paging).
+ */
 export async function listActiveFiltered(supabase: Client, filters: ListingFilters) {
-  let query = supabase.from("listings").select("*").eq("status", "active");
+  let query = supabase.from("listings").select("*", { count: "exact" }).eq("status", "active");
 
   if (filters.make) query = query.eq("make", filters.make);
   if (filters.ridingStyle) query = query.eq("riding_style", filters.ridingStyle);
@@ -52,10 +59,18 @@ export async function listActiveFiltered(supabase: Client, filters: ListingFilte
   if (filters.sort === "price_low") query = query.order("price_eur", { ascending: true });
   else if (filters.sort === "price_high") query = query.order("price_eur", { ascending: false });
   else query = query.order("created_at", { ascending: false });
+  // Tie-breaker so paging is stable when sort values are equal.
+  query = query.order("id", { ascending: true });
 
-  const { data, error } = await query;
+  const page = Math.max(1, Math.floor(filters.page ?? 1));
+  const from = (page - 1) * BROWSE_PAGE_SIZE;
+  query = query.range(from, from + BROWSE_PAGE_SIZE - 1);
+
+  const { data, error, count } = await query;
+  // Asking for a page past the end is a PostgREST "range not satisfiable" error, not an empty page.
+  if (error?.code === "PGRST103") return { listings: [], total: count ?? 0 };
   if (error) throw error;
-  return data;
+  return { listings: data, total: count ?? data.length };
 }
 
 /** One seller's live listings, newest first — a dealer storefront's stock. */

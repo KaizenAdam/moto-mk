@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { button } from "@/app/components/ui";
 
 /**
  * Fallback for any page that throws while rendering — most often because
@@ -33,13 +34,13 @@ export default function Error({
         <button
           type="button"
           onClick={() => retry()}
-          className="rounded-md bg-gradient-to-br from-gold-bright to-gold px-5 py-2.5 text-sm font-bold tracking-wide text-[#141414] uppercase"
+          className={button("primary", "lg")}
         >
           Try again
         </button>
         <Link
           href="/"
-          className="rounded-md border border-line px-5 py-2.5 text-sm font-bold tracking-wide text-ink uppercase hover:border-gold"
+          className={button("outline", "lg")}
         >
           Home
         </Link>

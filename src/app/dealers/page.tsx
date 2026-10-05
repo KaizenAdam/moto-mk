@@ -4,9 +4,10 @@ import { createClient } from "@/lib/supabase/server";
 import { listActiveDealers } from "@/lib/data/dealers";
 import { countActiveBySeller } from "@/lib/data/listings";
 import { PinIcon } from "@/app/components/icons";
+import { heroBackground } from "@/app/components/ui";
 
 export const metadata: Metadata = {
-  title: "Motorcycle dealers in North Macedonia — Just5Up!",
+  title: "Motorcycle dealers in North Macedonia",
   description: "Browse North Macedonia's motorcycle dealerships and their bikes for sale.",
 };
 
@@ -27,8 +28,7 @@ export default async function DealersPage() {
       <section
         className="border-b border-line px-5 py-8"
         style={{
-          background:
-            "radial-gradient(circle at 80% 0%, rgba(193,39,45,.18), transparent 55%), radial-gradient(circle at 10% 100%, rgba(212,175,55,.12), transparent 50%), #0e0e11",
+          background: heroBackground,
         }}
       >
         <div className="mx-auto max-w-[1280px]">

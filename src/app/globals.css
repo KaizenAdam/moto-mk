@@ -80,3 +80,13 @@ body {
 .leaflet-container .leaflet-control-attribution a {
   color: var(--gold);
 }
+
+/* Toasts (src/app/components/Toaster.tsx). */
+@keyframes j5-toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.j5-toast { animation: j5-toast-in 0.18s ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  .j5-toast { animation: none; }
+}

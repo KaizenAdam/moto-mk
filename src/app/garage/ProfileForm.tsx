@@ -3,11 +3,10 @@
 import { useActionState } from "react";
 import { updateProfileAction, type FormState } from "@/app/actions/garage";
 import { TOWNS } from "@/lib/constants/listings";
+import { toast } from "@/app/components/Toaster";
+import { input as inputClass, label as labelClass, button } from "@/app/components/ui";
 
 const initialState: FormState = { error: null };
-const inputClass =
-  "mt-1 w-full rounded-md border border-line bg-panel2 px-3 py-2.5 text-sm text-ink outline-none focus:border-gold";
-const labelClass = "block text-xs font-bold tracking-wide text-ink-dim uppercase";
 
 export default function ProfileForm({
   name,
@@ -18,7 +17,11 @@ export default function ProfileForm({
   phone: string | null;
   town: string | null;
 }) {
-  const [state, formAction, pending] = useActionState(updateProfileAction, initialState);
+  const [state, formAction, pending] = useActionState(async (prev: FormState, data: FormData) => {
+    const result = await updateProfileAction(prev, data);
+    if (result.message) toast(result.message);
+    return result;
+  }, initialState);
 
   return (
     <form action={formAction} className="space-y-3.5">
@@ -45,12 +48,11 @@ export default function ProfileForm({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md bg-gradient-to-br from-gold-bright to-gold px-4 py-2 text-xs font-bold tracking-wide text-[#141414] uppercase disabled:opacity-60"
+          className={button("primary", "sm")}
         >
           {pending ? "Saving…" : "Save profile"}
         </button>
         {state.error && <span className="text-xs text-red">{state.error}</span>}
-        {state.message && <span className="text-xs text-gold-bright">{state.message}</span>}
       </div>
     </form>
   );

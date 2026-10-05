@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { setServiceCentreLocationAction } from "@/app/actions/admin";
 import { geocodeAll, type GeocodeResult } from "@/lib/map/geocode";
+import { button } from "@/app/components/ui";
 
 const LeafletMap = dynamic(() => import("@/app/components/map/LeafletMap"), { ssr: false });
 
@@ -78,13 +79,13 @@ export default function LocateAll({ centres }: { centres: Centre[] }) {
     .map((c) => ({ id: c.id, ...items[c.id].point!, label: c.name }));
 
   return (
-    <div className="mb-4 rounded border border-amber-700/50 bg-zinc-950 p-4 text-sm">
+    <div className="mb-4 rounded-[10px] border border-gold/40 bg-panel p-4 text-sm">
       <div className="flex flex-wrap items-center gap-3">
         <button
           type="button"
           onClick={locate}
           disabled={running}
-          className="rounded bg-amber-400 px-3 py-1.5 text-xs font-medium text-black hover:bg-amber-300 disabled:opacity-60"
+          className={button("primary", "sm")}
         >
           {running ? `Looking up… ${done}/${centres.length}` : started ? "Look up again" : `Locate all ${centres.length} not on the map`}
         </button>
@@ -92,12 +93,12 @@ export default function LocateAll({ centres }: { centres: Centre[] }) {
           <button
             type="button"
             onClick={() => save(saveable)}
-            className="rounded bg-green-700 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-600"
+            className={button("success", "sm")}
           >
             Save {saveable.length} reviewed pin{saveable.length > 1 ? "s" : ""}
           </button>
         )}
-        <span className="text-xs text-zinc-500">
+        <span className="text-xs text-grey">
           Searches OpenStreetMap from your browser, about a second per centre.
         </span>
       </div>
@@ -121,10 +122,10 @@ export default function LocateAll({ centres }: { centres: Centre[] }) {
                 <li
                   key={c.id}
                   onClick={() => it?.point && setSelectedId(c.id)}
-                  className={`rounded border p-2 ${selectedId === c.id ? "border-amber-400" : "border-zinc-800"} ${it?.point ? "cursor-pointer" : ""}`}
+                  className={`rounded-[10px] border p-2 ${selectedId === c.id ? "border-gold" : "border-line"} ${it?.point ? "cursor-pointer" : ""}`}
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="font-medium text-white">{c.name}</span>
+                    <span className="font-medium text-ink">{c.name}</span>
                     {canSave(it) && (
                       <button
                         type="button"
@@ -132,13 +133,13 @@ export default function LocateAll({ centres }: { centres: Centre[] }) {
                           e.stopPropagation();
                           save([c.id]);
                         }}
-                        className="rounded bg-green-700 px-2 py-0.5 text-[11px] text-white hover:bg-green-600"
+                        className={button("success", "sm")}
                       >
                         Save
                       </button>
                     )}
                   </div>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-ink-dim">
                     {!it || it.state === "waiting"
                       ? "Waiting…"
                       : it.state === "saving"
@@ -153,7 +154,7 @@ export default function LocateAll({ centres }: { centres: Centre[] }) {
                                 ? "Pin moved by you — ready to save"
                                 : precisionNote[it.result!.precision]}
                   </p>
-                  {it?.error && it.state === "found" && <p className="text-xs text-red-400">{it.error}</p>}
+                  {it?.error && it.state === "found" && <p className="text-xs text-red">{it.error}</p>}
                 </li>
               );
             })}

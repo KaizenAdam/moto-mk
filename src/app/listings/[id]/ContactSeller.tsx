@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatPhone, telHref, whatsAppHref } from "@/lib/contact/phone";
+import { button } from "@/app/components/ui";
 
 /**
  * Seller box on a listing page. A private seller's phone, Call and
@@ -68,7 +69,7 @@ export default function ContactSeller({
         {mustLogIn ? (
           <Link
             href="/login"
-            className="inline-block rounded-md bg-gradient-to-br from-gold-bright to-gold px-4 py-2.5 text-xs font-bold tracking-wide text-[#141414] uppercase"
+            className={button("primary", "sm")}
           >
             Log in to contact the seller
           </Link>
@@ -88,7 +89,7 @@ export default function ContactSeller({
                 href={wa}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-md bg-[#25D366] px-4 py-2.5 text-xs font-bold tracking-wide text-[#0b0b0d] uppercase hover:brightness-110"
+                className={button("whatsapp", "md")}
               >
                 WhatsApp
               </a>
@@ -96,7 +97,7 @@ export default function ContactSeller({
             {tel && (
               <a
                 href={tel}
-                className="rounded-md border border-line px-4 py-2.5 text-xs font-bold tracking-wide text-ink uppercase hover:border-gold"
+                className={button("outline", "md")}
               >
                 Call {formatPhone(shownContact.phone)}
               </a>

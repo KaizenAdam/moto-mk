@@ -2,12 +2,10 @@
 
 import { useActionState } from "react";
 import { updatePassword, type AuthState } from "@/app/actions/auth";
+import { input as inputClass, label as labelClass, button } from "@/app/components/ui";
 
 const initialState: AuthState = { error: null };
 
-const inputClass =
-  "mt-1 w-full rounded-md border border-line bg-panel2 px-3 py-2.5 text-sm text-ink outline-none focus:border-gold";
-const labelClass = "block text-xs font-bold tracking-wide text-ink-dim uppercase";
 
 export default function ResetPasswordForm() {
   const [state, formAction, pending] = useActionState(updatePassword, initialState);
@@ -33,7 +31,7 @@ export default function ResetPasswordForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-gradient-to-br from-gold-bright to-gold px-4 py-2.5 text-sm font-bold tracking-wide text-[#141414] uppercase transition hover:brightness-110 disabled:opacity-60"
+        className={`${button("primary", "lg")} w-full`}
       >
         {pending ? "Saving…" : "Save new password"}
       </button>

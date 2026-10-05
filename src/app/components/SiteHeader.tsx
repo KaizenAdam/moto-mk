@@ -2,6 +2,9 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getOwnProfile } from "@/lib/data/profiles";
 import { signOut } from "@/app/actions/auth";
+import NavLinks from "./NavLinks";
+import MobileMenu from "./MobileMenu";
+import { button } from "./ui";
 
 export default async function SiteHeader() {
   const supabase = await createClient();
@@ -12,63 +15,48 @@ export default async function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-gradient-to-b from-[#111] to-black">
-      <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-4 px-5 py-3">
-        <Link href="/" className="flex items-center">
-          {/* eslint-disable-next-line @next/next/no-img-element -- decorative SVG wordmark, not a candidate for next/image optimization */}
+      <div className="relative mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-4 py-3 sm:px-5">
+        <Link href="/" className="flex shrink-0 items-center" aria-label="Just5Up! home">
+          {/* eslint-disable-next-line @next/next/no-img-element -- pre-sized PNG wordmark (public/brand), no next/image needed */}
           <img
-            src="/brand/wordmark-white.svg"
+            src="/brand/wordmark-white.png"
+            width={621}
+            height={168}
             alt="Just5Up!"
-            className="h-10 w-auto drop-shadow-[0_0_6px_rgba(212,175,55,0.25)] sm:h-14"
+            className="h-9 w-auto drop-shadow-[0_0_6px_rgba(212,175,55,0.25)] lg:h-14"
           />
         </Link>
 
-        <nav className="flex flex-wrap items-center gap-6">
-          {[
-            { href: "/", label: "Buy" },
-            { href: "/parts-gear", label: "Parts & Gear" },
-            { href: "/events", label: "Events" },
-            { href: "/service-centres", label: "Service Centres" },
-            { href: "/dealers", label: "Dealers" },
-          ].map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="border-b-2 border-transparent pb-1.5 text-sm font-semibold tracking-wide text-ink-dim uppercase transition hover:border-gold hover:text-gold-bright"
-            >
-              {item.label}
-            </Link>
-          ))}
+        {/* Desktop: everything in one row. */}
+        <nav className="hidden items-center gap-6 lg:flex">
+          <NavLinks variant="bar" />
         </nav>
 
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          {profile ? (
-            <div className="flex items-center gap-3 text-sm text-ink-dim">
-              <Link href="/garage" className="font-semibold text-ink hover:text-gold-bright">
-                My Garage
+        <div className="flex items-center gap-2.5 lg:gap-3">
+          <div className="hidden items-center gap-3 lg:flex">
+            {profile ? (
+              <>
+                <Link href="/garage" className="text-sm font-semibold text-ink hover:text-gold-bright">
+                  My Garage
+                </Link>
+                <form action={signOut}>
+                  <button type="submit" className={button("outline", "sm")}>
+                    Sign out
+                  </button>
+                </form>
+              </>
+            ) : (
+              <Link href="/login" className={button("outline")}>
+                Log in
               </Link>
-              <form action={signOut}>
-                <button
-                  type="submit"
-                  className="rounded-md border border-line px-4 py-2 text-xs font-bold tracking-wide text-ink uppercase transition hover:border-gold"
-                >
-                  Sign out
-                </button>
-              </form>
-            </div>
-          ) : (
-            <Link
-              href="/login"
-              className="rounded-md border border-line px-[18px] py-[9px] text-[13px] font-bold tracking-wide text-ink uppercase transition hover:border-gold"
-            >
-              Log in
-            </Link>
-          )}
-          <Link
-            href="/sell"
-            className="rounded-md bg-gradient-to-br from-gold-bright to-gold px-[18px] py-[9px] text-[13px] font-bold tracking-wide text-[#141414] uppercase shadow-[0_2px_10px_rgba(212,175,55,0.25)] transition hover:brightness-110"
-          >
-            + Sell your bike
+            )}
+          </div>
+          <Link href="/sell" className={button("primary")}>
+            <span className="sm:hidden">+ Sell</span>
+            <span className="hidden sm:inline">+ Sell your bike</span>
           </Link>
+          {/* Phones/tablets: the rest lives behind ☰. */}
+          <MobileMenu isLoggedIn={!!profile} />
         </div>
       </div>
     </header>

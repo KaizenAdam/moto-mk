@@ -6,6 +6,8 @@ import { removePhotoAction } from "@/app/actions/garage";
 import ActionButton from "@/app/components/ActionButton";
 import PhotoPicker from "@/app/components/PhotoPicker";
 import { uploadListingPhotos } from "@/app/components/uploadPhotos";
+import { toast } from "@/app/components/Toaster";
+import { button } from "@/app/components/ui";
 
 type Photo = { id: string; storage_path: string; sort_order: number; url: string | null };
 
@@ -33,6 +35,7 @@ export default function PhotoManager({
         setStatus(`Uploading ${done} of ${total}…`)
       );
       setFiles([]);
+      if (skipped < files.length) toast(`${files.length - skipped} photo${files.length - skipped > 1 ? "s" : ""} added`);
       setStatus(skipped > 0 ? `${skipped} photo(s) couldn't be read — try JPEG or PNG.` : null);
       router.refresh();
     } catch {
@@ -65,6 +68,7 @@ export default function PhotoManager({
                   label="Remove"
                   tone="danger"
                   confirm="Remove this photo?"
+                  successMessage="Photo removed"
                 />
               </div>
             </div>
@@ -79,7 +83,7 @@ export default function PhotoManager({
           type="button"
           onClick={upload}
           disabled={busy}
-          className="mt-3 rounded-md bg-gradient-to-br from-gold-bright to-gold px-4 py-2 text-xs font-bold tracking-wide text-[#141414] uppercase disabled:opacity-60"
+          className={`${button("primary", "sm")} mt-3`}
         >
           {busy ? "Uploading…" : `Upload ${files.length} photo${files.length > 1 ? "s" : ""}`}
         </button>

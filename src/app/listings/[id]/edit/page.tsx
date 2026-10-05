@@ -6,8 +6,8 @@ import { getById } from "@/lib/data/listings";
 import { listForListing, MAX_PHOTOS } from "@/lib/data/listingPhotos";
 import EditListingForm from "./EditListingForm";
 import PhotoManager from "./PhotoManager";
+import { sectionTitle } from "@/app/components/ui";
 
-const sectionTitle = "mb-4 border-b border-line pb-2.5 text-[15px] font-bold tracking-wide text-gold uppercase";
 
 export default async function EditListingPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

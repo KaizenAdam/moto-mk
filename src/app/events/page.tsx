@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { listUpcoming } from "@/lib/data/events";
 import { PinIcon } from "@/app/components/icons";
+import { heroBackground } from "@/app/components/ui";
 
 function formatEventDate(dateStr: string | null) {
   if (!dateStr) return null;
@@ -21,8 +22,7 @@ export default async function EventsPage() {
       <section
         className="border-b border-line px-5 py-8"
         style={{
-          background:
-            "radial-gradient(circle at 80% 0%, rgba(193,39,45,.18), transparent 55%), radial-gradient(circle at 10% 100%, rgba(212,175,55,.12), transparent 50%), #0e0e11",
+          background: heroBackground,
         }}
       >
         <div className="mx-auto max-w-[1280px]">

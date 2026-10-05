@@ -11,15 +11,16 @@ import { listSaved } from "@/lib/data/savedListings";
 import { formatPhone, telHref, whatsAppHref } from "@/lib/contact/phone";
 import { PinIcon } from "@/app/components/icons";
 import ListingsGrid from "@/app/components/ListingsGrid";
+import { heroBackground, button } from "@/app/components/ui";
 
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const dealer = await getBySlug(await createClient(), slug);
-  if (!dealer) return { title: "Dealer not found — Just5Up!" };
+  if (!dealer) return { title: "Dealer not found" };
   return {
-    title: `${dealer.business_name}${dealer.town ? `, ${dealer.town}` : ""} — Just5Up!`,
+    title: `${dealer.business_name}${dealer.town ? `, ${dealer.town}` : ""}`,
     description:
       dealer.about?.slice(0, 160) ??
       `Motorcycles for sale from ${dealer.business_name} on Just5Up!, North Macedonia's motorcycle marketplace.`,
@@ -62,8 +63,7 @@ export default async function DealerStorefrontPage({ params }: Props) {
       <section
         className="border-b border-line px-5 py-9"
         style={{
-          background:
-            "radial-gradient(circle at 80% 0%, rgba(193,39,45,.18), transparent 55%), radial-gradient(circle at 10% 100%, rgba(212,175,55,.12), transparent 50%), #0e0e11",
+          background: heroBackground,
         }}
       >
         <div className="mx-auto flex max-w-[1280px] flex-wrap items-end justify-between gap-6">
@@ -106,7 +106,7 @@ export default async function DealerStorefrontPage({ params }: Props) {
                   href={wa}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-md bg-[#25D366] px-5 py-3 text-sm font-bold tracking-wide text-[#0b0b0d] uppercase hover:brightness-110"
+                  className={button("whatsapp", "lg")}
                 >
                   WhatsApp
                 </a>
@@ -114,7 +114,7 @@ export default async function DealerStorefrontPage({ params }: Props) {
               {tel && dealer.phone && (
                 <a
                   href={tel}
-                  className="rounded-md border border-line px-5 py-3 text-sm font-bold tracking-wide text-ink uppercase hover:border-gold"
+                  className={button("outline", "lg")}
                 >
                   Call {formatPhone(dealer.phone)}
                 </a>

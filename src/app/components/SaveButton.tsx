@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { toggleSavedAction } from "@/app/actions/savedListings";
+import { toast } from "./Toaster";
 
 export default function SaveButton({
   listingId,
@@ -40,6 +41,7 @@ export default function SaveButton({
     startTransition(async () => {
       try {
         await toggleSavedAction(listingId, wasSaved);
+        toast(wasSaved ? "Removed from saved bikes" : "Saved to My Garage");
       } catch {
         setSaved(wasSaved); // the heart shouldn't claim a save that didn't happen
       }

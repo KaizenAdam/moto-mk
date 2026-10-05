@@ -2,11 +2,9 @@
 
 import { useActionState } from "react";
 import { requestDealerAction, type FormState } from "@/app/actions/garage";
+import { input as inputClass, label as labelClass, button } from "@/app/components/ui";
 
 const initialState: FormState = { error: null };
-const inputClass =
-  "mt-1 w-full rounded-md border border-line bg-panel2 px-3 py-2.5 text-sm text-ink outline-none focus:border-gold";
-const labelClass = "block text-xs font-bold tracking-wide text-ink-dim uppercase";
 
 export default function DealerRequestForm() {
   const [state, formAction, pending] = useActionState(requestDealerAction, initialState);
@@ -31,7 +29,7 @@ export default function DealerRequestForm() {
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md border border-line px-4 py-2 text-xs font-bold tracking-wide text-ink uppercase hover:border-gold disabled:opacity-60"
+          className={button("outline", "sm")}
         >
           {pending ? "Sending…" : "Request dealer account"}
         </button>

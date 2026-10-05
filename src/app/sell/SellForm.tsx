@@ -8,6 +8,7 @@ import { PinIcon } from "@/app/components/icons";
 import PhotoPicker from "@/app/components/PhotoPicker";
 import { uploadListingPhotos } from "@/app/components/uploadPhotos";
 import { MAX_PHOTOS } from "@/lib/data/listingPhotos";
+import { input as inputClass, label as labelClass, sectionTitle as sectionTitleClass, button } from "@/app/components/ui";
 
 const initialState: CreateListingState = { error: null, listing: null };
 
@@ -21,10 +22,6 @@ type PreviewData = {
   town: string;
 };
 
-const inputClass =
-  "mt-1 w-full rounded-md border border-line bg-panel2 px-3 py-2.5 text-sm text-ink outline-none focus:border-gold";
-const labelClass = "block text-xs font-bold tracking-wide text-ink-dim uppercase";
-const sectionTitleClass = "mb-4 border-b border-line pb-2.5 text-[15px] font-bold tracking-wide text-gold uppercase";
 
 function PreviewCard({ data, photoUrl }: { data: PreviewData; photoUrl?: string }) {
   const price = formatPrice(data.price || 0, "EUR");
@@ -157,7 +154,7 @@ export default function SellForm({ profilePhone }: { profilePhone: string | null
         </div>
         <Link
           href="/garage"
-          className="inline-block rounded-md bg-gradient-to-br from-gold-bright to-gold px-5 py-2.5 text-sm font-bold tracking-wide text-[#141414] uppercase"
+          className={button("primary", "lg")}
         >
           Go to My Garage
         </Link>
@@ -321,7 +318,7 @@ export default function SellForm({ profilePhone }: { profilePhone: string | null
         <button
           type="submit"
           disabled={pending}
-          className="w-full rounded-md bg-gradient-to-br from-gold-bright to-gold px-4 py-3.5 text-sm font-bold tracking-wide text-[#141414] uppercase transition hover:brightness-110 disabled:opacity-60"
+          className={`${button("primary", "lg")} w-full py-3.5`}
         >
           {pending ? "Submitting…" : "List my bike"}
         </button>

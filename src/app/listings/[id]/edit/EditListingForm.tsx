@@ -4,17 +4,17 @@ import { startTransition, useActionState, type FormEvent } from "react";
 import type { Tables } from "@/lib/database.types";
 import { updateListingAction, type FormState } from "@/app/actions/garage";
 import { ENGINE_TYPES, RIDING_STYLES, TOWNS } from "@/lib/constants/listings";
+import { toast } from "@/app/components/Toaster";
+import { input as inputClass, label as labelClass, button } from "@/app/components/ui";
 
 const initialState: FormState = { error: null };
-const inputClass =
-  "mt-1 w-full rounded-md border border-line bg-panel2 px-3 py-2.5 text-sm text-ink outline-none focus:border-gold";
-const labelClass = "block text-xs font-bold tracking-wide text-ink-dim uppercase";
 
 export default function EditListingForm({ listing }: { listing: Tables<"listings"> }) {
-  const [state, formAction, pending] = useActionState(
-    updateListingAction.bind(null, listing.id),
-    initialState
-  );
+  const [state, formAction, pending] = useActionState(async (prev: FormState, data: FormData) => {
+    const result = await updateListingAction(listing.id, prev, data);
+    if (!result.error) toast("Changes saved");
+    return result;
+  }, initialState);
 
   // Submitting through onSubmit rather than <form action> on purpose: React
   // resets a form after its action runs, which would wipe what the seller
@@ -123,7 +123,7 @@ export default function EditListingForm({ listing }: { listing: Tables<"listings
       <button
         type="submit"
         disabled={pending}
-        className="rounded-md bg-gradient-to-br from-gold-bright to-gold px-5 py-2.5 text-sm font-bold tracking-wide text-[#141414] uppercase disabled:opacity-60"
+        className={button("primary", "lg")}
       >
         {pending ? "Saving…" : listing.status === "rejected" ? "Save and resubmit" : "Save changes"}
       </button>
