@@ -389,9 +389,20 @@ is 8, checked in the server actions.
   (`dealerNames` into `ListingsGrid`), and their listing pages show the
   business, a storefront link and the shop line to everyone. Dealers
   edit their storefront from My Garage (`#storefront`).
-- **`/service-centres`** — directory of workshops, brand service
-  centres and importers (`service_centres` table: public read, admin-only
-  write). Filter by town (`?town=`); Call, plus WhatsApp only for mobile
+- **`/service-centres`** — a map (Leaflet) beside a list of workshops,
+  brand service centres and importers (`service_centres` table: public
+  read, admin-only write). Pins come from `lat`/`lng`, which are **only
+  ever set by an admin** with Admin → Service centres → Set location
+  (OpenStreetMap address search from the admin's browser, then drag or
+  click to correct, then save). Unplaced centres are listed under "Not on
+  the map yet" — never pinned at a guessed spot. The one map component is
+  `src/app/components/map/LeafletMap.tsx`; load it with `next/dynamic`
+  and `{ ssr: false }` (Leaflet needs `window`). Pins are CSS (`.j5-pin`),
+  not Leaflet's PNG markers. **Tiles default to OpenStreetMap's servers,
+  which aren't meant for heavy commercial traffic** — before launch, set
+  `NEXT_PUBLIC_MAP_TILE_URL` / `_ATTRIBUTION` to a key-based provider
+  (see `src/lib/map/tiles.ts`). Filter by town (`?town=`); Call, plus
+  WhatsApp only for mobile
   numbers (`canWhatsApp()` — MK landlines can't take WhatsApp), Google
   Maps link, website. **`verified`** means someone confirmed the
   details by phone or visit; unverified cards say "call ahead". The 8

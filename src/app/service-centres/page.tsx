@@ -2,8 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { listServiceCentres } from "@/lib/data/serviceCentres";
-import { canWhatsApp, formatPhone, telHref, whatsAppHref } from "@/lib/contact/phone";
-import { PinIcon } from "@/app/components/icons";
+import ServiceCentresExplorer from "./ServiceCentresExplorer";
 
 export const metadata: Metadata = {
   title: "Motorcycle service centres in North Macedonia — Just5Up!",
@@ -62,74 +61,7 @@ export default async function ServiceCentresPage({ searchParams }: { searchParam
             No service centres listed here yet.
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {shown.map((c) => {
-              const tel = c.phone ? telHref(c.phone) : null;
-              const wa =
-                c.phone && canWhatsApp(c.phone)
-                  ? whatsAppHref(c.phone, `Hi ${c.name}, I found you on Just5Up!`)
-                  : null;
-              const mapQuery = [c.name, c.address, c.town, "North Macedonia"].filter(Boolean).join(", ");
-              return (
-                <div key={c.id} className="flex flex-col rounded-[10px] border border-line bg-panel p-5">
-                  <div className="mb-1.5 flex items-start justify-between gap-3">
-                    <h2 className="font-display text-lg text-ink">{c.name}</h2>
-                    {c.verified && (
-                      <span className="shrink-0 rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-[#141414] uppercase">
-                        Verified
-                      </span>
-                    )}
-                  </div>
-                  <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mb-2 flex items-center gap-1.5 text-sm text-grey hover:text-gold-bright"
-                  >
-                    <PinIcon />
-                    {c.address ? `${c.address}, ${c.town}` : c.town}
-                  </a>
-                  {c.specialties && <p className="mb-4 text-sm text-ink-dim">{c.specialties}</p>}
-
-                  <div className="mt-auto flex flex-wrap items-center gap-2">
-                    {wa && (
-                      <a
-                        href={wa}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rounded-md bg-[#25D366] px-3.5 py-2 text-xs font-bold tracking-wide text-[#0b0b0d] uppercase hover:brightness-110"
-                      >
-                        WhatsApp
-                      </a>
-                    )}
-                    {tel && c.phone && (
-                      <a
-                        href={tel}
-                        className="rounded-md border border-line px-3.5 py-2 text-xs font-bold tracking-wide text-ink uppercase hover:border-gold"
-                      >
-                        Call {formatPhone(c.phone)}
-                      </a>
-                    )}
-                    {c.website && (
-                      <a
-                        href={c.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs font-bold tracking-wide text-gold-bright uppercase hover:underline"
-                      >
-                        Website
-                      </a>
-                    )}
-                  </div>
-                  {!c.verified && (
-                    <p className="mt-3 text-[11px] text-grey">
-                      From public directories — call ahead to confirm details.
-                    </p>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+          <ServiceCentresExplorer key={selectedTown ?? "all"} centres={shown} />
         )}
       </div>
     </main>

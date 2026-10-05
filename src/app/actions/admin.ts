@@ -8,6 +8,7 @@ import { createEvent, deleteEvent } from "@/lib/data/events";
 import {
   createServiceCentre,
   deleteServiceCentre,
+  setServiceCentreLocation,
   setServiceCentreVerified,
 } from "@/lib/data/serviceCentres";
 
@@ -101,6 +102,23 @@ export async function createEventAction(
 export async function setServiceCentreVerifiedAction(id: string, verified: boolean) {
   const supabase = await createClient();
   const result = await run(() => setServiceCentreVerified(supabase, id, verified));
+  revalidatePath("/service-centres");
+  return result;
+}
+
+export async function setServiceCentreLocationAction(
+  id: string,
+  location: { lat: number; lng: number } | null
+) {
+  if (
+    location &&
+    !(Number.isFinite(location.lat) && Number.isFinite(location.lng) &&
+      Math.abs(location.lat) <= 90 && Math.abs(location.lng) <= 180)
+  ) {
+    return { error: "That isn't a valid position.", done: false };
+  }
+  const supabase = await createClient();
+  const result = await run(() => setServiceCentreLocation(supabase, id, location));
   revalidatePath("/service-centres");
   return result;
 }

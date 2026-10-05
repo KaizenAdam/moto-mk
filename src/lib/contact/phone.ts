@@ -21,10 +21,17 @@ export function whatsAppHref(raw: string, message: string) {
   return d ? `https://wa.me/${d}?text=${encodeURIComponent(message)}` : null;
 }
 
-/** "+389 70 123 456"-ish display for a number we can make sense of; otherwise as typed. */
+/**
+ * Display form for a North Macedonian number: mobiles and most towns have a
+ * two-digit code (+389 70 123 456, +389 46 123 456); Skopje's is one digit
+ * (+389 2 312 0706). Anything else is shown as +digits.
+ */
 export function formatPhone(raw: string) {
   const d = toInternationalDigits(raw);
   if (!d) return raw;
+  if (d.startsWith("3892") && d.length === 11) {
+    return `+389 2 ${d.slice(4, 7)} ${d.slice(7)}`;
+  }
   if (d.startsWith("389") && d.length === 11) {
     return `+389 ${d.slice(3, 5)} ${d.slice(5, 8)} ${d.slice(8)}`;
   }

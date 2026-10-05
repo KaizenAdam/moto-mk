@@ -34,3 +34,16 @@ export async function deleteServiceCentre(supabase: Client, id: string) {
   const { error } = await supabase.from("service_centres").delete().eq("id", id);
   if (error) throw error;
 }
+
+/** Places (or clears, with nulls) a centre's map pin. Admin-only via RLS. */
+export async function setServiceCentreLocation(
+  supabase: Client,
+  id: string,
+  location: { lat: number; lng: number } | null
+) {
+  const { error } = await supabase
+    .from("service_centres")
+    .update({ lat: location?.lat ?? null, lng: location?.lng ?? null })
+    .eq("id", id);
+  if (error) throw error;
+}

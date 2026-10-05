@@ -21,6 +21,7 @@ import {
 import AddEventForm from "./AddEventForm";
 import AdminAction from "./AdminAction";
 import AddServiceCentreForm from "./AddServiceCentreForm";
+import LocationPicker from "./LocationPicker";
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -205,7 +206,8 @@ export default async function AdminPage() {
 
         <section>
           <h2 className="mb-3 text-lg font-semibold">
-            Service centres ({serviceCentres.length}, {serviceCentres.filter((c) => c.verified).length} verified)
+            Service centres ({serviceCentres.length}, {serviceCentres.filter((c) => c.verified).length} verified,{" "}
+            {serviceCentres.filter((c) => c.lat != null).length} on the map)
           </h2>
           <p className="mb-3 text-xs text-zinc-500">
             Unverified entries show a &ldquo;call ahead to confirm&rdquo; note on the public page. Mark one
@@ -218,6 +220,9 @@ export default async function AdminPage() {
                   {c.name}{" "}
                   <span className={c.verified ? "text-xs text-green-500" : "text-xs text-zinc-500"}>
                     {c.verified ? "verified" : "unverified"}
+                  </span>{" "}
+                  <span className={c.lat != null ? "text-xs text-green-500" : "text-xs text-amber-500"}>
+                    {c.lat != null ? "on map" : "not on map"}
                   </span>
                 </p>
                 <p className="text-zinc-400">
@@ -235,6 +240,13 @@ export default async function AdminPage() {
                     tone="approve"
                   />
                   <AdminAction action={deleteServiceCentreAction.bind(null, c.id)} label="Delete" tone="reject" />
+                  <LocationPicker
+                    id={c.id}
+                    name={c.name}
+                    address={c.address}
+                    town={c.town}
+                    initial={c.lat != null && c.lng != null ? { lat: c.lat, lng: c.lng } : null}
+                  />
                 </div>
               </div>
             ))}

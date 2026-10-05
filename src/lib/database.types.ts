@@ -337,6 +337,8 @@ export type Database = {
           address: string | null
           created_at: string
           id: string
+          lat: number | null
+          lng: number | null
           name: string
           phone: string | null
           source_url: string | null
@@ -350,6 +352,8 @@ export type Database = {
           address?: string | null
           created_at?: string
           id?: string
+          lat?: number | null
+          lng?: number | null
           name: string
           phone?: string | null
           source_url?: string | null
@@ -363,6 +367,8 @@ export type Database = {
           address?: string | null
           created_at?: string
           id?: string
+          lat?: number | null
+          lng?: number | null
           name?: string
           phone?: string | null
           source_url?: string | null
