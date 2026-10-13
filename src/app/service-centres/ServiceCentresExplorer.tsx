@@ -6,6 +6,7 @@ import type { Tables } from "@/lib/database.types";
 import { canWhatsApp, formatPhone, telHref, whatsAppHref } from "@/lib/contact/phone";
 import { PinIcon } from "@/app/components/icons";
 import { button } from "@/app/components/ui";
+import Badge from "@/app/components/Badge";
 
 const LeafletMap = dynamic(() => import("@/app/components/map/LeafletMap"), {
   ssr: false,
@@ -75,11 +76,9 @@ function CentreCard({ centre: c, active, onClick }: { centre: Centre; active: bo
       } ${onClick ? "cursor-pointer hover:border-gold" : ""}`}
     >
       <div className="mb-1 flex items-start justify-between gap-3">
-        <h2 className="font-display text-base text-ink">{c.name}</h2>
+        <h2 className="font-display text-lg text-ink">{c.name}</h2>
         {c.verified && (
-          <span className="shrink-0 rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-[#141414] uppercase">
-            Verified
-          </span>
+          <Badge>Verified</Badge>
         )}
       </div>
       <a

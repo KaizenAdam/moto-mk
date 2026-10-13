@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { listServiceCentres } from "@/lib/data/serviceCentres";
 import ServiceCentresExplorer from "./ServiceCentresExplorer";
-import { heroBackground } from "@/app/components/ui";
+import PageHero from "@/app/components/PageHero";
+import EmptyState from "@/app/components/EmptyState";
 
 export const metadata: Metadata = {
   title: "Motorcycle service centres in North Macedonia",
@@ -28,19 +29,10 @@ export default async function ServiceCentresPage({ searchParams }: { searchParam
 
   return (
     <main>
-      <section
-        className="border-b border-line px-5 py-8"
-        style={{
-          background: heroBackground,
-        }}
-      >
-        <div className="mx-auto max-w-[1280px]">
-          <h1 className="font-display mb-1.5 text-2xl">Service Centres</h1>
-          <p className="text-sm text-ink-dim">
-            Workshops, official brand service centres and importers across North Macedonia.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="Service Centres"
+        intro="Workshops, official brand service centres and importers across North Macedonia."
+      />
 
       <div className="mx-auto max-w-[1280px] px-6 py-8 pb-14">
         {towns.length > 1 && (
@@ -57,9 +49,7 @@ export default async function ServiceCentresPage({ searchParams }: { searchParam
         )}
 
         {shown.length === 0 ? (
-          <div className="rounded-[10px] border border-dashed border-line px-5 py-10 text-center text-sm text-ink-dim">
-            No service centres listed here yet.
-          </div>
+          <EmptyState>No service centres listed here yet.</EmptyState>
         ) : (
           <ServiceCentresExplorer key={selectedTown ?? "all"} centres={shown} />
         )}

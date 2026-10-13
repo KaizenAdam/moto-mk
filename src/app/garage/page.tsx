@@ -15,15 +15,17 @@ import ListingCard from "@/app/components/ListingCard";
 import ProfileForm from "./ProfileForm";
 import DealerRequestForm from "./DealerRequestForm";
 import StorefrontForm from "./StorefrontForm";
-import { sectionTitle, button } from "@/app/components/ui";
+import { button } from "@/app/components/ui";
+import Badge, { type BadgeTone } from "@/app/components/Badge";
+import SectionHeading from "@/app/components/SectionHeading";
 
-const STATUS: Record<string, { label: string; className: string }> = {
-  active: { label: "Live", className: "bg-green-700 text-white" },
-  pending: { label: "Awaiting review", className: "bg-gold text-[#141414]" },
-  rejected: { label: "Rejected", className: "bg-red text-white" },
-  sold: { label: "Sold", className: "bg-panel2 text-ink-dim border border-line" },
-  removed: { label: "Removed", className: "bg-panel2 text-ink-dim border border-line" },
-  draft: { label: "Draft", className: "bg-panel2 text-ink-dim border border-line" },
+const STATUS: Record<string, { label: string; tone: BadgeTone }> = {
+  active: { label: "Live", tone: "green" },
+  pending: { label: "Awaiting review", tone: "gold" },
+  rejected: { label: "Rejected", tone: "red" },
+  sold: { label: "Sold", tone: "muted" },
+  removed: { label: "Removed", tone: "muted" },
+  draft: { label: "Draft", tone: "muted" },
 };
 
 
@@ -50,18 +52,19 @@ export default async function GaragePage() {
 
   return (
     <main className="mx-auto max-w-[1100px] px-5 py-8 pb-16">
-      <h1 className="font-display mb-1.5 text-3xl">My Garage</h1>
+      <h1 className="font-display mb-1.5 text-3xl sm:text-4xl">My Garage</h1>
       <p className="mb-8 text-sm text-ink-dim">Your listings, saved bikes and profile.</p>
 
       <section className="mb-12">
-        <div className="mb-4 flex items-center justify-between border-b border-line pb-2.5">
-          <h2 className="text-[15px] font-bold tracking-wide text-gold uppercase">
-            My listings ({mine.length})
-          </h2>
-          <Link href="/sell" className="text-xs font-bold tracking-wide text-gold-bright uppercase hover:underline">
-            + List a bike
-          </Link>
-        </div>
+        <SectionHeading
+          action={
+            <Link href="/sell" className="text-sm text-gold-bright hover:underline">
+              + List a bike
+            </Link>
+          }
+        >
+          My listings ({mine.length})
+        </SectionHeading>
         {mine.length === 0 ? (
           <p className="text-sm text-ink-dim">You haven&rsquo;t listed a bike yet.</p>
         ) : (
@@ -86,9 +89,7 @@ export default async function GaragePage() {
                       <Link href={`/listings/${l.id}`} className="truncate font-bold text-ink hover:text-gold-bright">
                         {l.title}
                       </Link>
-                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase ${status.className}`}>
-                        {status.label}
-                      </span>
+                      <Badge tone={status.tone}>{status.label}</Badge>
                     </div>
                     <p className="text-sm text-gold-bright">{formatPrice(Number(l.price_eur), "EUR").main}</p>
                     {l.status === "rejected" && l.rejection_reason && (
@@ -128,7 +129,7 @@ export default async function GaragePage() {
       </section>
 
       <section className="mb-12">
-        <h2 className={sectionTitle}>Saved bikes ({savedListings.length})</h2>
+        <SectionHeading>Saved bikes ({savedListings.length})</SectionHeading>
         {savedListings.length === 0 ? (
           <p className="text-sm text-ink-dim">Tap the ♡ on any bike to keep it here.</p>
         ) : (
@@ -149,12 +150,12 @@ export default async function GaragePage() {
 
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
         <section>
-          <h2 className={sectionTitle}>Profile</h2>
+          <SectionHeading>Profile</SectionHeading>
           <ProfileForm name={profile.name} phone={profile.phone} town={profile.town} />
         </section>
 
         <section id="storefront">
-          <h2 className={sectionTitle}>{dealer ? "Your storefront" : "Dealer account"}</h2>
+          <SectionHeading>{dealer ? "Your storefront" : "Dealer account"}</SectionHeading>
           {dealer ? (
             <StorefrontForm dealer={dealer} />
           ) : profile.account_type === "dealer" || profile.account_type === "admin" ? (

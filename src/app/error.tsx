@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { button } from "@/app/components/ui";
+import Badge from "@/app/components/Badge";
 
 /**
  * Fallback for any page that throws while rendering — most often because
@@ -22,9 +23,9 @@ export default function Error({
 
   return (
     <main className="mx-auto max-w-xl px-5 py-16 text-center">
-      <span className="mb-4 inline-block rounded-full bg-red px-3 py-1.5 text-[11px] font-bold tracking-wide text-white uppercase">
+      <Badge tone="red" size="md" className="mb-4">
         Temporarily unavailable
-      </span>
+      </Badge>
       <h1 className="font-display mb-3 text-3xl">We&rsquo;ve hit a pothole</h1>
       <p className="mb-6 text-[15px] text-ink-dim">
         Something went wrong loading this page. It&rsquo;s usually brief — give it a moment and try

@@ -224,6 +224,18 @@ demo state — not test residue to clean up.
   `input`, `label`, `sectionTitle`, `card`, `errorBox`, `heroBackground`.
   Use these instead of writing button or input classes inline; every page
   and the admin portal now do.
+- **Shared components** (`src/app/components/`): `PageHero` (the
+  glow-backed title band at the top of a section page), `Badge` (status
+  and trust pills — `gold` for Verified/Dealer, `red` for attention,
+  `green`/`muted`/`soft`/`outline`), `Chip` (spec chips: 600cc, 4-stroke),
+  `EmptyState` (the dashed "nothing here" box), `SectionHeading` (gold
+  underlined h2 with an optional right-hand link). Reach for these before
+  writing the markup by hand.
+- **Type:** headings, buttons, badges, nav and prices use `.font-display`
+  — **Oswald** (`next/font/google` in `layout.tsx`, latin + cyrillic so
+  the Macedonian version works), bold, uppercase. It's in `@layer
+  components` in `globals.css`, so utilities like `font-semibold` or
+  `normal-case` still override it. Body text stays on the system stack.
 - **Header:** `SiteHeader` + `NavLinks` (current section highlighted) +
   `MobileMenu` (☰ below `lg`). Nav items live in `NAV_ITEMS` in
   `NavLinks.tsx`. "Parts & Gear" is out of the nav until it's built (the
@@ -265,7 +277,8 @@ shared components: `SiteHeader`/`SiteFooter` (wrapped around every route
 in `layout.tsx`), `ListingCard` (the `.card` unit — photo placeholder,
 save-heart badge, spec chips, price), and `SaveButton`'s `badge`/`inline`
 variants. Body font is the demo's system stack; the `.font-display`
-class gives headings the demo's Georgia serif. Every real page
+class gives headings bold condensed Oswald (it was the demo's Georgia
+serif until Oct 2026, which didn't match the punk/rock brief). Every real page
 (`/`, `/listings`, `/listings/[id]`, `/sell`, `/login`, `/signup`) now
 uses this system — the old ad-hoc black/amber Tailwind on the auth pages
 is gone.

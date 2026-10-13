@@ -11,6 +11,7 @@ import { listSaved } from "@/lib/data/savedListings";
 import { formatPhone, telHref, whatsAppHref } from "@/lib/contact/phone";
 import { PinIcon } from "@/app/components/icons";
 import ListingsGrid from "@/app/components/ListingsGrid";
+import Badge from "@/app/components/Badge";
 import { heroBackground, button } from "@/app/components/ui";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -72,10 +73,8 @@ export default async function DealerStorefrontPage({ params }: Props) {
               ← All dealers
             </Link>
             <div className="mb-2 flex flex-wrap items-center gap-3">
-              <h1 className="font-display text-3xl">{dealer.business_name}</h1>
-              <span className="rounded-full bg-gold px-2.5 py-0.5 text-[11px] font-bold text-[#141414] uppercase">
-                Verified dealer
-              </span>
+              <h1 className="font-display text-3xl sm:text-4xl">{dealer.business_name}</h1>
+              <Badge size="md">Verified dealer</Badge>
             </div>
             {(dealer.address || dealer.town) && (
               <div className="mb-3 flex items-center gap-1.5 text-sm text-grey">

@@ -35,10 +35,10 @@ export default function NavLinks({
         aria-current={active ? "page" : undefined}
         className={
           variant === "bar"
-            ? `border-b-2 pb-1.5 text-sm font-semibold tracking-wide uppercase transition hover:border-gold hover:text-gold-bright ${
+            ? `font-display border-b-2 pb-1.5 text-[15px] font-medium tracking-wider transition hover:border-gold hover:text-gold-bright ${
                 active ? "border-gold text-gold-bright" : "border-transparent text-ink-dim"
               }`
-            : `block border-l-2 px-4 py-3 text-base font-semibold tracking-wide uppercase ${
+            : `font-display block border-l-2 px-4 py-3 text-lg font-medium tracking-wider ${
                 active ? "border-gold bg-panel2 text-gold-bright" : "border-transparent text-ink"
               }`
         }

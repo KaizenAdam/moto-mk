@@ -14,7 +14,8 @@ import { listActiveDealers } from "@/lib/data/dealers";
 import ListingsFilterBar from "@/app/listings/ListingsFilterBar";
 import SortSelect from "@/app/listings/SortSelect";
 import ListingsGrid from "@/app/components/ListingsGrid";
-import { heroBackground, button } from "@/app/components/ui";
+import { button } from "@/app/components/ui";
+import PageHero from "@/app/components/PageHero";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -75,20 +76,15 @@ export default async function Home({
 
   return (
     <main>
-      <section
-        className="border-b border-line px-5 py-9"
-        style={{
-          background: heroBackground,
-        }}
-      >
-        <div className="mx-auto max-w-[1280px]">
-          <h1 className="font-display mb-1.5 text-3xl">
+      <PageHero
+        size="lg"
+        title={
+          <>
             Find your next ride in <em className="not-italic text-gold">North Macedonia</em>
-          </h1>
-          <p className="mb-4 text-sm text-ink-dim">
-            Motorcycles, gear and parts — from riders and trusted dealers across Skopje, Ohrid,
-            Bitola and beyond.
-          </p>
+          </>
+        }
+        intro="Motorcycles, gear and parts — from riders and trusted dealers across Skopje, Ohrid, Bitola and beyond."
+      >
           <form action="/" method="GET" className="flex gap-2.5 rounded-lg border border-line bg-panel p-2">
             <input
               type="text"
@@ -104,8 +100,7 @@ export default async function Home({
               Search
             </button>
           </form>
-        </div>
-      </section>
+      </PageHero>
 
       <section className="border-b border-line bg-panel">
         <div className="px-6 py-3.5">

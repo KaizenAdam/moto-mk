@@ -5,6 +5,7 @@ import type { Tables } from "@/lib/database.types";
 import type { Currency } from "@/lib/constants/listings";
 import ListingCard from "@/app/components/ListingCard";
 import CurrencyToggle from "@/app/listings/CurrencyToggle";
+import EmptyState from "@/app/components/EmptyState";
 
 export default function ListingsGrid({
   listings,
@@ -41,9 +42,7 @@ export default function ListingsGrid({
       </div>
 
       {listings.length === 0 ? (
-        <div className="rounded-[10px] border border-dashed border-line px-5 py-10 text-center text-sm text-ink-dim">
-          No motorcycles match your filters. Try clearing a few.
-        </div>
+        <EmptyState>No motorcycles match your filters. Try clearing a few.</EmptyState>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {listings.map((listing) => (

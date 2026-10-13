@@ -1,7 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { listUpcoming } from "@/lib/data/events";
 import { PinIcon } from "@/app/components/icons";
-import { heroBackground } from "@/app/components/ui";
+import PageHero from "@/app/components/PageHero";
+import Badge from "@/app/components/Badge";
+import EmptyState from "@/app/components/EmptyState";
 
 function formatEventDate(dateStr: string | null) {
   if (!dateStr) return null;
@@ -19,26 +21,14 @@ export default async function EventsPage() {
 
   return (
     <main>
-      <section
-        className="border-b border-line px-5 py-8"
-        style={{
-          background: heroBackground,
-        }}
-      >
-        <div className="mx-auto max-w-[1280px]">
-          <h1 className="font-display mb-1.5 text-2xl">Events</h1>
-          <p className="text-sm text-ink-dim">
-            Rallies, track days and group rides — a calendar for the North Macedonia riding
-            community.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="Events"
+        intro="Rallies, track days and group rides — a calendar for the North Macedonia riding community."
+      />
 
       <div className="mx-auto max-w-3xl px-6 py-8 pb-14">
         {events.length === 0 ? (
-          <div className="rounded-[10px] border border-dashed border-line px-5 py-10 text-center text-sm text-ink-dim">
-            No upcoming events yet — check back soon.
-          </div>
+          <EmptyState>No upcoming events yet — check back soon.</EmptyState>
         ) : (
           <div className="space-y-4">
             {events.map((event) => {
@@ -46,11 +36,11 @@ export default async function EventsPage() {
               return (
                 <div key={event.id} className="rounded-[10px] border border-line bg-panel p-5">
                   <div className="mb-1.5 flex flex-wrap items-baseline justify-between gap-2">
-                    <h2 className="font-display text-lg">{event.title}</h2>
+                    <h2 className="font-display text-xl">{event.title}</h2>
                     {date && (
-                      <span className="rounded-full border border-gold bg-panel2 px-3 py-1 text-xs font-bold text-gold-bright uppercase">
+                      <Badge tone="outline" size="md">
                         {date}
-                      </span>
+                      </Badge>
                     )}
                   </div>
                   {event.location && (

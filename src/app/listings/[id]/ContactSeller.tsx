@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { formatPhone, telHref, whatsAppHref } from "@/lib/contact/phone";
 import { button } from "@/app/components/ui";
+import Badge from "@/app/components/Badge";
 
 /**
  * Seller box on a listing page. A private seller's phone, Call and
@@ -47,9 +48,7 @@ export default function ContactSeller({
         <>
           <p className="flex items-center gap-2 text-ink-dim">
             Seller
-            <span className="rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-[#141414] uppercase">
-              Verified dealer
-            </span>
+            <Badge>Verified dealer</Badge>
           </p>
           <p className="text-ink">{dealer.business_name}</p>
           {sellerTown && <p className="text-grey">{sellerTown}</p>}

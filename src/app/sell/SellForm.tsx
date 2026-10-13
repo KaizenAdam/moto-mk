@@ -6,6 +6,8 @@ import { createListingAction, type CreateListingState } from "@/app/actions/list
 import { RIDING_STYLES, ENGINE_TYPES, TOWNS, formatPrice } from "@/lib/constants/listings";
 import { PinIcon } from "@/app/components/icons";
 import PhotoPicker from "@/app/components/PhotoPicker";
+import Badge from "@/app/components/Badge";
+import Chip from "@/app/components/Chip";
 import { uploadListingPhotos } from "@/app/components/uploadPhotos";
 import { MAX_PHOTOS } from "@/lib/data/listingPhotos";
 import { input as inputClass, label as labelClass, sectionTitle as sectionTitleClass, button } from "@/app/components/ui";
@@ -44,15 +46,9 @@ function PreviewCard({ data, photoUrl }: { data: PreviewData; photoUrl?: string 
           <span className="ml-1 text-[11px] font-normal text-grey">{data.price ? price.alt : ""}</span>
         </div>
         <div className="mb-1.5 flex flex-wrap gap-1.5">
-          <span className="rounded border border-line bg-panel2 px-1.5 py-0.5 text-[11px] text-ink-dim">
-            {data.cc || 0}cc
-          </span>
-          <span className="rounded border border-line bg-panel2 px-1.5 py-0.5 text-[11px] text-ink-dim">
-            {data.engineType}
-          </span>
-          <span className="rounded border border-line bg-panel2 px-1.5 py-0.5 text-[11px] text-ink-dim">
-            {data.style}
-          </span>
+          <Chip>{data.cc || 0}cc</Chip>
+          <Chip>{data.engineType}</Chip>
+          <Chip>{data.style}</Chip>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-grey">
           <PinIcon />
@@ -130,10 +126,10 @@ export default function SellForm({ profilePhone }: { profilePhone: string | null
   if (state.listing) {
     return (
       <div className="mx-auto max-w-[520px] px-5 py-14 text-center">
-        <span className="mb-4 inline-block rounded-full bg-red px-3 py-1.5 text-[11px] font-bold tracking-wide text-white uppercase">
-          Pending review
-        </span>
-        <h1 className="font-display mb-2.5 text-[28px]">Your listing has been submitted</h1>
+        <Badge tone="red" size="md" className="mb-4">
+        Pending review
+      </Badge>
+        <h1 className="font-display mb-2.5 text-3xl">Your listing has been submitted</h1>
         <p className="mb-5 text-sm text-ink-dim">
           <strong className="text-ink">{state.listing.title}</strong> won&rsquo;t be visible to
           buyers until an admin approves it — we&rsquo;ll keep it out of search until then.

@@ -13,6 +13,7 @@ import { getActiveBySeller } from "@/lib/data/dealers";
 import { formatPrice } from "@/lib/constants/listings";
 import { PinIcon } from "@/app/components/icons";
 import SaveButton from "@/app/components/SaveButton";
+import Chip from "@/app/components/Chip";
 import ContactSeller from "./ContactSeller";
 import PhotoGallery from "./PhotoGallery";
 
@@ -103,13 +104,14 @@ export default async function ListingDetailPage({
         </div>
 
         <div className="p-5">
-          <h1 className="font-display text-2xl">
+          <h1 className="font-display text-3xl sm:text-4xl">
             {listing.make} {listing.model}
           </h1>
           <p className="mb-3 text-sm text-ink-dim">{listing.title}</p>
 
-          <div className="mb-4 text-3xl font-extrabold text-gold-bright">
-            {price.main} <span className="ml-2 text-sm font-normal text-grey">{price.alt}</span>
+          <div className="font-display mb-4 text-4xl text-gold-bright">
+            {price.main}{" "}
+            <span className="ml-2 font-sans text-sm font-normal normal-case text-grey">{price.alt}</span>
           </div>
 
           <div className="mb-5 flex flex-wrap gap-2">
@@ -150,7 +152,5 @@ export default async function ListingDetailPage({
 }
 
 function Spec({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="rounded border border-line bg-panel2 px-2 py-1 text-xs text-ink-dim">{children}</span>
-  );
+  return <Chip size="md">{children}</Chip>;
 }

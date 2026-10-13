@@ -25,7 +25,7 @@ export default async function EditListingPage({ params }: { params: Promise<{ id
       <Link href="/garage" className="mb-4 inline-block text-sm text-grey hover:text-gold-bright">
         ← My Garage
       </Link>
-      <h1 className="font-display mb-1.5 text-2xl">Edit {listing.title}</h1>
+      <h1 className="font-display mb-1.5 text-3xl">Edit {listing.title}</h1>
       {listing.status === "active" && (
         <p className="mb-6 text-sm text-ink-dim">
           This listing is live. Price changes show straight away; any other change (including

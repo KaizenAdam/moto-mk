@@ -4,12 +4,12 @@
  */
 
 const buttonBase =
-  "inline-flex items-center justify-center gap-1.5 rounded-md font-bold tracking-wide uppercase transition disabled:cursor-not-allowed disabled:opacity-60";
+  "font-display inline-flex items-center justify-center gap-1.5 rounded-md font-semibold tracking-wider transition disabled:cursor-not-allowed disabled:opacity-60";
 
 const buttonSizes = {
   sm: "px-3 py-1.5 text-xs",
-  md: "px-[18px] py-[9px] text-[13px]",
-  lg: "px-5 py-3 text-sm",
+  md: "px-4 py-2 text-sm",
+  lg: "px-6 py-3 text-base",
 } as const;
 
 const buttonVariants = {
@@ -34,7 +34,7 @@ export const input =
 export const label = "block text-xs font-bold tracking-wide text-ink-dim uppercase";
 
 export const sectionTitle =
-  "mb-4 border-b border-line pb-2.5 text-[15px] font-bold tracking-wide text-gold uppercase";
+  "font-display mb-4 border-b border-line pb-2.5 text-lg font-semibold tracking-wide text-gold";
 
 export const card = "rounded-[10px] border border-line bg-panel";
 

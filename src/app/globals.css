@@ -33,8 +33,18 @@ body {
   line-height: 1.4;
 }
 
-.font-display {
-  font-family: Georgia, serif;
+/* Headings, buttons, badges: Oswald (loaded in layout.tsx), uppercase.
+   Arial Narrow is the closest common fallback while it loads. In the
+   components layer so utilities (font-semibold, leading-*, normal-case)
+   still override it. */
+@layer components {
+  .font-display {
+    font-family: var(--font-oswald), "Arial Narrow", "Helvetica Neue", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+  }
 }
 
 /* Map (src/app/components/map/LeafletMap.tsx). Pins are drawn here rather

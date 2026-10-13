@@ -3,6 +3,8 @@ import type { Tables } from "@/lib/database.types";
 import { formatPrice, type Currency } from "@/lib/constants/listings";
 import { PinIcon } from "@/app/components/icons";
 import SaveButton from "@/app/components/SaveButton";
+import Badge from "@/app/components/Badge";
+import Chip from "@/app/components/Chip";
 
 export default function ListingCard({
   listing,
@@ -48,36 +50,24 @@ export default function ListingCard({
       </div>
 
       <Link href={`/listings/${listing.id}`} className="block px-3 pt-2.5 pb-3">
-        <div className="truncate text-sm font-bold text-ink">
+        <div className="font-display truncate text-base font-semibold text-ink">
           {listing.make} {listing.model}
         </div>
-        <div className="mb-1.5 text-base font-extrabold text-gold-bright">
-          {price.main} <span className="ml-1 text-[11px] font-normal text-grey">{price.alt}</span>
+        <div className="font-display mb-1.5 text-xl text-gold-bright">
+          {price.main} <span className="ml-1 font-sans text-[11px] font-normal normal-case text-grey">{price.alt}</span>
         </div>
         <div className="mb-1.5 flex flex-wrap gap-1.5">
-          {listing.engine_cc != null && (
-            <span className="rounded border border-line bg-panel2 px-1.5 py-0.5 text-[11px] text-ink-dim">
-              {listing.engine_cc}cc
-            </span>
-          )}
-          {listing.engine_type && (
-            <span className="rounded border border-line bg-panel2 px-1.5 py-0.5 text-[11px] text-ink-dim">
-              {listing.engine_type}
-            </span>
-          )}
-          {listing.riding_style && (
-            <span className="rounded border border-line bg-panel2 px-1.5 py-0.5 text-[11px] text-ink-dim">
-              {listing.riding_style}
-            </span>
-          )}
+          {listing.engine_cc != null && <Chip>{listing.engine_cc}cc</Chip>}
+          {listing.engine_type && <Chip>{listing.engine_type}</Chip>}
+          {listing.riding_style && <Chip>{listing.riding_style}</Chip>}
         </div>
         <div className="flex items-center gap-1.5 text-xs text-grey">
           <PinIcon />
           {listing.town ?? "—"}
           {dealerName && (
-            <span className="ml-auto truncate rounded bg-gold/15 px-1.5 py-0.5 text-[10px] font-bold text-gold-bright uppercase">
+            <Badge tone="soft" className="ml-auto max-w-[60%] truncate">
               {dealerName}
-            </span>
+            </Badge>
           )}
         </div>
       </Link>

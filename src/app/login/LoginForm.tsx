@@ -14,7 +14,7 @@ export default function LoginForm({ notice }: { notice?: string }) {
   return (
     <main className="flex min-h-[70vh] items-center justify-center px-4 py-10">
       <form action={formAction} className="w-full max-w-sm rounded-[10px] border border-line bg-panel p-8">
-        <h1 className="font-display mb-6 text-2xl text-gold">Log in</h1>
+        <h1 className="font-display mb-6 text-3xl text-gold">Log in</h1>
 
         {notice && !state.error && (
           <p className="mb-4 rounded-md bg-panel2 px-3 py-2 text-sm text-ink-dim">{notice}</p>

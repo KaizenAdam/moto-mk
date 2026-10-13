@@ -12,7 +12,7 @@ export default function ResetPasswordForm() {
 
   return (
     <form action={formAction} className="w-full max-w-sm rounded-[10px] border border-line bg-panel p-8">
-      <h1 className="font-display mb-6 text-2xl text-gold">Choose a new password</h1>
+      <h1 className="font-display mb-6 text-3xl text-gold">Choose a new password</h1>
 
       {state.error && (
         <p className="mb-4 rounded-md bg-red/20 px-3 py-2 text-sm text-gold-bright">{state.error}</p>

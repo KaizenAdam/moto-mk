@@ -14,7 +14,7 @@ export default function ForgotPasswordPage() {
   return (
     <main className="flex min-h-[70vh] items-center justify-center px-4 py-10">
       <form action={formAction} className="w-full max-w-sm rounded-[10px] border border-line bg-panel p-8">
-        <h1 className="font-display mb-2 text-2xl text-gold">Reset your password</h1>
+        <h1 className="font-display mb-2 text-3xl text-gold">Reset your password</h1>
 
         {state.message ? (
           <p className="mt-4 text-sm text-ink-dim">{state.message}</p>
