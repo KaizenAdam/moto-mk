@@ -15,7 +15,7 @@ export default function ComingSoon({ title, description }: { title: string; desc
         will sit in the finished product.
       </p>
       <Link
-        href="/"
+        href="/bikes"
         className={button("primary", "lg")}
       >
         ← Back to Buy

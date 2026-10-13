@@ -6,7 +6,7 @@ import { listOwn } from "@/lib/data/listings";
 import { listSaved } from "@/lib/data/savedListings";
 import { listOwnRequests } from "@/lib/data/dealerRequests";
 import { getOwnDealer } from "@/lib/data/dealers";
-import { getCoverPhotoUrls } from "@/lib/data/listingPhotos";
+import { getCoverPhotos } from "@/lib/data/listingPhotos";
 import { cachedPhotoSigner } from "@/lib/photos/signer";
 import { formatPrice } from "@/lib/constants/listings";
 import { deleteListingAction, markSoldAction } from "@/app/actions/garage";
@@ -44,7 +44,7 @@ export default async function GaragePage() {
   // Saved rows whose listing is no longer visible (sold, removed) come back
   // with listings = null under RLS — just leave them out.
   const savedListings = saved.flatMap((s) => (s.listings ? [s.listings] : []));
-  const covers = await getCoverPhotoUrls(supabase, [
+  const covers = await getCoverPhotos(supabase, [
     ...mine.map((l) => l.id),
     ...savedListings.map((l) => l.id),
   ], cachedPhotoSigner(supabase));
@@ -71,7 +71,7 @@ export default async function GaragePage() {
           <div className="space-y-3">
             {mine.map((l) => {
               const status = STATUS[l.status] ?? STATUS.draft;
-              const cover = covers.get(l.id);
+              const cover = covers.get(l.id)?.url;
               return (
                 <div key={l.id} className="flex flex-wrap gap-4 rounded-[10px] border border-line bg-panel p-3">
                   <Link href={`/listings/${l.id}`} className="shrink-0">
@@ -141,7 +141,8 @@ export default async function GaragePage() {
                 currency="EUR"
                 initiallySaved
                 isLoggedIn
-                photoUrl={covers.get(l.id)}
+                photoUrl={covers.get(l.id)?.url ?? undefined}
+                photoCount={covers.get(l.id)?.count ?? 0}
               />
             ))}
           </div>

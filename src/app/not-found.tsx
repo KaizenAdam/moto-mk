@@ -10,7 +10,7 @@ export default function NotFound() {
         That page doesn&rsquo;t exist — or the bike&rsquo;s already been sold.
       </p>
       <div className="flex flex-wrap justify-center gap-3">
-        <Link href="/" className={button("primary", "lg")}>
+        <Link href="/bikes" className={button("primary", "lg")}>
           Browse bikes
         </Link>
         <Link href="/dealers" className={button("outline", "lg")}>

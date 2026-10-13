@@ -11,7 +11,7 @@ export default function ListingsGrid({
   listings,
   savedIds,
   isLoggedIn,
-  photoUrls,
+  photos,
   sortSelect,
   dealerNames = {},
   total,
@@ -19,7 +19,8 @@ export default function ListingsGrid({
   listings: Tables<"listings">[];
   savedIds: string[];
   isLoggedIn: boolean;
-  photoUrls: Record<string, string>;
+  /** listing id → cover photo URL and photo count (missing = no photos). */
+  photos: Record<string, { url: string | null; count: number }>;
   sortSelect: ReactNode;
   /** seller_id → business name, for sellers who are verified dealers. */
   dealerNames?: Record<string, string>;
@@ -44,7 +45,7 @@ export default function ListingsGrid({
       {listings.length === 0 ? (
         <EmptyState>No motorcycles match your filters. Try clearing a few.</EmptyState>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {listings.map((listing) => (
             <ListingCard
               key={listing.id}
@@ -52,7 +53,8 @@ export default function ListingsGrid({
               currency={currency}
               initiallySaved={savedIdSet.has(listing.id)}
               isLoggedIn={isLoggedIn}
-              photoUrl={photoUrls[listing.id]}
+              photoUrl={photos[listing.id]?.url ?? undefined}
+              photoCount={photos[listing.id]?.count ?? 0}
               dealerName={dealerNames[listing.seller_id]}
             />
           ))}

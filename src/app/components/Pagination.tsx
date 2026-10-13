@@ -10,7 +10,7 @@ function hrefFor(searchParams: SearchParams, page: number) {
   }
   if (page > 1) params.set("page", String(page));
   const q = params.toString();
-  return q ? `/?${q}` : "/";
+  return q ? `/bikes?${q}` : "/bikes";
 }
 
 /** Numbered page links that keep the current filters. Window of pages around the current one. */

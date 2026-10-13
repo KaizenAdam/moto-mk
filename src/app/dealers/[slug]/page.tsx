@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getBySlug } from "@/lib/data/dealers";
 import { listActiveBySeller } from "@/lib/data/listings";
-import { getCoverPhotoUrls } from "@/lib/data/listingPhotos";
+import { getCoverPhotos } from "@/lib/data/listingPhotos";
 import { cachedPhotoSigner } from "@/lib/photos/signer";
 import { getOwnProfile } from "@/lib/data/profiles";
 import { listSaved } from "@/lib/data/savedListings";
@@ -44,7 +44,7 @@ export default async function DealerStorefrontPage({ params }: Props) {
     getOwnProfile(supabase),
     listSaved(supabase),
   ]);
-  const covers = await getCoverPhotoUrls(
+  const covers = await getCoverPhotos(
     supabase,
     listings.map((l) => l.id),
     cachedPhotoSigner(supabase)
@@ -135,8 +135,9 @@ export default async function DealerStorefrontPage({ params }: Props) {
           listings={listings}
           savedIds={saved.map((s) => s.listing_id)}
           isLoggedIn={!!profile}
-          photoUrls={Object.fromEntries(covers)}
+          photos={Object.fromEntries(covers)}
           sortSelect={null}
+          dealerNames={{ [dealer.profile_id]: dealer.business_name }}
         />
       )}
     </main>

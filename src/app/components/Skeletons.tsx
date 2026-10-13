@@ -20,7 +20,7 @@ export function CardGridSkeleton({ count = 8 }: { count?: number }) {
   return (
     <div className="px-6 py-6">
       <div className={`${block} mb-4 h-5 w-40`} />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {Array.from({ length: count }, (_, i) => (
           <div key={i} className="overflow-hidden rounded-[10px] border border-line bg-panel">
             <div className={`${block} aspect-[4/3] rounded-none`} />

@@ -49,16 +49,17 @@ export async function listForListing(
 }
 
 /**
- * The lowest-sort_order photo per listing, for a grid of cards. One query
- * plus one signing pass, not N round trips.
+ * The lowest-sort_order photo per listing, plus how many photos each has,
+ * for a grid of cards. One query plus one signing pass, not N round trips.
+ * Listings with no photos are missing from the map.
  */
-export async function getCoverPhotoUrls(
+export async function getCoverPhotos(
   supabase: Client,
   listingIds: string[],
   sign: PhotoSigner = signWith(supabase)
 ) {
-  const urls = new Map<string, string>();
-  if (listingIds.length === 0) return urls;
+  const covers = new Map<string, { url: string | null; count: number }>();
+  if (listingIds.length === 0) return covers;
 
   const { data, error } = await supabase
     .from("listing_photos")
@@ -69,17 +70,31 @@ export async function getCoverPhotoUrls(
   if (error) throw error;
 
   const coverByListing = new Map<string, string>();
+  const counts = new Map<string, number>();
   for (const row of data) {
     if (!coverByListing.has(row.listing_id)) coverByListing.set(row.listing_id, row.storage_path);
+    counts.set(row.listing_id, (counts.get(row.listing_id) ?? 0) + 1);
   }
-  if (coverByListing.size === 0) return urls;
+  if (coverByListing.size === 0) return covers;
 
   const paths = [...coverByListing.values()];
   const signed = await sign(paths);
   const urlByPath = new Map(paths.map((path, i) => [path, signed[i]]));
   for (const [listingId, path] of coverByListing) {
-    const url = urlByPath.get(path);
-    if (url) urls.set(listingId, url);
+    covers.set(listingId, { url: urlByPath.get(path) ?? null, count: counts.get(listingId) ?? 0 });
+  }
+  return covers;
+}
+
+/** Just the cover URLs (see getCoverPhotos). */
+export async function getCoverPhotoUrls(
+  supabase: Client,
+  listingIds: string[],
+  sign: PhotoSigner = signWith(supabase)
+) {
+  const urls = new Map<string, string>();
+  for (const [id, cover] of await getCoverPhotos(supabase, listingIds, sign)) {
+    if (cover.url) urls.set(id, cover.url);
   }
   return urls;
 }

@@ -79,7 +79,7 @@ export default async function ListingDetailPage({
 
   return (
     <main className="mx-auto max-w-3xl px-5 py-8">
-      <Link href="/" className="mb-4 inline-block text-sm text-grey hover:text-gold-bright">
+      <Link href="/bikes" className="mb-4 inline-block text-sm text-grey hover:text-gold-bright">
         ← Back to listings
       </Link>
 
