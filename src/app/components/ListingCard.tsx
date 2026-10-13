@@ -7,6 +7,16 @@ import SaveButton from "@/app/components/SaveButton";
 import Badge from "@/app/components/Badge";
 import { button } from "@/app/components/ui";
 
+/** One card's worth of data, for pages that list a handful of bikes (home, similar bikes). */
+export type ListingCardData = {
+  listing: Tables<"listings">;
+  saved: boolean;
+  photoUrl?: string;
+  photoCount: number;
+  dealerName?: string;
+  featured?: boolean;
+};
+
 /**
  * A bike in a results grid (Bikesales-style): photo with photo count and
  * save heart, title, big price, a 2×2 spec grid, who's selling and where,

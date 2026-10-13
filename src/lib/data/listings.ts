@@ -105,6 +105,47 @@ export async function listSimilar(
   return data;
 }
 
+/** The newest live bikes, for the home page. */
+export async function listLatest(supabase: Client, limit = 8) {
+  const { data, error } = await supabase
+    .from("listings")
+    .select("*")
+    .eq("status", "active")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Per riding style: how many live bikes, and the newest one (whose cover
+ * photo fronts the home page's "Browse by type" tile). Reads one narrow
+ * row per live listing — fine at today's size; move to a grouped SQL view
+ * or RPC once there are thousands.
+ */
+export async function listStyleShowcase(supabase: Client, styles: readonly string[]) {
+  const { data, error } = await supabase
+    .from("listings")
+    .select("id, riding_style")
+    .eq("status", "active")
+    .in("riding_style", [...styles])
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+
+  const byStyle = new Map<string, { count: number; newestId: string | null }>(
+    styles.map((s) => [s, { count: 0, newestId: null }])
+  );
+  for (const row of data) {
+    const entry = row.riding_style ? byStyle.get(row.riding_style) : undefined;
+    if (!entry) continue;
+    entry.count += 1;
+    entry.newestId ??= row.id;
+  }
+  return styles.map((style) => ({ style, ...byStyle.get(style)! }));
+}
+
 /** How many live listings each of these sellers has (missing = 0). */
 export async function countActiveBySeller(supabase: Client, sellerIds: string[]) {
   const counts = new Map<string, number>();

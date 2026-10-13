@@ -14,20 +14,12 @@ import {
 } from "@/app/components/icons";
 import SaveButton from "@/app/components/SaveButton";
 import Badge from "@/app/components/Badge";
-import ListingCard from "@/app/components/ListingCard";
+import ListingCard, { type ListingCardData } from "@/app/components/ListingCard";
 import SectionHeading from "@/app/components/SectionHeading";
 import { card } from "@/app/components/ui";
 import { ContactCard, MeetTheSeller, MobileContactBar, type ContactProps } from "./ContactSeller";
 import PhotoGallery from "./PhotoGallery";
 import ShareButton from "./ShareButton";
-
-type Similar = {
-  listing: Tables<"listings">;
-  saved: boolean;
-  photoUrl?: string;
-  photoCount: number;
-  dealerName?: string;
-};
 
 /**
  * A bike's page, Auto Trader-style: photo mosaic, then details on the left
@@ -54,7 +46,7 @@ export default function ListingView({
   isLoggedIn: boolean;
   isDealer: boolean;
   contactProps: ContactProps;
-  similar: Similar[];
+  similar: ListingCardData[];
 }) {
   const price = formatPrice(Number(listing.price_eur), "EUR");
   const subtitle = [
