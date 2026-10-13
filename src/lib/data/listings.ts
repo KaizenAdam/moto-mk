@@ -86,6 +86,25 @@ export async function listActiveBySeller(supabase: Client, sellerId: string) {
   return data;
 }
 
+/**
+ * Up to `limit` other live bikes like this one, for "Similar bikes" on a
+ * listing page: same riding style if it has one, otherwise same make.
+ */
+export async function listSimilar(
+  supabase: Client,
+  listing: Pick<Tables<"listings">, "id" | "riding_style" | "make">,
+  limit = 4
+) {
+  let query = supabase.from("listings").select("*").eq("status", "active").neq("id", listing.id);
+  query = listing.riding_style
+    ? query.eq("riding_style", listing.riding_style)
+    : query.eq("make", listing.make);
+
+  const { data, error } = await query.order("created_at", { ascending: false }).limit(limit);
+  if (error) throw error;
+  return data;
+}
+
 /** How many live listings each of these sellers has (missing = 0). */
 export async function countActiveBySeller(supabase: Client, sellerIds: string[]) {
   const counts = new Map<string, number>();

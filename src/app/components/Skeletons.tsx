@@ -38,20 +38,19 @@ export function CardGridSkeleton({ count = 8 }: { count?: number }) {
 
 export function ListingDetailSkeleton() {
   return (
-    <main className="mx-auto max-w-3xl px-5 py-8">
-      <div className={`${block} mb-4 h-4 w-32`} />
-      <div className="overflow-hidden rounded-[10px] border border-line bg-panel">
-        <div className={`${block} aspect-video rounded-none`} />
-        <div className="space-y-3 p-5">
-          <div className={`${block} h-7 w-2/3`} />
-          <div className={`${block} h-9 w-40`} />
-          <div className="flex gap-2">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className={`${block} h-6 w-16`} />
-            ))}
+    <main className="mx-auto max-w-[1280px] pb-14 sm:px-5">
+      <div className={`${block} mx-4 my-4 h-4 w-32 sm:mx-0`} />
+      <div className={`${block} aspect-[4/3] rounded-none sm:rounded-[10px] lg:aspect-auto lg:h-[460px]`} />
+      <div className="mt-4 grid gap-4 px-4 sm:px-0 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-6">
+        <div className="space-y-4">
+          <div className="space-y-3 rounded-[10px] border border-line bg-panel p-5">
+            <div className={`${block} h-8 w-2/3`} />
+            <div className={`${block} h-4 w-1/3`} />
+            <div className={`${block} h-10 w-40`} />
           </div>
-          <div className={`${block} h-24 w-full`} />
+          <div className={`${block} h-40 w-full rounded-[10px]`} />
         </div>
+        <div className={`${block} hidden h-48 rounded-[10px] lg:block`} />
       </div>
     </main>
   );
