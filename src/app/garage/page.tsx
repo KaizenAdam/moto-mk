@@ -105,6 +105,11 @@ export default async function GaragePage() {
                         </Link>
                       )}
                       {l.status === "active" && (
+                        <Link href={`/listings/${l.id}/feature`} className={button("primary", "sm")}>
+                          Feature this bike
+                        </Link>
+                      )}
+                      {l.status === "active" && (
                         <ActionButton
                           action={markSoldAction.bind(null, l.id)}
                           label="Mark sold"

@@ -22,6 +22,7 @@ const columns = [
       { href: "/garage", label: "My Garage" },
       { href: "/sell", label: "List your bike" },
       { href: "/garage#storefront", label: "Become a dealer" },
+      { href: "/advertise", label: "Advertise with us" },
     ],
   },
 ];

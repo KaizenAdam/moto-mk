@@ -17,6 +17,7 @@ import Badge from "@/app/components/Badge";
 import ListingCard, { type ListingCardData } from "@/app/components/ListingCard";
 import SectionHeading from "@/app/components/SectionHeading";
 import { card } from "@/app/components/ui";
+import AdSlot from "@/app/components/AdSlot";
 import { ContactCard, MeetTheSeller, MobileContactBar, type ContactProps } from "./ContactSeller";
 import PhotoGallery from "./PhotoGallery";
 import ShareButton from "./ShareButton";
@@ -162,10 +163,15 @@ export default function ListingView({
               <li>Never pay a deposit by bank transfer to someone you haven&rsquo;t met.</li>
             </ul>
           </section>
+
+          <div className="lg:hidden">
+            <AdSlot slot="listing-sidebar" />
+          </div>
         </div>
 
-        <aside className="hidden lg:sticky lg:top-24 lg:block">
+        <aside className="hidden space-y-4 lg:sticky lg:top-24 lg:block">
           <ContactCard {...contactProps} />
+          <AdSlot slot="listing-sidebar" />
         </aside>
       </div>
 

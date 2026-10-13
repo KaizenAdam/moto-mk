@@ -117,6 +117,7 @@ export default async function BikesPage({
 
       <ListingsGrid
         total={total}
+        showAd
         listings={listings}
         savedIds={saved.map((s) => s.listing_id)}
         isLoggedIn={!!profile}
