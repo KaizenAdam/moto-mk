@@ -1,5 +1,9 @@
 # Just5Up!
 
+> **Backend work (featured listings, ads, payments)?** Read
+> `docs/HANDOVER-backend.md` first: it lists what the Oct 2026 front-end
+> pass left for the backend, the UI contracts to fill, and known issues.
+
 ## Purpose
 
 A motorcycle classifieds marketplace for North Macedonia — think
@@ -229,8 +233,14 @@ demo state — not test residue to clean up.
   and trust pills — `gold` for Verified/Dealer, `red` for attention,
   `green`/`muted`/`soft`/`outline`), `Chip` (spec chips: 600cc, 4-stroke),
   `EmptyState` (the dashed "nothing here" box), `SectionHeading` (gold
-  underlined h2 with an optional right-hand link). Reach for these before
-  writing the markup by hand.
+  underlined h2 with an optional right-hand link), `AdSlot` (a banner
+  position: a real ad when given one, otherwise the house "Your ad here"
+  card — never an invented advertiser). Reach for these before writing
+  the markup by hand.
+- **`ListingCard`** (Bikesales-style): photo count, spec icons
+  (`icons.tsx`), dealer or private seller, Contact / View details. Its
+  `featured` prop draws the paid-placement frame — **only pass it for a
+  listing that is really featured**; the live site is client-facing.
 - **Type:** headings, buttons, badges, nav and prices use `.font-display`
   — **Oswald** (`next/font/google` in `layout.tsx`, latin + cyrillic so
   the Macedonian version works), bold, uppercase. It's in `@layer
@@ -279,7 +289,7 @@ save-heart badge, spec chips, price), and `SaveButton`'s `badge`/`inline`
 variants. Body font is the demo's system stack; the `.font-display`
 class gives headings bold condensed Oswald (it was the demo's Georgia
 serif until Oct 2026, which didn't match the punk/rock brief). Every real page
-(`/`, `/listings`, `/listings/[id]`, `/sell`, `/login`, `/signup`) now
+(`/`, `/bikes`, `/listings/[id]`, `/sell`, `/login`, `/signup`) now
 uses this system — the old ad-hoc black/amber Tailwind on the auth pages
 is gone.
 
@@ -369,24 +379,27 @@ is 8, checked in the server actions.
 
 ## Pages
 
-- **`/` is the browse page** — matches the static demo, where
-  `index.html` was always hero + filter bar + grid on one URL, never a
-  separate marketing homepage. `/listings` (below) is a thin redirect to
-  `/` that preserves query params, kept only for old links/bookmarks —
-  the real implementation lives at `src/app/page.tsx`. The filter bar and
-  results grid are intentionally **not** width-capped (no `max-w-*`
-  wrapper) — only the header and hero text are, matching `index.html`'s
-  `.layout`/`.filterbar` (full width) vs `.header-inner`/`.hero-inner`
-  (capped at 1280px) split exactly. Don't reintroduce a `max-w-[1280px]`
-  around the grid/filter bar — that was tried once during the design
-  pass and had to be reverted.
-- **Nav is the full 5-item menu** (Buy, Parts & Gear, Events, Service
-  Centres, Dealers), matching the demo. `/parts-gear`, `/service-centres`,
-  `/dealers` are still minimal `ComingSoon`-component pages (ported from
-  the demo's own "Coming Soon" placeholder pages), not dead links.
-  `/events` is real (see below). No mobile hamburger — the demo's own
-  burger button was non-functional (CSS-only, no JS behind it); the nav
-  just wraps on narrow screens instead.
+- **`/` is the landing hub** (Oct 2026; it used to be the browse page,
+  as in the static demo). `src/app/page.tsx` fetches,
+  `src/app/_home/HomeView.tsx` renders: hero search, Browse by type
+  (one tile per riding style, newest bike's photo, live count), Latest
+  bikes, a home-banner `AdSlot`, "More than bikes" (Parts & Gear and
+  Rider Forum as Coming soon, next events, service centres), dealers,
+  sell banner. The bikes row is "Latest bikes" until paid featured
+  listings exist — see `docs/HANDOVER-backend.md`.
+- **`/bikes` is the search page** (`src/app/bikes/page.tsx`).
+  `/listings?…` redirects here, keeping its query params, for old links.
+  The filter bar and results grid are intentionally **not** width-capped
+  (no `max-w-*` wrapper) — only the header and hero text are, matching
+  `index.html`'s `.layout`/`.filterbar` (full width) vs
+  `.header-inner`/`.hero-inner` (capped at 1280px) split exactly. Don't
+  reintroduce a `max-w-[1280px]` around the grid/filter bar — that was
+  tried once during the design pass and had to be reverted. Filters stay
+  a top bar (Adam's 25 Aug call), not a sidebar.
+- **Nav:** Buy (`/bikes`), Dealers, Service Centres, Events, with a ☰
+  menu below `lg` (`MobileMenu`). Parts & Gear is still a `ComingSoon`
+  page and out of the nav; the Forum (client's site map, Phase 3 in the
+  quote) only appears as a Coming soon card on the hub.
 - **`/events`** — public read via `listUpcoming` in
   `src/lib/data/events.ts`, which filters to `event_date >= today OR
   event_date IS NULL` (an `.or()` filter, since Postgrest has no single
@@ -395,7 +408,7 @@ is 8, checked in the server actions.
   (`listEvents`) deliberately shows everything, past included, since
   managing old rows is a real admin need past events shouldn't need
   archiving to fix. No RLS beyond what already exists (`events_public_read`).
-- **The browse page** (`/`, redirected to from `/listings`) — Server
+- **The search page** (`/bikes`, redirected to from `/listings`) — Server
   Component, reads filters from `searchParams` (`make`, `style`,
   `engineType`, `town`, `priceMax`, `ccMax`) and calls
   `listActiveFiltered`/`listFilterOptions` in `src/lib/data/listings.ts`
@@ -409,7 +422,17 @@ is 8, checked in the server actions.
   dropped it earlier ("they don't have those licences in Macedonia") and
   this page follows that call, not the schema's original full field list.
 - **`/listings/[id]`** — detail page, `getById` (RLS already scopes this
-  to active-or-owner-or-admin).
+  to active-or-owner-or-admin). Auto Trader-style: `page.tsx` fetches,
+  `ListingView.tsx` renders a photo mosaic with a full-screen gallery
+  (`PhotoGallery.tsx`), details on the left, a sticky contact card on
+  the right (phones: Call/WhatsApp pinned to the bottom), similar bikes
+  (`listSimilar`). All contact rules live in `resolveContact()` in
+  `ContactSeller.tsx`; card "Contact" buttons jump to `#contact`.
+- **`/listings/[id]/feature`** — owner-only "feature your bike" package
+  picker (live bikes only). **`/advertise`** — ad slots for businesses.
+  Both are front end only: their pay/enquire buttons are disabled until
+  the backend in `docs/HANDOVER-backend.md` exists. Packages and slots
+  are defined once in `src/lib/constants/monetisation.ts`.
 - **`/sell`** — list-a-bike form. `createListingAction`
   (`src/app/actions/listings.ts`) never accepts a `status` field from the
   client — `create()`'s type signature omits it entirely, so the DB
