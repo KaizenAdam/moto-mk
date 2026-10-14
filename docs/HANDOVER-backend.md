@@ -76,6 +76,31 @@ New read-only data functions are in `src/lib/data/listings.ts`: `listLatest`, `l
   - The handover's agreed scope said "no in-app payments in Phase 1". Billy has since asked for this to be planned now, so confirm the phase and budget with the client.
 - **Admin portal:** add "Feature this listing until…" (manual, for payments taken off-site), an ads manager (upload, slot, dates, on/off) and a payments list.
 
+## Parts & Gear (second front-end pass, 14 Oct 2026)
+
+`/parts-gear` is a finished page shell with nothing to list yet:
+- **Categories:** the client's two categories, with sub-category tiles from `src/lib/constants/parts.ts` (`PART_CATEGORIES`, `PART_CONDITIONS`). Store these ids; don't redefine them.
+- **Not wired up yet:** the brand search and "Sell parts & gear" are disabled. Every tile shows "No listings yet".
+- **Card:** `src/app/components/PartCard.tsx` is ready and typed (`PartCardData`), but nothing renders it until parts exist. It links to `/parts-gear/[id]`, a detail page that doesn't exist yet.
+
+Suggested backend, following the listings pattern:
+- A **`parts`** table:
+  - `seller_id → profiles` (the brief says parts sit under the same profile as the seller's bikes)
+  - `category`, `subcategory`, `brand`, `title`, `description`, `condition`, `price_eur`, `town`
+  - `status` defaulting to `pending`, with the same `enforce_listing_activation`-style trigger and re-review-on-edit rules
+- A **`part_photos`** table and a private bucket, mirroring `listing_photos` and its Storage RLS.
+- **Front end still to do:**
+  - fill the tiles with live counts
+  - a results grid of `PartCard`s per subcategory, plus brand search
+  - a sell-a-part form (reuse `PhotoPicker`)
+  - a detail page, reusing `ListingView`'s layout and `ContactSeller` rules
+  - a "Parts" section in My Garage and the admin review queue
+
+## Smaller future items from the same pass
+- **Event submissions:** `/events` says the team adds events for now. A public "submit an event" form would need a `pending` status on `events` and an admin queue.
+- **Admin users table:** still unpaginated. The new filter box only searches rows already fetched.
+- **The sell form is four steps,** but it's still one `<form>` posting the same fields to `createListingAction` as before. Nothing changed on the server side.
+
 ## Known issues found during the front-end pass
 
 - **Vercel Preview deployments have no Supabase env vars.** Every preview returns a bare "Internal Server Error". Tick **Preview** on `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (and `NEXT_PUBLIC_SITE_URL`, `CRON_SECRET` if set) under Project → Settings → Environment Variables, then redeploy.

@@ -399,12 +399,21 @@ is 8, checked in the server actions.
   tried once during the design pass and had to be reverted. Filters stay
   a top bar (Adam's 25 Aug call), not a sidebar.
 - **Nav (Oct 2026, "put everything in for now"):** Home, Buy (`/bikes`),
-  Parts & Gear (still a `ComingSoon` page), Dealers, Service Centres,
+  Parts & Gear, Dealers, Service Centres,
   Events, Advertise — with a ☰ menu below `xl` (`MobileMenu`). Signed-in
   users also get "Feature a bike" (→ My Garage, where each live listing
   has the button). The Forum (client's site map, Phase 3 in the quote)
   only appears as a Coming soon card on the hub.
-- **`/events`** — public read via `listUpcoming` in
+- **`/parts-gear`** — the finished page shell (14 Oct 2026), honest that
+  nothing can be listed yet: categories and sub-category tiles from
+  `src/lib/constants/parts.ts` each show an empty state, never sample
+  items; brand search and "Sell parts & gear" are disabled. `PartCard`
+  is built for when the parts backend exists (`docs/HANDOVER-backend.md`).
+- **`/events`** — `EventsView.tsx`: the soonest dated event as a "Next
+  up" feature, the rest grouped by month, undated last; "Add to
+  calendar" downloads an all-day `.ics` built in the browser
+  (`AddToCalendar.tsx`). The date block is the shared `EventDate`
+  component (home feed, /events, admin). Public read via `listUpcoming` in
   `src/lib/data/events.ts`, which filters to `event_date >= today OR
   event_date IS NULL` (an `.or()` filter, since Postgrest has no single
   operator for "gte or null") — a past rally shouldn't linger at the top
@@ -437,7 +446,14 @@ is 8, checked in the server actions.
   Both are front end only: their pay/enquire buttons are disabled until
   the backend in `docs/HANDOVER-backend.md` exists. Packages and slots
   are defined once in `src/lib/constants/monetisation.ts`.
-- **`/sell`** — list-a-bike form. `createListingAction`
+- **`/sell`** — list-a-bike form, four steps (The bike, Photos, Price &
+  place, Contact & check). All steps stay mounted in **one** `<form>`
+  (`noValidate`; Next validates the current step, the final submit
+  jumps to any step with a missing field), so `createListingAction`
+  receives the same fields as ever — keep it that way. `PhotoPicker`
+  does drag-and-drop, ← → reorder and "★ Cover"; array order is upload
+  order, cover first (`coverFirst={false}` on the edit page when the
+  listing already has photos). `createListingAction`
   (`src/app/actions/listings.ts`) never accepts a `status` field from the
   client — `create()`'s type signature omits it entirely, so the DB
   default (`pending`) is structurally the only possible outcome. On
@@ -497,7 +513,9 @@ is 8, checked in the server actions.
   is thin — the admin portal has an add / verify / delete section.
   Motocentar (motocentar.com.mk) is a car-tyre chain, not a bike
   service: don't add it.
-- **`/admin`** — the full admin portal: pending-listing and
+- **`/admin`** — the full admin portal (`page.tsx` gates and fetches,
+  `AdminView.tsx` renders a dashboard: counts that jump to sections, a
+  section rail, a filterable `UsersTable`): pending-listing and
   pending-dealer-request review queues, a roster of every user
   (`listAllForAdmin` in `profiles.ts` — needs the `profiles_select` admin
   RLS arm noted above), a dealers section (profiles where
