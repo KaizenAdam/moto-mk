@@ -7,6 +7,7 @@ import ListingCard, { type ListingCardData } from "@/app/components/ListingCard"
 import AdSlot from "@/app/components/AdSlot";
 import Badge from "@/app/components/Badge";
 import { PinIcon } from "@/app/components/icons";
+import EventDate from "@/app/components/EventDate";
 import { button, card } from "@/app/components/ui";
 
 export type StyleTile = { style: string; count: number; coverUrl: string | null };
@@ -258,23 +259,10 @@ function EventsFeed({ events, total }: { events: Tables<"events">[]; total: numb
         </p>
       ) : (
         <ol className="divide-y divide-line">
-          {events.map((e) => {
-            const date = e.event_date ? new Date(`${e.event_date}T00:00:00`) : null;
-            return (
+          {events.map((e) => (
               <li key={e.id}>
-                <Link href="/events" className="group flex gap-3 py-3">
-                  <span className="flex w-12 shrink-0 flex-col items-center justify-center rounded-md border border-line bg-panel2 py-1.5">
-                    {date ? (
-                      <>
-                        <span className="font-display text-2xl leading-none text-gold-bright">{date.getDate()}</span>
-                        <span className="mt-0.5 text-[10px] tracking-wider text-ink-dim uppercase">
-                          {date.toLocaleDateString("en-GB", { month: "short" })}
-                        </span>
-                      </>
-                    ) : (
-                      <span className="font-display text-sm text-ink-dim">TBC</span>
-                    )}
-                  </span>
+                <Link href={`/events#event-${e.id}`} className="group flex gap-3 py-3">
+                  <EventDate date={e.event_date} />
                   <span className="min-w-0">
                     <span className="font-display block text-base leading-tight text-ink group-hover:text-gold-bright">
                       {e.title}
@@ -291,8 +279,7 @@ function EventsFeed({ events, total }: { events: Tables<"events">[]; total: numb
                   </span>
                 </Link>
               </li>
-            );
-          })}
+          ))}
         </ol>
       )}
     </RailCard>
