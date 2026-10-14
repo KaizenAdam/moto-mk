@@ -101,3 +101,23 @@ export function PlaceIcon({ className = "h-4 w-4" }: IconProps) {
     </svg>
   );
 }
+
+/** Spare parts & accessories. */
+export function WrenchIcon({ className = "h-5 w-5" }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden {...line}>
+      <path d="M14.5 6.5a4 4 0 0 0 5 5L12 19a2.1 2.1 0 0 1-3-3l7.5-7.5a4 4 0 0 0-2-2z" />
+      <path d="M15 4l2.5 2.5" />
+    </svg>
+  );
+}
+
+/** Riding gear. */
+export function HelmetIcon({ className = "h-5 w-5" }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden {...line}>
+      <path d="M4 15a8 8 0 0 1 16-2v4a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2z" />
+      <path d="M12 11h8M9 18v2" />
+    </svg>
+  );
+}
