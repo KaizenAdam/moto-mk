@@ -76,7 +76,7 @@ export default function PhotoManager({
         </div>
       )}
 
-      <PhotoPicker files={files} onChange={setFiles} max={max - photos.length} />
+      <PhotoPicker files={files} onChange={setFiles} max={max - photos.length} coverFirst={photos.length === 0} />
 
       {files.length > 0 && (
         <button

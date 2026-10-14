@@ -14,6 +14,13 @@ import { input as inputClass, label as labelClass, sectionTitle as sectionTitleC
 
 const initialState: CreateListingState = { error: null, listing: null };
 
+const STEPS = [
+  { title: "The bike", hint: "make, model and specs" },
+  { title: "Photos", hint: "the first one is the cover" },
+  { title: "Price & place", hint: "what you want and where it is" },
+  { title: "Contact & check", hint: "how buyers reach you" },
+] as const;
+
 type PreviewData = {
   make: string;
   model: string;
@@ -68,12 +75,49 @@ type Upload =
 export default function SellForm({ profilePhone }: { profilePhone: string | null }) {
   const [state, formAction, pending] = useActionState(createListingAction, initialState);
 
+  const formRef = useRef<HTMLFormElement>(null);
+  const [stepIndex, setStepIndex] = useState(0);
+  // Furthest step reached, so the step bar can jump back but not skip ahead.
+  const [reached, setReached] = useState(0);
+
+  /** First invalid field in a step (browser validation: required, min/max…), if any. */
+  function firstInvalid(i: number) {
+    const fields = formRef.current?.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+      `[data-step="${i}"] input, [data-step="${i}"] select, [data-step="${i}"] textarea`
+    );
+    return [...(fields ?? [])].find((f) => !f.checkValidity()) ?? null;
+  }
+
+  function goTo(i: number) {
+    setStepIndex(i);
+    setReached((r) => Math.max(r, i));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   // Submitting through onSubmit rather than <form action> on purpose: React
   // resets a form after its action runs, which would wipe what the seller
-  // typed whenever validation sends back an error.
+  // typed whenever validation sends back an error. Enter or "Next" on an
+  // earlier step just moves on (after checking that step's fields).
   function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    if (stepIndex < STEPS.length - 1) {
+      const bad = firstInvalid(stepIndex);
+      if (bad) bad.reportValidity();
+      else goTo(stepIndex + 1);
+      return;
+    }
+    // Last step: every step must be valid (the form is noValidate, so the
+    // browser won't stop on a hidden step's field by itself).
+    for (let i = 0; i < STEPS.length; i++) {
+      const bad = firstInvalid(i);
+      if (bad) {
+        setStepIndex(i);
+        requestAnimationFrame(() => bad.reportValidity());
+        return;
+      }
+    }
+    const data = new FormData(form);
     startTransition(() => formAction(data));
   }
   const [photos, setPhotos] = useState<File[]>([]);
@@ -158,166 +202,231 @@ export default function SellForm({ profilePhone }: { profilePhone: string | null
     );
   }
 
+  const step = STEPS[stepIndex];
+  const isLast = stepIndex === STEPS.length - 1;
+
   return (
-    <form onSubmit={submit} className="mx-auto grid max-w-[1100px] grid-cols-1 gap-8 px-5 py-8 md:grid-cols-[1fr_300px]">
+    <form
+      ref={formRef}
+      onSubmit={submit}
+      noValidate
+      className="mx-auto grid max-w-[1100px] grid-cols-1 gap-8 px-5 py-8 md:grid-cols-[1fr_300px]"
+    >
       <div>
+        <ol className="mb-8 grid grid-cols-4 gap-2" aria-label="Steps">
+          {STEPS.map((s, i) => {
+            const done = i < stepIndex;
+            const current = i === stepIndex;
+            return (
+              <li key={s.title}>
+                <button
+                  type="button"
+                  disabled={i > reached}
+                  onClick={() => goTo(i)}
+                  aria-current={current ? "step" : undefined}
+                  className="group w-full text-left disabled:cursor-not-allowed"
+                >
+                  <span
+                    className={`block h-1.5 rounded-full ${current || done ? "bg-gold" : "bg-line"}`}
+                  />
+                  <span
+                    className={`font-display mt-2 block text-xs tracking-wider sm:text-sm ${
+                      current ? "text-gold-bright" : done ? "text-ink group-hover:text-gold-bright" : "text-grey"
+                    }`}
+                  >
+                    <span className="hidden sm:inline">{i + 1}. </span>
+                    {s.title}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+
         {state.error && (
           <p className="mb-4 rounded-md bg-red/20 px-3 py-2 text-sm text-gold-bright">{state.error}</p>
         )}
 
-        <div className="mb-7">
+        {/* Every step stays mounted so one FormData carries all the fields to
+            createListingAction; only the current one is shown. */}
+        <section data-step="0" hidden={stepIndex !== 0}>
           <h2 className={sectionTitleClass}>The bike</h2>
-          <div className="mb-3.5 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+            <div className="mb-3.5 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+              <label className={labelClass}>
+                Make <span className="text-red">*</span>
+                <input
+                  name="make"
+                  required
+                  placeholder="e.g. Yamaha"
+                  className={inputClass}
+                  onChange={(e) => update("make", e.target.value)}
+                />
+              </label>
+              <label className={labelClass}>
+                Model <span className="text-red">*</span>
+                <input
+                  name="model"
+                  required
+                  placeholder="e.g. MT-07"
+                  className={inputClass}
+                  onChange={(e) => update("model", e.target.value)}
+                />
+              </label>
+            </div>
+            <div className="mb-3.5 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+              <label className={labelClass}>
+                Year
+                <input name="year" type="number" min="1970" max={new Date().getFullYear() + 1} placeholder="2020" className={inputClass} />
+              </label>
+              <label className={labelClass}>
+                Engine size (cc)
+                <input
+                  name="engine_cc"
+                  type="number"
+                  min="0"
+                  placeholder="650"
+                  className={inputClass}
+                  onChange={(e) => update("cc", Number(e.target.value))}
+                />
+              </label>
+            </div>
+            <div className="mb-3.5 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+              <label className={labelClass}>
+                Engine type
+                <select
+                  name="engine_type"
+                  defaultValue="4-stroke"
+                  className={inputClass}
+                  onChange={(e) => update("engineType", e.target.value)}
+                >
+                  {ENGINE_TYPES.map((t) => (
+                    <option key={t.value} value={t.value}>
+                      {t.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className={labelClass}>
+                Riding style
+                <select
+                  name="riding_style"
+                  defaultValue="Naked"
+                  className={inputClass}
+                  onChange={(e) => update("style", e.target.value)}
+                >
+                  {RIDING_STYLES.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <label className={`${labelClass} mb-3.5`}>
+              Mileage (km)
+              <input name="mileage_km" type="number" min="0" placeholder="14200" className={inputClass} />
+            </label>
             <label className={labelClass}>
-              Make <span className="text-red">*</span>
-              <input
-                name="make"
-                required
-                placeholder="e.g. Yamaha"
-                className={inputClass}
-                onChange={(e) => update("make", e.target.value)}
+              Description
+              <textarea
+                name="description"
+                rows={5}
+                maxLength={3000}
+                placeholder="Condition, service history, extras, reason for selling…"
+                className={`${inputClass} normal-case`}
               />
             </label>
-            <label className={labelClass}>
-              Model <span className="text-red">*</span>
-              <input
-                name="model"
-                required
-                placeholder="e.g. MT-07"
-                className={inputClass}
-                onChange={(e) => update("model", e.target.value)}
-              />
-            </label>
-          </div>
-          <div className="mb-3.5 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-            <label className={labelClass}>
-              Year
-              <input name="year" type="number" min="1970" max={new Date().getFullYear() + 1} placeholder="2020" className={inputClass} />
-            </label>
-            <label className={labelClass}>
-              Engine size (cc)
-              <input
-                name="engine_cc"
-                type="number"
-                min="0"
-                placeholder="650"
-                className={inputClass}
-                onChange={(e) => update("cc", Number(e.target.value))}
-              />
-            </label>
-          </div>
-          <div className="mb-3.5 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-            <label className={labelClass}>
-              Engine type
-              <select
-                name="engine_type"
-                defaultValue="4-stroke"
-                className={inputClass}
-                onChange={(e) => update("engineType", e.target.value)}
-              >
-                {ENGINE_TYPES.map((t) => (
-                  <option key={t.value} value={t.value}>
-                    {t.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className={labelClass}>
-              Riding style
-              <select
-                name="riding_style"
-                defaultValue="Naked"
-                className={inputClass}
-                onChange={(e) => update("style", e.target.value)}
-              >
-                {RIDING_STYLES.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <label className={`${labelClass} mb-3.5`}>
-            Mileage (km)
-            <input name="mileage_km" type="number" min="0" placeholder="14200" className={inputClass} />
-          </label>
-          <label className={labelClass}>
-            Description
-            <textarea
-              name="description"
-              rows={5}
-              maxLength={3000}
-              placeholder="Condition, service history, extras, reason for selling…"
-              className={`${inputClass} normal-case`}
-            />
-          </label>
-        </div>
+        </section>
 
-        <div className="mb-7">
-          <h2 className={sectionTitleClass}>Price &amp; location</h2>
-          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-            <label className={labelClass}>
-              Price (€) <span className="text-red">*</span>
-              <input
-                name="price_eur"
-                type="number"
-                step="0.01"
-                min="0"
-                required
-                placeholder="6400"
-                className={inputClass}
-                onChange={(e) => update("price", Number(e.target.value))}
-              />
-            </label>
-            <label className={labelClass}>
-              Town
-              <select
-                name="town"
-                defaultValue="Skopje"
-                className={inputClass}
-                onChange={(e) => update("town", e.target.value)}
-              >
-                {TOWNS.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-        </div>
-
-        <div className="mb-7">
-          <h2 className={sectionTitleClass}>Contact</h2>
-          <label className={labelClass}>
-            Phone (WhatsApp) <span className="text-red">*</span>
-            <input
-              name="phone"
-              type="tel"
-              required
-              defaultValue={profilePhone ?? ""}
-              placeholder="070 123 456"
-              className={inputClass}
-            />
-          </label>
-          <p className="mt-1.5 text-xs text-grey">
-            Only shown to signed-in buyers. Saved to your profile for next time.
-          </p>
-        </div>
-
-        <div className="mb-7">
+        <section data-step="1" hidden={stepIndex !== 1}>
           <h2 className={sectionTitleClass}>Photos</h2>
+          <p className="mb-4 text-sm text-ink-dim">
+            Bikes with several clear photos get far more interest. Daylight, the whole bike, both
+            sides, the dash and any marks.
+          </p>
           <PhotoPicker files={photos} onChange={setPhotos} max={MAX_PHOTOS} />
-        </div>
+        </section>
 
-        <button
-          type="submit"
-          disabled={pending}
-          className={`${button("primary", "lg")} w-full py-3.5`}
-        >
-          {pending ? "Submitting…" : "List my bike"}
-        </button>
+        <section data-step="2" hidden={stepIndex !== 2}>
+          <h2 className={sectionTitleClass}>Price &amp; location</h2>
+            <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+              <label className={labelClass}>
+                Price (€) <span className="text-red">*</span>
+                <input
+                  name="price_eur"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  required
+                  placeholder="6400"
+                  className={inputClass}
+                  onChange={(e) => update("price", Number(e.target.value))}
+                />
+              </label>
+              <label className={labelClass}>
+                Town
+                <select
+                  name="town"
+                  defaultValue="Skopje"
+                  className={inputClass}
+                  onChange={(e) => update("town", e.target.value)}
+                >
+                  {TOWNS.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+        </section>
+
+        <section data-step="3" hidden={stepIndex !== 3}>
+          <h2 className={sectionTitleClass}>Contact</h2>
+            <label className={labelClass}>
+              Phone (WhatsApp) <span className="text-red">*</span>
+              <input
+                name="phone"
+                type="tel"
+                required
+                defaultValue={profilePhone ?? ""}
+                placeholder="070 123 456"
+                className={inputClass}
+              />
+            </label>
+            <p className="mt-1.5 text-xs text-grey">
+              Only shown to signed-in buyers. Saved to your profile for next time.
+            </p>
+
+          <h2 className={`${sectionTitleClass} mt-8`}>Check it over</h2>
+          <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+            <dt className="text-grey">Bike</dt>
+            <dd className="text-ink">{[preview.make, preview.model].filter(Boolean).join(" ") || "—"}</dd>
+            <dt className="text-grey">Price</dt>
+            <dd className="text-ink">{preview.price ? formatPrice(preview.price, "EUR").main : "—"}</dd>
+            <dt className="text-grey">Town</dt>
+            <dd className="text-ink">{preview.town}</dd>
+            <dt className="text-grey">Photos</dt>
+            <dd className="text-ink">{photos.length === 0 ? "None — you can add them later" : photos.length}</dd>
+          </dl>
+          <p className="mt-4 text-xs text-grey">
+            A moderator checks every listing before it goes live — usually within a day.
+          </p>
+        </section>
+
+        <div className="mt-8 flex gap-3">
+          {stepIndex > 0 && (
+            <button type="button" onClick={() => goTo(stepIndex - 1)} className={button("outline", "lg")}>
+              ← Back
+            </button>
+          )}
+          <button type="submit" disabled={pending} className={`${button("primary", "lg")} flex-1 py-3.5`}>
+            {isLast ? (pending ? "Submitting…" : "List my bike") : `Next: ${STEPS[stepIndex + 1].title} →`}
+          </button>
+        </div>
+        <p className="mt-2 text-center text-xs text-grey">
+          Step {stepIndex + 1} of {STEPS.length} · {step.hint}
+        </p>
       </div>
 
       <div className="self-start md:sticky md:top-24">
