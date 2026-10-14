@@ -105,6 +105,17 @@ export async function listSimilar(
   return data;
 }
 
+/** How many bikes are live right now (a count only — no rows come back). */
+export async function countActive(supabase: Client) {
+  const { count, error } = await supabase
+    .from("listings")
+    .select("id", { count: "exact", head: true })
+    .eq("status", "active");
+
+  if (error) throw error;
+  return count ?? 0;
+}
+
 /** The newest live bikes, for the home page. */
 export async function listLatest(supabase: Client, limit = 8) {
   const { data, error } = await supabase

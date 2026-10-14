@@ -66,7 +66,15 @@ export default function PhotoGallery({ urls, alt }: { urls: string[]; alt: strin
           small.length === 0 ? "grid-cols-1" : small.length === 1 ? "grid-cols-2" : "grid-cols-[2fr_1fr_1fr] grid-rows-2"
         }`}
       >
-        <MosaicTile url={urls[0]} alt={alt} onClick={() => setOpen(0)} className={small.length > 1 ? "row-span-2" : ""} />
+        <MosaicTile
+          url={urls[0]}
+          alt={alt}
+          onClick={() => setOpen(0)}
+          className={small.length > 1 ? "row-span-2" : ""}
+          // One photo spans the full width: cropping it to fill would cut
+          // most of the bike off, so show all of it on a blurred backdrop.
+          contain={small.length === 0}
+        />
         {small.map((url, i) => (
           <MosaicTile
             key={url}
@@ -93,20 +101,35 @@ function MosaicTile({
   onClick,
   className = "",
   more = 0,
+  contain = false,
 }: {
   url: string;
   alt: string;
   onClick: () => void;
   className?: string;
   more?: number;
+  /** Show the whole photo (letterboxed on a blurred copy of itself) instead of cropping to fill. */
+  contain?: boolean;
 }) {
   return (
     <button type="button" onClick={onClick} className={`group relative min-h-0 overflow-hidden bg-black ${className}`}>
+      {contain && (
+        // eslint-disable-next-line @next/next/no-img-element -- signed URL rotates per request
+        <img
+          src={url}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full scale-110 object-cover opacity-50 blur-2xl"
+          draggable={false}
+        />
+      )}
       {/* eslint-disable-next-line @next/next/no-img-element -- signed URL rotates per request */}
       <img
         src={url}
         alt={alt}
-        className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+        className={`relative h-full w-full transition duration-300 ${
+          contain ? "object-contain" : "object-cover group-hover:scale-[1.03]"
+        }`}
         draggable={false}
       />
       {more > 0 && (

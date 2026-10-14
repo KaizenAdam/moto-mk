@@ -380,11 +380,14 @@ is 8, checked in the server actions.
 
 - **`/` is the landing hub** (Oct 2026; it used to be the browse page,
   as in the static demo). `src/app/page.tsx` fetches,
-  `src/app/_home/HomeView.tsx` renders: hero search, Browse by type
-  (one tile per riding style, newest bike's photo, live count), Latest
-  bikes, a home-banner `AdSlot`, "More than bikes" (Parts & Gear and
-  Rider Forum as Coming soon, next events, service centres), dealers,
-  sell banner. The bikes row is "Latest bikes" until paid featured
+  `src/app/_home/HomeView.tsx` renders it as a dashboard: hero search,
+  then a main column (live stats — bikes, dealers, service centres,
+  events; Browse by type with live counts; Latest bikes; a home-banner
+  `AdSlot`; "More than bikes") beside a right rail (upcoming events
+  feed, dealers, sell card). On phones the rail sits between the bike
+  types and Latest bikes. The grid needs its explicit
+  `grid-cols-[minmax(0,1fr)]` on phones, or the sideways-scrolling bikes
+  row widens the page. The bikes row is "Latest bikes" until paid featured
   listings exist — see `docs/HANDOVER-backend.md`.
 - **`/bikes` is the search page** (`src/app/bikes/page.tsx`).
   `/listings?…` redirects here, keeping its query params, for old links.

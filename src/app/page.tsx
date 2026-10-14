@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
-import { countActiveBySeller, listLatest, listStyleShowcase } from "@/lib/data/listings";
+import { countActive, countActiveBySeller, listLatest, listStyleShowcase } from "@/lib/data/listings";
 import { getCoverPhotos } from "@/lib/data/listingPhotos";
 import { cachedPhotoSigner } from "@/lib/photos/signer";
 import { getOwnProfile } from "@/lib/data/profiles";
@@ -21,9 +21,10 @@ export const metadata: Metadata = {
 export default async function Home() {
   const supabase = await createClient();
 
-  const [styles, latest, profile, saved, dealers, events, centres] = await Promise.all([
+  const [bikeCount, styles, latest, profile, saved, dealers, events, centres] = await Promise.all([
+    countActive(supabase),
     listStyleShowcase(supabase, RIDING_STYLES),
-    listLatest(supabase, 8),
+    listLatest(supabase, 6),
     getOwnProfile(supabase),
     listSaved(supabase),
     listActiveDealers(supabase),
@@ -44,6 +45,7 @@ export default async function Home() {
   return (
     <HomeView
       isLoggedIn={!!profile}
+      stats={{ bikes: bikeCount, dealers: dealers.length, serviceCentres: centres.length, events: events.length }}
       styles={styles.map((s) => ({
         style: s.style,
         count: s.count,
@@ -59,7 +61,7 @@ export default async function Home() {
         photoCount: covers.get(l.id)?.count ?? 0,
         dealerName: dealerNames.get(l.seller_id),
       }))}
-      events={events.slice(0, 3)}
+      events={events.slice(0, 5)}
       serviceCentres={{ count: centres.length, towns: [...new Set(centres.map((c) => c.town))].sort() }}
       dealers={[...dealers]
         .map((d) => ({ slug: d.slug, business_name: d.business_name, town: d.town, stock: stock.get(d.profile_id) ?? 0 }))
