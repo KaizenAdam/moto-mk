@@ -23,21 +23,25 @@ export default async function SiteHeader() {
             width={621}
             height={168}
             alt="Just5Up!"
-            className="h-9 w-auto drop-shadow-[0_0_6px_rgba(212,175,55,0.25)] lg:h-14"
+            className="h-9 w-auto drop-shadow-[0_0_6px_rgba(212,175,55,0.25)] xl:h-14"
           />
         </Link>
 
         {/* Desktop: everything in one row. */}
-        <nav className="hidden items-center gap-6 lg:flex">
+        <nav className="hidden items-center gap-5 xl:flex">
           <NavLinks variant="bar" />
         </nav>
 
-        <div className="flex items-center gap-2.5 lg:gap-3">
-          <div className="hidden items-center gap-3 lg:flex">
+        <div className="flex items-center gap-2.5 xl:gap-3">
+          <div className="hidden items-center gap-3 xl:flex">
             {profile ? (
               <>
-                <Link href="/garage" className="text-sm font-semibold text-ink hover:text-gold-bright">
+                <Link href="/garage" className="text-sm font-semibold whitespace-nowrap text-ink hover:text-gold-bright">
                   My Garage
+                </Link>
+                {/* Featuring is per listing: My Garage has the button on each live bike. */}
+                <Link href="/garage" className="text-sm font-semibold whitespace-nowrap text-gold-bright hover:underline">
+                  Feature a bike
                 </Link>
                 <form action={signOut}>
                   <button type="submit" className={button("outline", "sm")}>
@@ -55,7 +59,7 @@ export default async function SiteHeader() {
             <span className="sm:hidden">+ Sell</span>
             <span className="hidden sm:inline">+ Sell your bike</span>
           </Link>
-          {/* Phones/tablets: the rest lives behind ☰. */}
+          {/* Below 1280px: the rest lives behind ☰. */}
           <MobileMenu isLoggedIn={!!profile} />
         </div>
       </div>

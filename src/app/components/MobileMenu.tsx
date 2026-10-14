@@ -29,7 +29,7 @@ export default function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
         aria-expanded={open}
         aria-controls="mobile-menu"
         aria-label={open ? "Close menu" : "Open menu"}
-        className="flex h-10 w-10 items-center justify-center rounded-md border border-line text-ink lg:hidden"
+        className="flex h-10 w-10 items-center justify-center rounded-md border border-line text-ink xl:hidden"
       >
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
@@ -38,10 +38,10 @@ export default function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
 
       {open && (
         <>
-          <div className="fixed inset-0 top-[65px] z-40 bg-black/60 lg:hidden" onClick={close} aria-hidden />
+          <div className="fixed inset-0 top-[65px] z-40 bg-black/60 xl:hidden" onClick={close} aria-hidden />
           <div
             id="mobile-menu"
-            className="absolute inset-x-0 top-full z-50 border-b border-line bg-[#0e0e11] pb-4 shadow-[0_12px_30px_rgba(0,0,0,0.6)] lg:hidden"
+            className="absolute inset-x-0 top-full z-50 border-b border-line bg-[#0e0e11] pb-4 shadow-[0_12px_30px_rgba(0,0,0,0.6)] xl:hidden"
           >
             <nav className="py-2">
               <NavLinks variant="menu" onNavigate={close} />
@@ -51,6 +51,10 @@ export default function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                 <>
                   <Link href="/garage" onClick={close} className={button("outline", "lg")}>
                     My Garage
+                  </Link>
+                  {/* Featuring is per listing: My Garage has the button on each live bike. */}
+                  <Link href="/garage" onClick={close} className={button("outline", "lg")}>
+                    Feature a bike
                   </Link>
                   <form action={signOut} onSubmit={close}>
                     <button type="submit" className={`${button("outline", "lg")} w-full`}>

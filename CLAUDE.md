@@ -247,9 +247,8 @@ demo state — not test residue to clean up.
   components` in `globals.css`, so utilities like `font-semibold` or
   `normal-case` still override it. Body text stays on the system stack.
 - **Header:** `SiteHeader` + `NavLinks` (current section highlighted) +
-  `MobileMenu` (☰ below `lg`). Nav items live in `NAV_ITEMS` in
-  `NavLinks.tsx`. "Parts & Gear" is out of the nav until it's built (the
-  route still exists).
+  `MobileMenu` (☰ below `xl` — seven items don't fit a 1024px bar). Nav
+  items live in `NAV_ITEMS` in `NavLinks.tsx`.
 - **Toasts:** `toast("Saved")` from any client component
   (`components/Toaster.tsx`, mounted once in the root layout). For
   successes only; errors stay next to what failed.
@@ -396,10 +395,12 @@ is 8, checked in the server actions.
   reintroduce a `max-w-[1280px]` around the grid/filter bar — that was
   tried once during the design pass and had to be reverted. Filters stay
   a top bar (Adam's 25 Aug call), not a sidebar.
-- **Nav:** Buy (`/bikes`), Dealers, Service Centres, Events, with a ☰
-  menu below `lg` (`MobileMenu`). Parts & Gear is still a `ComingSoon`
-  page and out of the nav; the Forum (client's site map, Phase 3 in the
-  quote) only appears as a Coming soon card on the hub.
+- **Nav (Oct 2026, "put everything in for now"):** Home, Buy (`/bikes`),
+  Parts & Gear (still a `ComingSoon` page), Dealers, Service Centres,
+  Events, Advertise — with a ☰ menu below `xl` (`MobileMenu`). Signed-in
+  users also get "Feature a bike" (→ My Garage, where each live listing
+  has the button). The Forum (client's site map, Phase 3 in the quote)
+  only appears as a Coming soon card on the hub.
 - **`/events`** — public read via `listUpcoming` in
   `src/lib/data/events.ts`, which filters to `event_date >= today OR
   event_date IS NULL` (an `.or()` filter, since Postgrest has no single
