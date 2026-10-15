@@ -36,10 +36,11 @@ export default function ListingsGrid({
 
   return (
     <div className="px-6 py-6 pb-14">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2.5">
-        <div className="text-sm text-ink-dim">
-          <b className="text-ink">{total ?? listings.length}</b> motorcycles found
-        </div>
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-2.5">
+        <h2 className="font-display text-2xl font-medium">
+          <span className="text-highlight">{(total ?? listings.length).toLocaleString("en-GB")}</span>{" "}
+          {(total ?? listings.length) === 1 ? "motorcycle" : "motorcycles"}
+        </h2>
         <div className="flex items-center gap-2.5 text-[13px]">
           <CurrencyToggle value={currency} onChange={setCurrency} />
           {sortSelect}
@@ -49,7 +50,7 @@ export default function ListingsGrid({
       {listings.length === 0 ? (
         <EmptyState>No motorcycles match your filters. Try clearing a few.</EmptyState>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {listings.map((listing, i) => (
             <Fragment key={listing.id}>
               <ListingCard

@@ -1,6 +1,7 @@
 "use client";
 
 import { toast } from "@/app/components/Toaster";
+import { ShareIcon } from "@/app/components/icons";
 
 /** The phone's own share sheet where there is one; otherwise copies the link. */
 export default function ShareButton({ url, title }: { url: string; title: string }) {
@@ -22,7 +23,8 @@ export default function ShareButton({ url, title }: { url: string; title: string
   }
 
   return (
-    <button type="button" onClick={share} className="text-sm text-grey hover:text-gold-bright">
+    <button type="button" onClick={share} className="flex items-center gap-1.5 text-sm text-ink-dim hover:text-highlight">
+      <ShareIcon />
       Share
     </button>
   );

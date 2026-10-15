@@ -54,7 +54,7 @@ export default function EventsView({ events }: { events: Event[] }) {
                       rel="noopener noreferrer"
                       className="mt-2 inline-flex items-center gap-1.5 text-sm text-grey hover:text-gold-bright"
                     >
-                      <PinIcon className="h-3.5 w-3.5 fill-gold" />
+                      <PinIcon />
                       {next.location}
                     </a>
                   )}

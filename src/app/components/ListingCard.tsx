@@ -2,10 +2,8 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Tables } from "@/lib/database.types";
 import { formatPrice, type Currency } from "@/lib/constants/listings";
-import { BikeIcon, CameraIcon, EngineIcon, FuelIcon, GaugeIcon, PinIcon } from "@/app/components/icons";
+import { BikeIcon, CameraIcon, EngineIcon, GaugeIcon, PinIcon, StoreIcon, UserIcon } from "@/app/components/icons";
 import SaveButton from "@/app/components/SaveButton";
-import Badge from "@/app/components/Badge";
-import { button } from "@/app/components/ui";
 
 /** One card's worth of data, for pages that list a handful of bikes (home, similar bikes). */
 export type ListingCardData = {
@@ -18,9 +16,10 @@ export type ListingCardData = {
 };
 
 /**
- * A bike in a results grid (Bikesales-style): photo with photo count and
- * save heart, title, big price, a 2×2 spec grid, who's selling and where,
- * and Contact / View details buttons.
+ * A bike in a results grid: photo with photo count and save heart, title,
+ * spec line, the gold price tag (as on the home page), who's selling and
+ * where, and Contact / View bike buttons. Square-cornered, like the rest
+ * of the Oct 2026 look.
  */
 export default function ListingCard({
   listing,
@@ -53,37 +52,36 @@ export default function ListingCard({
 
   return (
     <div
-      className={`flex flex-col overflow-hidden rounded-[10px] border bg-panel transition hover:-translate-y-0.5 hover:shadow-[0_8px_22px_rgba(0,0,0,0.4)] ${
-        featured
-          ? "border-gold shadow-[0_0_0_1px_var(--gold)] hover:border-gold-bright"
-          : "border-line hover:border-gold"
+      className={`group/card flex flex-col bg-panel transition hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(0,0,0,0.5)] ${
+        featured ? "outline-2 outline-highlight outline-solid" : "outline-1 outline-line outline-solid hover:outline-[#4a4a50]"
       }`}
     >
-      <div className="relative aspect-[4/3]">
-        <Link href={href} className="absolute inset-0 block">
+      <div className="relative aspect-[4/3] overflow-hidden bg-panel2">
+        <Link href={href} className="absolute inset-0 block" tabIndex={-1} aria-hidden>
           {photoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element -- signed URL rotates per request, not a next/image candidate
             <img
               src={photoUrl}
-              alt={name}
+              alt=""
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover transition duration-500 group-hover/card:scale-[1.04]"
               draggable={false}
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#26262b] to-[#18181b] text-xs text-grey">
+            <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 bg-gradient-to-br from-[#26262b] to-[#18181b] text-xs text-grey">
+              <CameraIcon className="h-6 w-6" />
               No photo yet
             </div>
           )}
         </Link>
         {featured && (
-          <div className="absolute top-2.5 left-2.5 z-10">
-            <Badge>Featured</Badge>
-          </div>
+          <span className="font-display absolute top-0 left-0 z-10 bg-highlight px-2.5 py-1 text-xs tracking-wider text-[#111]">
+            Featured
+          </span>
         )}
         {photoCount > 0 && (
-          <span className="pointer-events-none absolute bottom-2.5 left-2.5 z-10 flex items-center gap-1 rounded bg-black/70 px-1.5 py-0.5 text-[11px] text-ink">
+          <span className="pointer-events-none absolute bottom-2.5 left-2.5 z-10 flex items-center gap-1 bg-black/75 px-1.5 py-0.5 text-[11px] font-semibold text-white">
             <CameraIcon />
             {photoCount}
           </span>
@@ -93,30 +91,34 @@ export default function ListingCard({
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col px-3.5 pt-3 pb-3.5">
-        <Link href={href} className="font-display line-clamp-2 text-[17px] font-semibold text-ink hover:text-gold-bright">
+      <div className="flex flex-1 flex-col px-4 pt-3.5 pb-4">
+        <Link href={href} className="font-display line-clamp-2 text-[19px] leading-tight font-medium text-ink hover:text-highlight">
           {name}
         </Link>
-        <div className="mt-1">
-          <span className="font-display text-2xl text-gold-bright">{price.main}</span>
-          <span className="ml-1.5 text-[11px] text-grey">{price.alt}</span>
-        </div>
 
-        <div className="my-3 grid grid-cols-2 gap-x-3 gap-y-1.5 border-y border-line py-2.5 text-xs text-ink-dim">
-          {listing.riding_style && <Spec icon={<BikeIcon />}>{listing.riding_style}</Spec>}
-          {listing.engine_cc != null && <Spec icon={<EngineIcon />}>{listing.engine_cc.toLocaleString("en-GB")} cc</Spec>}
+        <div className="mt-2 flex flex-wrap gap-x-3.5 gap-y-1 text-[13px] text-ink-dim">
+          {listing.engine_cc != null && <Spec icon={<EngineIcon />}>{listing.engine_cc.toLocaleString("en-GB")}cc</Spec>}
           {listing.mileage_km != null && <Spec icon={<GaugeIcon />}>{listing.mileage_km.toLocaleString("en-GB")} km</Spec>}
-          {listing.engine_type && <Spec icon={<FuelIcon />}>{listing.engine_type}</Spec>}
+          {listing.riding_style && <Spec icon={<BikeIcon />}>{listing.riding_style}</Spec>}
         </div>
 
-        <div className="mb-3 flex items-center gap-1.5 text-xs text-grey">
-          <span className="truncate">
+        <div className="mt-3 flex items-baseline gap-2">
+          <span className="font-display bg-highlight px-2.5 py-0.5 text-[22px] font-medium text-[#111]">{price.main}</span>
+          <span className="text-[11px] text-grey">{price.alt}</span>
+        </div>
+
+        <div className="mt-3.5 mb-4 flex items-center gap-2 border-t border-line pt-3 text-xs text-grey">
+          <span className="flex min-w-0 items-center gap-1.5">
             {dealerName ? (
               <>
-                Dealer · <span className="text-gold-bright">{dealerName}</span>
+                <StoreIcon className="h-4 w-4 shrink-0 text-highlight" />
+                <span className="truncate text-ink">{dealerName}</span>
               </>
             ) : (
-              "Private seller"
+              <>
+                <UserIcon className="h-4 w-4 shrink-0" />
+                Private seller
+              </>
             )}
           </span>
           {listing.town && (
@@ -128,11 +130,17 @@ export default function ListingCard({
         </div>
 
         <div className="mt-auto grid grid-cols-2 gap-2">
-          <Link href={`${href}#contact`} className={button("outline", "sm")}>
+          <Link
+            href={`${href}#contact`}
+            className="font-display flex items-center justify-center border-2 border-red py-1.5 text-[13px] font-medium tracking-[.06em] text-white transition hover:bg-red"
+          >
             Contact
           </Link>
-          <Link href={href} className={button("primary", "sm")}>
-            View details
+          <Link
+            href={href}
+            className="font-display flex items-center justify-center bg-highlight py-1.5 text-[13px] font-medium tracking-[.06em] text-[#111] transition hover:brightness-110"
+          >
+            View bike &gt;&gt;&gt;
           </Link>
         </div>
       </div>
@@ -142,8 +150,8 @@ export default function ListingCard({
 
 function Spec({ icon, children }: { icon: ReactNode; children: ReactNode }) {
   return (
-    <span className="flex min-w-0 items-center gap-1.5">
-      <span className="shrink-0 text-gold">{icon}</span>
+    <span className="flex min-w-0 items-center gap-1">
+      <span className="shrink-0 text-highlight">{icon}</span>
       <span className="truncate">{children}</span>
     </span>
   );

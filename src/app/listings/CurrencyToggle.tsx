@@ -15,20 +15,22 @@ export default function CurrencyToggle({
   value: Currency;
   onChange: (currency: Currency) => void;
 }) {
-  const base = "px-3 py-1.5 text-xs font-bold";
+  const base = "font-display px-3 py-2 text-xs font-medium tracking-wider";
   return (
-    <div className="flex overflow-hidden rounded-full border border-line bg-panel2">
+    <div className="flex border border-line bg-panel2" role="group" aria-label="Currency">
       <button
         type="button"
         onClick={() => onChange("EUR")}
-        className={`${base} ${value === "EUR" ? "bg-red text-white" : "text-ink-dim"}`}
+        aria-pressed={value === "EUR"}
+        className={`${base} ${value === "EUR" ? "bg-white text-[#111]" : "text-ink-dim hover:text-white"}`}
       >
         EUR €
       </button>
       <button
         type="button"
         onClick={() => onChange("MKD")}
-        className={`${base} ${value === "MKD" ? "bg-red text-white" : "text-ink-dim"}`}
+        aria-pressed={value === "MKD"}
+        className={`${base} ${value === "MKD" ? "bg-white text-[#111]" : "text-ink-dim hover:text-white"}`}
       >
         MKD
       </button>

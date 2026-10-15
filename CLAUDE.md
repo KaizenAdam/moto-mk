@@ -237,11 +237,17 @@ demo state — not test residue to clean up.
   position: a real ad when given one, otherwise the house "Your ad here"
   card — never an invented advertiser). Reach for these before writing
   the markup by hand.
+- **Icons: Tabler** (`@tabler/icons-react`, pinned), wrapped in
+  `src/app/components/icons.tsx` under site names (`PinIcon`,
+  `EngineIcon`, `HeartIcon`…). Import from there; never hand-draw an SVG
+  icon or use a text glyph (♡ × ‹) — add the Tabler one to that file.
 - **`Shard`** — the brand's one decorative shape: an irregular torn
   shard (`double`, `torn`, `bent`, `sliver`), absolutely positioned and
   `aria-hidden`. One per section at most; Billy found several busy.
-- **`ListingCard`** (Bikesales-style): photo count, spec icons
-  (`icons.tsx`), dealer or private seller, Contact / View details. Its
+  `PageHero shard` adds one behind a hero (the search page uses it).
+- **`ListingCard`**: square-cornered, photo count, spec line (cc, km,
+  style), the gold `highlight` price tag, dealer or private seller,
+  Contact (red outline) / View bike (gold). Its
   `featured` prop draws the paid-placement frame — **only pass it for a
   listing that is really featured**; the live site is client-facing.
 - **Type:** headings, buttons, badges, nav and prices use `.font-display`
@@ -395,7 +401,8 @@ is 8, checked in the server actions.
   attention. The stats row and dealers rail of the old dashboard were
   dropped for the cleaner design. "Latest bikes" becomes "Featured bikes"
   only once paid featured listings exist — see `docs/HANDOVER-backend.md`.
-- **`/bikes` is the search page** (`src/app/bikes/page.tsx`).
+- **`/bikes` is the search page** (`page.tsx` fetches, `BikesView.tsx`
+  renders). Keep its glow hero (`heroBackground`) — the client likes it.
   `/listings?…` redirects here, keeping its query params, for old links.
   The filter bar and results grid are intentionally **not** width-capped
   (no `max-w-*` wrapper) — only the header and hero text are, matching

@@ -78,7 +78,7 @@ export default async function DealerStorefrontPage({ params }: Props) {
             </div>
             {(dealer.address || dealer.town) && (
               <div className="mb-3 flex items-center gap-1.5 text-sm text-grey">
-                <PinIcon className="h-3.5 w-3.5 fill-gold" />
+                <PinIcon />
                 {mapUrl ? (
                   <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="hover:text-gold-bright">
                     {dealer.address ?? dealer.town}

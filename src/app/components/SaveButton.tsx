@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { toggleSavedAction } from "@/app/actions/savedListings";
 import { toast } from "./Toaster";
+import { HeartFilledIcon, HeartIcon } from "./icons";
 
 export default function SaveButton({
   listingId,
@@ -21,15 +22,16 @@ export default function SaveButton({
   const [pending, startTransition] = useTransition();
 
   const badgeClass =
-    "flex h-[30px] w-[30px] items-center justify-center rounded-full bg-black/50 text-base transition hover:bg-black/70 hover:scale-105";
+    "flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-sm transition hover:scale-105 hover:bg-black/80";
 
   if (!isLoggedIn) {
     return variant === "badge" ? (
-      <Link href="/login" className={badgeClass} title="Log in to save">
-        ♡
+      <Link href="/login" className={badgeClass} title="Log in to save" aria-label="Log in to save">
+        <HeartIcon className="h-[18px] w-[18px]" />
       </Link>
     ) : (
-      <Link href="/login" className="text-sm text-grey hover:text-gold-bright">
+      <Link href="/login" className="flex items-center gap-1.5 text-sm text-ink-dim hover:text-highlight">
+        <HeartIcon />
         Log in to save
       </Link>
     );
@@ -54,9 +56,11 @@ export default function SaveButton({
         type="button"
         disabled={pending}
         onClick={toggle}
-        className={`${badgeClass} ${saved ? "bg-red text-white hover:bg-red" : ""} disabled:opacity-60`}
+        aria-label={saved ? "Remove from saved" : "Save"}
+        aria-pressed={saved}
+        className={`${badgeClass} ${saved ? "bg-red hover:bg-red" : ""} disabled:opacity-60`}
       >
-        {saved ? "♥" : "♡"}
+        {saved ? <HeartFilledIcon className="h-[18px] w-[18px]" /> : <HeartIcon className="h-[18px] w-[18px]" />}
       </button>
     );
   }
@@ -66,9 +70,11 @@ export default function SaveButton({
       type="button"
       disabled={pending}
       onClick={toggle}
-      className="text-sm text-ink-dim hover:text-gold-bright disabled:opacity-60"
+      aria-pressed={saved}
+      className="flex items-center gap-1.5 text-sm text-ink-dim hover:text-highlight disabled:opacity-60"
     >
-      {saved ? "♥ Saved" : "♡ Save"}
+      {saved ? <HeartFilledIcon className="h-4 w-4 text-red" /> : <HeartIcon />}
+      {saved ? "Saved" : "Save"}
     </button>
   );
 }

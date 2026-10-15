@@ -5,6 +5,7 @@ import Link from "next/link";
 import { signOut } from "@/app/actions/auth";
 import NavLinks from "./NavLinks";
 import { button } from "./ui";
+import { CloseIcon, MenuIcon } from "./icons";
 
 /**
  * Phone-size menu: a ☰ button that drops the navigation down under the
@@ -29,11 +30,9 @@ export default function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
         aria-expanded={open}
         aria-controls="mobile-menu"
         aria-label={open ? "Close menu" : "Open menu"}
-        className="flex h-10 w-10 items-center justify-center rounded-md border border-line text-ink xl:hidden"
+        className="flex h-10 w-10 items-center justify-center border border-line text-ink xl:hidden"
       >
-        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-          {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
-        </svg>
+        {open ? <CloseIcon /> : <MenuIcon />}
       </button>
 
       {open && (

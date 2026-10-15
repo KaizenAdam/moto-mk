@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowLeftIcon, ArrowRightIcon } from "./icons";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -28,12 +29,13 @@ export default function Pagination({
   const pages = new Set([1, pageCount, page - 1, page, page + 1].filter((p) => p >= 1 && p <= pageCount));
   const sorted = [...pages].sort((a, b) => a - b);
 
-  const cell = "flex h-10 min-w-10 items-center justify-center rounded-md border px-3 text-sm font-bold";
+  const cell = "font-display flex h-10 min-w-10 items-center justify-center gap-1.5 border px-3 text-sm font-medium";
   return (
     <nav aria-label="Pages" className="mt-8 flex flex-wrap items-center justify-center gap-2">
       {page > 1 && (
-        <Link href={hrefFor(searchParams, page - 1)} aria-label="Previous page" className={`${cell} border-line text-ink hover:border-gold`}>
-          ←<span className="hidden sm:inline">&nbsp;Prev</span>
+        <Link href={hrefFor(searchParams, page - 1)} aria-label="Previous page" className={`${cell} border-line text-ink hover:border-highlight`}>
+          <ArrowLeftIcon />
+          <span className="hidden sm:inline">Prev</span>
         </Link>
       )}
       {sorted.map((p, i) => (
@@ -42,15 +44,16 @@ export default function Pagination({
           <Link
             href={hrefFor(searchParams, p)}
             aria-current={p === page ? "page" : undefined}
-            className={`${cell} ${p === page ? "border-gold bg-gold text-[#141414]" : "border-line text-ink hover:border-gold"}`}
+            className={`${cell} ${p === page ? "border-highlight bg-highlight text-[#111]" : "border-line text-ink hover:border-highlight"}`}
           >
             {p}
           </Link>
         </span>
       ))}
       {page < pageCount && (
-        <Link href={hrefFor(searchParams, page + 1)} aria-label="Next page" className={`${cell} border-line text-ink hover:border-gold`}>
-          <span className="hidden sm:inline">Next&nbsp;</span>→
+        <Link href={hrefFor(searchParams, page + 1)} aria-label="Next page" className={`${cell} border-line text-ink hover:border-highlight`}>
+          <span className="hidden sm:inline">Next</span>
+          <ArrowRightIcon />
         </Link>
       )}
     </nav>

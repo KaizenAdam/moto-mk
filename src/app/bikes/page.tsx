@@ -1,22 +1,16 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import {
-  BROWSE_PAGE_SIZE,
   listActiveFiltered,
   listFilterOptions,
   type ListingFilters,
 } from "@/lib/data/listings";
-import Pagination from "@/app/components/Pagination";
 import { listSaved } from "@/lib/data/savedListings";
 import { getOwnProfile } from "@/lib/data/profiles";
 import { getCoverPhotos } from "@/lib/data/listingPhotos";
 import { cachedPhotoSigner } from "@/lib/photos/signer";
 import { listActiveDealers } from "@/lib/data/dealers";
-import ListingsFilterBar from "@/app/listings/ListingsFilterBar";
-import SortSelect from "@/app/listings/SortSelect";
-import ListingsGrid from "@/app/components/ListingsGrid";
-import { button } from "@/app/components/ui";
-import PageHero from "@/app/components/PageHero";
+import BikesView from "./BikesView";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -82,56 +76,17 @@ export default async function BikesPage({
   );
 
   return (
-    <main>
-      <PageHero
-        size="lg"
-        title={
-          <>
-            Find your next ride in <em className="not-italic text-gold">North Macedonia</em>
-          </>
-        }
-        intro="Motorcycles, gear and parts — from riders and trusted dealers across Skopje, Ohrid, Bitola and beyond."
-      >
-          <form action="/bikes" method="GET" className="flex gap-2.5 rounded-lg border border-line bg-panel p-2">
-            <input
-              type="text"
-              name="search"
-              defaultValue={filters.search ?? ""}
-              placeholder="Search make, model, e.g. Yamaha R6…"
-              className="flex-1 bg-transparent px-2.5 py-2 text-[15px] text-ink outline-none placeholder:text-[#6f6f76]"
-            />
-            <button
-              type="submit"
-              className={button("primary")}
-            >
-              Search
-            </button>
-          </form>
-      </PageHero>
-
-      <section className="border-b border-line bg-panel">
-        <div className="px-6 py-3.5">
-          <ListingsFilterBar makes={filterOptions.makes} towns={filterOptions.towns} current={sp} />
-        </div>
-      </section>
-
-      <ListingsGrid
-        total={total}
-        showAd
-        listings={listings}
-        savedIds={saved.map((s) => s.listing_id)}
-        isLoggedIn={!!profile}
-        photos={Object.fromEntries(covers)}
-        sortSelect={<SortSelect current={filters.sort ?? "newest"} searchParams={sp} />}
-        dealerNames={Object.fromEntries(dealers.map((d) => [d.profile_id, d.business_name]))}
-      />
-      <div className="-mt-10 px-6 pb-14">
-        <Pagination
-          page={filters.page ?? 1}
-          pageCount={Math.ceil(total / BROWSE_PAGE_SIZE)}
-          searchParams={sp}
-        />
-      </div>
-    </main>
+    <BikesView
+      filters={filters}
+      searchParams={sp}
+      listings={listings}
+      total={total}
+      makes={filterOptions.makes}
+      towns={filterOptions.towns}
+      savedIds={saved.map((s) => s.listing_id)}
+      isLoggedIn={!!profile}
+      photos={Object.fromEntries(covers)}
+      dealerNames={Object.fromEntries(dealers.map((d) => [d.profile_id, d.business_name]))}
+    />
   );
 }

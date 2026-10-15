@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { button } from "./ui";
 
 const columns = [
   {
@@ -38,17 +37,20 @@ export default function SiteFooter() {
           <p className="mb-4 max-w-xs text-sm text-ink-dim">
             North Macedonia&rsquo;s motorcycle marketplace — bikes from riders and verified dealers.
           </p>
-          <Link href="/sell" className={button("primary", "sm")}>
-            + List your bike free
+          <Link
+            href="/sell"
+            className="font-display inline-block bg-highlight px-4 py-2 text-sm font-semibold tracking-[.06em] text-[#111] transition hover:brightness-110"
+          >
+            List your bike free &gt;&gt;&gt;
           </Link>
         </div>
         {columns.map((col) => (
           <div key={col.title}>
-            <p className="font-display mb-3 text-sm font-semibold tracking-wider text-gold">{col.title}</p>
+            <p className="font-display mb-3 text-sm font-semibold tracking-wider text-highlight">{col.title}</p>
             <ul className="space-y-2">
               {col.links.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-sm text-ink-dim hover:text-gold-bright">
+                  <Link href={l.href} className="text-sm text-ink-dim hover:text-highlight">
                     {l.label}
                   </Link>
                 </li>

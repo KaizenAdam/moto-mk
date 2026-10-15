@@ -11,7 +11,8 @@ export default function SortSelect({ current, searchParams }: { current: string;
     <select
       value={current}
       onChange={(e) => router.push(`${pathname}?${withParam(searchParams, "sort", e.target.value)}`)}
-      className="rounded-md border border-line bg-panel2 px-2 py-2 text-[13px] text-ink outline-none focus:border-gold"
+      aria-label="Sort"
+      className="border border-line bg-panel2 py-2 pr-2 pl-3 text-[13px] text-ink outline-none focus:border-highlight"
     >
       <option value="newest">Newest first</option>
       <option value="price_low">Price: low to high</option>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CameraIcon } from "@/app/components/icons";
+import { CameraIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "@/app/components/icons";
 
 /**
  * Listing photos, Auto Trader-style: on desktop a mosaic (one big photo,
@@ -16,7 +16,8 @@ export default function PhotoGallery({ urls, alt }: { urls: string[]; alt: strin
 
   if (urls.length === 0) {
     return (
-      <div className="flex aspect-video w-full items-center justify-center rounded-[10px] bg-gradient-to-br from-[#26262b] to-[#18181b] text-sm text-grey lg:aspect-auto lg:h-[460px]">
+      <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-[#26262b] to-[#18181b] text-sm text-grey lg:aspect-auto lg:h-[460px]">
+        <CameraIcon className="h-8 w-8" />
         No photos yet
       </div>
     );
@@ -27,7 +28,7 @@ export default function PhotoGallery({ urls, alt }: { urls: string[]; alt: strin
     <button
       type="button"
       onClick={() => setOpen(0)}
-      className="font-display absolute bottom-3 left-3 flex items-center gap-1.5 rounded-md bg-black/75 px-3 py-1.5 text-sm font-semibold tracking-wider text-ink hover:bg-black"
+      className="font-display absolute bottom-3 left-3 flex items-center gap-1.5 bg-black/80 px-3 py-2 text-sm font-medium tracking-wider text-white transition hover:bg-highlight hover:text-[#111]"
     >
       <CameraIcon className="h-4 w-4" />
       Gallery ({urls.length})
@@ -38,7 +39,7 @@ export default function PhotoGallery({ urls, alt }: { urls: string[]; alt: strin
     <>
       {/* Phones and tablets: one photo at a time. */}
       <div
-        className="relative aspect-[4/3] overflow-hidden bg-black sm:rounded-[10px] lg:hidden"
+        className="relative aspect-[4/3] overflow-hidden bg-black lg:hidden"
         onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
         onTouchEnd={(e) => {
           if (touchX.current == null) return;
@@ -53,7 +54,7 @@ export default function PhotoGallery({ urls, alt }: { urls: string[]; alt: strin
           <img src={urls[mobileIndex]} alt={alt} className="h-full w-full object-cover" draggable={false} />
         </button>
         {urls.length > 1 && (
-          <span className="absolute right-3 bottom-3 rounded bg-black/75 px-2 py-0.5 text-xs text-ink">
+          <span className="absolute right-3 bottom-3 bg-black/80 px-2 py-1 text-xs font-semibold text-white">
             {mobileIndex + 1} / {urls.length}
           </span>
         )}
@@ -62,7 +63,7 @@ export default function PhotoGallery({ urls, alt }: { urls: string[]; alt: strin
 
       {/* Desktop: mosaic. */}
       <div
-        className={`relative hidden h-[460px] gap-2 overflow-hidden rounded-[10px] lg:grid ${
+        className={`relative hidden h-[480px] gap-1.5 overflow-hidden lg:grid ${
           small.length === 0 ? "grid-cols-1" : small.length === 1 ? "grid-cols-2" : "grid-cols-[2fr_1fr_1fr] grid-rows-2"
         }`}
       >
@@ -163,7 +164,7 @@ function Lightbox({ urls, alt, start, onClose }: { urls: string[]; alt: string; 
   }, [go, onClose]);
 
   const arrow =
-    "absolute top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-panel2/80 text-2xl text-ink hover:bg-panel2 hover:text-gold-bright";
+    "absolute top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center bg-black/70 text-ink hover:bg-highlight hover:text-[#111]";
 
   return (
     <div role="dialog" aria-modal="true" aria-label="Photo gallery" className="fixed inset-0 z-[60] flex flex-col bg-black/95">
@@ -171,8 +172,8 @@ function Lightbox({ urls, alt, start, onClose }: { urls: string[]; alt: string; 
         <span>
           {index + 1} / {urls.length}
         </span>
-        <button type="button" onClick={onClose} className="text-3xl leading-none text-ink hover:text-gold-bright" aria-label="Close gallery">
-          ×
+        <button type="button" onClick={onClose} className="flex h-10 w-10 items-center justify-center text-ink hover:text-highlight" aria-label="Close gallery">
+          <CloseIcon className="h-6 w-6" />
         </button>
       </div>
       <div
@@ -190,10 +191,10 @@ function Lightbox({ urls, alt, start, onClose }: { urls: string[]; alt: string; 
         {urls.length > 1 && (
           <>
             <button type="button" onClick={() => go(-1)} className={`${arrow} left-3`} aria-label="Previous photo">
-              ‹
+              <ChevronLeftIcon />
             </button>
             <button type="button" onClick={() => go(1)} className={`${arrow} right-3`} aria-label="Next photo">
-              ›
+              <ChevronRightIcon />
             </button>
           </>
         )}
@@ -206,8 +207,8 @@ function Lightbox({ urls, alt, start, onClose }: { urls: string[]; alt: string; 
               type="button"
               onClick={() => setIndex(i)}
               aria-label={`Photo ${i + 1}`}
-              className={`h-14 w-20 shrink-0 overflow-hidden rounded border-2 ${
-                i === index ? "border-gold" : "border-transparent opacity-60 hover:opacity-100"
+              className={`h-14 w-20 shrink-0 overflow-hidden border-2 ${
+                i === index ? "border-highlight" : "border-transparent opacity-60 hover:opacity-100"
               }`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element -- signed URL */}
