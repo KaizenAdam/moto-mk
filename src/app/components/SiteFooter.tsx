@@ -30,7 +30,7 @@ const columns = [
 
 export default function SiteFooter() {
   return (
-    <footer className="border-t border-line bg-[#0e0e11]">
+    <footer className="bg-[#1a1a1c]">
       <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-8 px-5 py-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
         <div className="col-span-2 md:col-span-1">
           {/* eslint-disable-next-line @next/next/no-img-element -- pre-sized PNG wordmark */}

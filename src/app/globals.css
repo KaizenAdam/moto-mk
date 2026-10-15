@@ -7,6 +7,8 @@
   --line: #2a2a2f;
   --gold: #d4af37;
   --gold-bright: #f2cf5b;
+  /* Flat, louder gold for highlight blocks (home page prices, "next ride"). */
+  --highlight: #f2c230;
   --red: #c1272d;
   --grey: #8a8a92;
   --text: #f0eee8;
@@ -20,6 +22,7 @@
   --color-line: var(--line);
   --color-gold: var(--gold);
   --color-gold-bright: var(--gold-bright);
+  --color-highlight: var(--highlight);
   --color-red: var(--red);
   --color-grey: var(--grey);
   --color-ink: var(--text);
@@ -44,6 +47,17 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.01em;
     line-height: 1.1;
+  }
+}
+
+/* Home hero photo (src/app/_home/HomeView.tsx): full-bleed and faint on
+   phones; from lg, the right 62% with a torn left edge. */
+@media (min-width: 64rem) {
+  .j5-hero-photo.j5-hero-photo {
+    left: auto;
+    width: 62%;
+    opacity: 1;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 12% 100%, 4% 77%, 14% 61%, 1% 44%, 11% 27%, 6% 12%);
   }
 }
 

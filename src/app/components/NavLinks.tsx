@@ -39,8 +39,8 @@ export default function NavLinks({
         aria-current={active ? "page" : undefined}
         className={
           variant === "bar"
-            ? `font-display whitespace-nowrap border-b-2 pb-1.5 text-[15px] font-medium tracking-wider transition hover:border-gold hover:text-gold-bright ${
-                active ? "border-gold text-gold-bright" : "border-transparent text-ink-dim"
+            ? `font-display whitespace-nowrap pb-1 text-[15px] font-normal tracking-[.06em] transition hover:text-white ${
+                active ? "text-white shadow-[inset_0_-3px_0_var(--highlight)]" : "text-[#9a988f]"
               }`
             : `font-display block border-l-2 px-4 py-3 text-lg font-medium tracking-wider ${
                 active ? "border-gold bg-panel2 text-gold-bright" : "border-transparent text-ink"

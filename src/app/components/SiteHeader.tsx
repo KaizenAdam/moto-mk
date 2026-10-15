@@ -14,7 +14,7 @@ export default async function SiteHeader() {
   const profile = await getOwnProfile(supabase).catch(() => null);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-gradient-to-b from-[#111] to-black">
+    <header className="sticky top-0 z-50 border-b border-[#1c1c1e] bg-[#0a0a0a]">
       <div className="relative mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-4 py-3 sm:px-5">
         <Link href="/" className="flex shrink-0 items-center" aria-label="Just5Up! home">
           {/* eslint-disable-next-line @next/next/no-img-element -- pre-sized PNG wordmark (public/brand), no next/image needed */}
@@ -23,7 +23,7 @@ export default async function SiteHeader() {
             width={621}
             height={168}
             alt="Just5Up!"
-            className="h-9 w-auto drop-shadow-[0_0_6px_rgba(212,175,55,0.25)] xl:h-14"
+            className="h-9 w-auto xl:h-10"
           />
         </Link>
 
@@ -50,14 +50,20 @@ export default async function SiteHeader() {
                 </form>
               </>
             ) : (
-              <Link href="/login" className={button("outline")}>
+              <Link
+                href="/login"
+                className="font-display border-2 border-red px-4 py-2 text-sm font-semibold tracking-[.06em] text-white transition hover:bg-red"
+              >
                 Log in
               </Link>
             )}
           </div>
-          <Link href="/sell" className={button("primary")}>
-            <span className="sm:hidden">+ Sell</span>
-            <span className="hidden sm:inline">+ Sell your bike</span>
+          <Link
+            href="/sell"
+            className="font-display bg-highlight px-3.5 py-2.5 text-sm font-semibold tracking-[.06em] whitespace-nowrap text-[#111] transition hover:brightness-110 sm:px-[18px]"
+          >
+            <span className="sm:hidden">Sell &gt;&gt;&gt;</span>
+            <span className="hidden sm:inline">Sell your bike &gt;&gt;&gt;</span>
           </Link>
           {/* Below 1280px: the rest lives behind ☰. */}
           <MobileMenu isLoggedIn={!!profile} />

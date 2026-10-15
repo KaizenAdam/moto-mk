@@ -237,6 +237,9 @@ demo state — not test residue to clean up.
   position: a real ad when given one, otherwise the house "Your ad here"
   card — never an invented advertiser). Reach for these before writing
   the markup by hand.
+- **`Shard`** — the brand's one decorative shape: an irregular torn
+  shard (`double`, `torn`, `bent`, `sliver`), absolutely positioned and
+  `aria-hidden`. One per section at most; Billy found several busy.
 - **`ListingCard`** (Bikesales-style): photo count, spec icons
   (`icons.tsx`), dealer or private seller, Contact / View details. Its
   `featured` prop draws the paid-placement frame — **only pass it for a
@@ -378,17 +381,20 @@ is 8, checked in the server actions.
 
 ## Pages
 
-- **`/` is the landing hub** (Oct 2026; it used to be the browse page,
-  as in the static demo). `src/app/page.tsx` fetches,
-  `src/app/_home/HomeView.tsx` renders it as a dashboard: hero search,
-  then a main column (live stats — bikes, dealers, service centres,
-  events; Browse by type with live counts; Latest bikes; a home-banner
-  `AdSlot`; "More than bikes") beside a right rail (upcoming events
-  feed, dealers, sell card). On phones the rail sits between the bike
-  types and Latest bikes. The grid needs its explicit
-  `grid-cols-[minmax(0,1fr)]` on phones, or the sideways-scrolling bikes
-  row widens the page. The bikes row is "Latest bikes" until paid featured
-  listings exist — see `docs/HANDOVER-backend.md`.
+- **`/` is the landing page** (R3 · Combo, picked by Billy from the
+  design canvas, 15 Oct 2026). `src/app/page.tsx` fetches,
+  `src/app/_home/HomeView.tsx` renders: a black-and-white hero photo
+  (`public/brand/hero-bike.jpg`, torn left edge from `lg` via
+  `.j5-hero-photo` in `globals.css`, a faint backdrop on phones) with
+  search; angled "Browse by type" tiles with live counts; Latest bikes
+  (4, "See all {total}"); the `home-banner` `AdSlot` (the advertise page
+  sells it, so keep it); a full-width red band with up to 3 upcoming
+  events and "Keep it rolling" (service centres, Parts & gear, forum);
+  a gold "Sell your bike today" banner. Colour jobs: flat `highlight`
+  gold (`#f2c230`) for prices and calls to buy/sell, red for riding and
+  attention. The stats row and dealers rail of the old dashboard were
+  dropped for the cleaner design. "Latest bikes" becomes "Featured bikes"
+  only once paid featured listings exist — see `docs/HANDOVER-backend.md`.
 - **`/bikes` is the search page** (`src/app/bikes/page.tsx`).
   `/listings?…` redirects here, keeping its query params, for old links.
   The filter bar and results grid are intentionally **not** width-capped
