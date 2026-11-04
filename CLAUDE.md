@@ -255,10 +255,14 @@ demo state — not test residue to clean up.
   `RedBand`, `GoldBanner`, `blackButton`. Events, Dealers and Parts &
   Gear use them (Nov 2026); Billy wants the red bands / gold blocks /
   shards that break up the black on more pages, not just the home page.
-  **Every hero and band gets its own shard** (`shard` prop: a shape from
-  `Shard.tsx` — double, torn, bent, sliver, crack, fang, claw — plus its
-  own placement and tint). Billy flagged repeating the same one; check
-  which shapes nearby pages use before picking.
+  **Every hero and band gets its own shard** (`shard` prop), but **in the
+  home page's style**: Billy's favourites are the home page's `double`
+  chevrons (red band, sell banner) and the `bent` shard on the events
+  "Got an event?" banner. Vary them by placement, size, rotation, tint or
+  mirroring (`-scale-x-100`), not by inventing new shapes. He rejected a
+  lightning bolt (removed) and claw slashes as heroes (`claw` survives
+  only on Parts & Gear's gold banner, which he's happy with). Let a
+  shard run off the section's edge rather than end inside it.
 - **`Shard`** — the brand's one decorative shape: an irregular torn
   shard (`double`, `torn`, `bent`, `sliver`), absolutely positioned and
   `aria-hidden`. One per section at most; Billy found several busy.

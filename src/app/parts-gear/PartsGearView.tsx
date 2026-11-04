@@ -20,7 +20,7 @@ export default function PartsGearView() {
   return (
     <main className="pb-16">
       <BlockHero
-        shard={{ shape: "fang", className: "top-0 right-[-80px] h-[90%] w-[340px] bg-red/[.24] sm:right-[3%] sm:w-[480px]" }}
+        shard={{ shape: "fang", className: "top-0 right-[-80px] h-[140%] w-[340px] bg-red/[.24] sm:right-[3%] sm:w-[480px]" }}
         title={
           <>
             Parts &amp;
@@ -101,7 +101,7 @@ export default function PartsGearView() {
 
       <RedBand
         className="mt-16"
-        shard={{ shape: "crack", className: "top-[-40px] right-[-40px] h-[130%] w-[300px] rotate-[12deg] bg-black/[.16] sm:right-[6%]" }}
+        shard={{ shape: "double", className: "top-[10%] right-[-120px] h-[110%] w-[420px] rotate-[-8deg] bg-black/[.16] sm:right-[-20px]" }}
       >
         <Eyebrow>Coming soon</Eyebrow>
         <h2 className="font-display mb-6 text-4xl leading-none sm:text-[44px]">How it&rsquo;ll work</h2>

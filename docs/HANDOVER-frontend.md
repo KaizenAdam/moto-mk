@@ -119,10 +119,16 @@ release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
 - **Parts & Gear** has angled category tiles like the home page's Browse
   by type, a red "How it'll work" band and a gold banner.
 - The home page itself is unchanged.
-- **No two heroes share a shard.** `BlockHero` requires a `shard` prop.
-  Events uses a crack, Dealers claw slashes, and Parts & Gear a fang, and
-  their red bands and gold banners use different shapes again. Three
-  shapes were added for this (`crack`, `fang`, `claw`).
+- **No two heroes share a shard placement.** `BlockHero` requires a
+  `shard` prop. Each page varies the home page's `double` chevrons and
+  `bent` shard by position, size, rotation and tint:
+  - Events: red chevrons in the hero, bent in its band
+  - Dealers: a mirrored gold bent shard, and mirrored chevrons in the band
+  - Parts & Gear: a red `fang` running off the bottom of the hero,
+    chevrons in its band, and `claw` on its gold banner (Billy kept that)
+
+  The first attempt used a lightning bolt and claw slashes in heroes;
+  Billy said they weren't the brand's style.
 
 **Waiting on the client:** a contact email or phone for business
 enquiries, so the For business page's "Enquire" button can work. It's

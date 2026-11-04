@@ -99,7 +99,7 @@ export default function EventsView({ events }: { events: Event[] }) {
         }
         intro="Moto Sobori, track days and group rides: the calendar for North Macedonia's riding community."
         ticks={["Add any event to your calendar", "Every event added by our team"]}
-        shard={{ shape: "crack", className: "top-[-8%] right-[-60px] h-[118%] w-[300px] -rotate-[6deg] bg-red/[.30] sm:right-[8%] sm:w-[420px]" }}
+        shard={{ shape: "double", className: "top-[-12%] right-[-180px] h-[124%] w-[460px] rotate-[6deg] bg-red/[.28] sm:right-[-40px] sm:w-[640px]" }}
       >
         <div className="flex max-w-[640px] flex-col gap-2 sm:flex-row">
           <label className="flex min-w-0 flex-1 items-center bg-white">
@@ -182,7 +182,7 @@ export default function EventsView({ events }: { events: Event[] }) {
         <RedBand
           id={`event-${next.id}`}
           className="mt-10"
-          shard={{ shape: "sliver", className: "top-[-30px] right-[-60px] h-[130%] w-[360px] rotate-[10deg] bg-black/[.18]" }}
+          shard={{ shape: "bent", className: "top-[-25%] right-[-40px] h-[150%] w-[380px] rotate-[6deg] bg-black/[.18] sm:right-[6%]" }}
         >
           <Eyebrow>Next up</Eyebrow>
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
