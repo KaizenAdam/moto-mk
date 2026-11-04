@@ -101,6 +101,25 @@ Suggested backend, following the listings pattern:
 - **Admin users table:** still unpaginated. The new filter box only searches rows already fetched.
 - **The sell form is four steps,** but it's still one `<form>` posting the same fields to `createListingAction` as before. Nothing changed on the server side.
 
+## Dealer shop photos and language (4 Nov 2026)
+
+- **Shop-front photo.** Dealer cards and storefronts now have a photo
+  slot (`src/app/components/ShopPhoto.tsx`, which takes `photoUrl`). Every
+  dealer shows the "coming soon" placeholder because there's nowhere to
+  store a photo yet. To fill it:
+  - add `photo_path text null` to `dealers` and add it to the dealer's
+    column-level `update` grant (dealers edit their own; `slug` and
+    `active` stay out)
+  - add a bucket for it. It can be public, since storefronts are public
+    and only active ones are shown; Storage write policy owner-only on
+    `{profile_id}/…`
+  - add an upload to `StorefrontForm` (reuse `compressImage` from
+    `src/lib/images/compress.ts`), then pass the URL to `ShopPhoto` on
+    `/dealers` and `/dealers/[slug]`
+- **Preferred language.** The cookies bar saves `j5_lang` (`en`, `mk`,
+  `sq`). Nothing reads it yet: only English copy exists. Real
+  translations are separate work (see `CLAUDE.md`, Brand direction).
+
 ## Known issues found during the front-end pass
 
 - **Vercel Preview deployments have no Supabase env vars.** Every preview returns a bare "Internal Server Error". Tick **Preview** on `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (and `NEXT_PUBLIC_SITE_URL`, `CRON_SECRET` if set) under Project → Settings → Environment Variables, then redeploy.

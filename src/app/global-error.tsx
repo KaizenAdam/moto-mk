@@ -33,7 +33,7 @@ export default function GlobalError({
           padding: "0 20px",
         }}
       >
-        <title>Just5Up! — temporarily unavailable</title>
+        <title>Just5Up! - temporarily unavailable</title>
         <div>
           <h1 style={{ fontFamily: "Georgia, serif", fontSize: 28, marginBottom: 12 }}>
             Just5Up! is taking a pit stop

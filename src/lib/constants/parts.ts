@@ -40,4 +40,4 @@ export const PART_CATEGORIES: {
   },
 ];
 
-export const PART_CONDITIONS = ["New", "Used — like new", "Used — good", "Used — worn"] as const;
+export const PART_CONDITIONS = ["New", "Used - like new", "Used - good", "Used - worn"] as const;

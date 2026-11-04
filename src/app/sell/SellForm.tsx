@@ -160,7 +160,7 @@ export default function SellForm({ profilePhone }: { profilePhone: string | null
       <div className="mx-auto max-w-[520px] px-5 py-20 text-center">
         <h1 className="font-display mb-2.5 text-2xl">Uploading your photos…</h1>
         <p className="text-sm text-ink-dim">
-          {upload.status === "uploading" ? `${upload.done} of ${upload.total} done` : "Starting"} —
+          {upload.status === "uploading" ? `${upload.done} of ${upload.total} done` : "Starting"} -
           keep this page open.
         </p>
       </div>
@@ -176,7 +176,7 @@ export default function SellForm({ profilePhone }: { profilePhone: string | null
         <h1 className="font-display mb-2.5 text-3xl">Your listing has been submitted</h1>
         <p className="mb-5 text-sm text-ink-dim">
           <strong className="text-ink">{state.listing.title}</strong> won&rsquo;t be visible to
-          buyers until an admin approves it — we&rsquo;ll keep it out of search until then.
+          buyers until an admin approves it - we&rsquo;ll keep it out of search until then.
         </p>
         {upload.status === "failed" && (
           <p className="mb-5 border-l-4 border-red bg-red/15 px-3 py-2 text-sm text-ink">
@@ -185,7 +185,7 @@ export default function SellForm({ profilePhone }: { profilePhone: string | null
         )}
         {upload.status === "done" && upload.skipped > 0 && (
           <p className="mb-5 border-l-4 border-red bg-red/15 px-3 py-2 text-sm text-ink">
-            {upload.skipped} photo{upload.skipped > 1 ? "s" : ""} couldn&rsquo;t be read (try JPEG or PNG) — add
+            {upload.skipped} photo{upload.skipped > 1 ? "s" : ""} couldn&rsquo;t be read (try JPEG or PNG) - add
             {upload.skipped > 1 ? " them" : " it"} again from My Garage.
           </p>
         )}
@@ -401,16 +401,16 @@ export default function SellForm({ profilePhone }: { profilePhone: string | null
           <h2 className={`${sectionTitleClass} mt-8`}>Check it over</h2>
           <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
             <dt className="text-grey">Bike</dt>
-            <dd className="text-ink">{[preview.make, preview.model].filter(Boolean).join(" ") || "—"}</dd>
+            <dd className="text-ink">{[preview.make, preview.model].filter(Boolean).join(" ") || "-"}</dd>
             <dt className="text-grey">Price</dt>
-            <dd className="text-ink">{preview.price ? formatPrice(preview.price, "EUR").main : "—"}</dd>
+            <dd className="text-ink">{preview.price ? formatPrice(preview.price, "EUR").main : "-"}</dd>
             <dt className="text-grey">Town</dt>
             <dd className="text-ink">{preview.town}</dd>
             <dt className="text-grey">Photos</dt>
-            <dd className="text-ink">{photos.length === 0 ? "None — you can add them later" : photos.length}</dd>
+            <dd className="text-ink">{photos.length === 0 ? "None - you can add them later" : photos.length}</dd>
           </dl>
           <p className="mt-4 text-xs text-grey">
-            A moderator checks every listing before it goes live — usually within a day.
+            A moderator checks every listing before it goes live - usually within a day.
           </p>
         </section>
 

@@ -105,7 +105,7 @@ export default function ListingView({
         <div className="mx-4 mb-4 flex gap-2.5 border-l-4 border-red bg-red/15 px-4 py-3 text-sm sm:mx-0">
           <WarningIcon className="mt-0.5 h-4 w-4 shrink-0 text-red" />
           <div>
-            <p>This listing is {listing.status} — only you (or an admin) can see this page.</p>
+            <p>This listing is {listing.status} - only you (or an admin) can see this page.</p>
             {listing.status === "rejected" && listing.rejection_reason && (
               <p className="mt-1 text-ink-dim">Reason: {listing.rejection_reason}</p>
             )}

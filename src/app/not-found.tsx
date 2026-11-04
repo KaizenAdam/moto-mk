@@ -7,7 +7,7 @@ export default function NotFound() {
       <p className="font-display mb-2 text-7xl text-highlight">404</p>
       <h1 className="font-display mb-3 text-3xl">Wrong turn</h1>
       <p className="mb-8 text-[15px] text-ink-dim">
-        That page doesn&rsquo;t exist — or the bike&rsquo;s already been sold.
+        That page doesn&rsquo;t exist - or the bike&rsquo;s already been sold.
       </p>
       <div className="flex flex-wrap justify-center gap-3">
         <Link href="/bikes" className={button("primary", "lg")}>

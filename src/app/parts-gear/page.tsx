@@ -4,7 +4,7 @@ import PartsGearView from "./PartsGearView";
 export const metadata: Metadata = {
   title: "Motorcycle parts & gear",
   description:
-    "Spare parts, accessories and riding gear from riders and shops across North Macedonia — helmets, jackets, tyres, exhausts and more.",
+    "Spare parts, accessories and riding gear from riders and shops across North Macedonia - helmets, jackets, tyres, exhausts and more.",
 };
 
 /**

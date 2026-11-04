@@ -13,4 +13,4 @@ export const SITE_URL = (
 
 export const SITE_NAME = "Just5Up!";
 export const SITE_DESCRIPTION =
-  "Motorcycles for sale across North Macedonia — from riders and verified dealers. Free to list.";
+  "Motorcycles for sale across North Macedonia - from riders and verified dealers. Free to list.";

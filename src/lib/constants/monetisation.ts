@@ -28,7 +28,7 @@ export const FEATURE_PACKAGES: {
   },
   {
     id: "featured-7",
-    name: "Featured — 7 days",
+    name: "Featured - 7 days",
     summary: "Shown above ordinary listings with a gold Featured frame for a week.",
     perks: ["Above ordinary listings in search", "Gold Featured frame and badge", "Shown on the home page"],
     priceEur: null,
@@ -36,7 +36,7 @@ export const FEATURE_PACKAGES: {
   },
   {
     id: "featured-30",
-    name: "Featured — 30 days",
+    name: "Featured - 30 days",
     summary: "A month at the top, for bikes that need more time to find the right buyer.",
     perks: ["Everything in 7 days", "Four times as long", "Best value per day"],
     priceEur: null,

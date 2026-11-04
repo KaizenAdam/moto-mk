@@ -138,7 +138,7 @@ export default function AdminView({
                       </div>
                       {listing.description && <p className="mt-2 line-clamp-2 text-ink-dim">{listing.description}</p>}
                       <p className="mt-2 text-xs text-grey">
-                        Seller: {sellerName ?? "—"} · submitted {new Date(listing.created_at).toLocaleDateString("en-GB")}
+                        Seller: {sellerName ?? "-"} · submitted {new Date(listing.created_at).toLocaleDateString("en-GB")}
                       </p>
                       <div className="mt-3 flex flex-wrap gap-2">
                         <AdminAction action={approveListingAction.bind(null, listing.id)} label="Approve" tone="approve" />
@@ -159,7 +159,7 @@ export default function AdminView({
                     <p className="mt-1 text-ink-dim">
                       {request.address ?? "No address"} · {request.phone ?? "No phone"}
                     </p>
-                    <p className="text-xs text-grey">Requested by {requesterName ?? "—"}</p>
+                    <p className="text-xs text-grey">Requested by {requesterName ?? "-"}</p>
                     <div className="mt-3 flex flex-wrap gap-2">
                       <AdminAction action={approveDealerRequestAction.bind(null, request.id)} label="Approve" tone="approve" />
                       <AdminAction action={rejectDealerRequestAction.bind(null, request.id)} label="Reject" tone="reject" />
@@ -178,9 +178,9 @@ export default function AdminView({
                       {(businessName ?? profile.name ?? "?").charAt(0)}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-ink">{businessName ?? "—"}</p>
+                      <p className="truncate text-ink">{businessName ?? "-"}</p>
                       <p className="truncate text-xs text-grey">
-                        {profile.name ?? "—"} · {profile.town ?? "—"} · {profile.phone ?? "no phone"}
+                        {profile.name ?? "-"} · {profile.town ?? "-"} · {profile.phone ?? "no phone"}
                       </p>
                     </div>
                     {slug && (
@@ -194,7 +194,7 @@ export default function AdminView({
             </Section>
 
             <Section id="events" title={`Events (${events.length})`}>
-              {events.length === 0 && <Nothing>No events yet — add the first below.</Nothing>}
+              {events.length === 0 && <Nothing>No events yet - add the first below.</Nothing>}
               <div className="space-y-2">
                 {events.map((event) => (
                   <div key={event.id} className={`${card} flex gap-3 p-3 text-sm`}>
@@ -221,7 +221,7 @@ export default function AdminView({
             <Section id="centres" title={`Service centres (${serviceCentres.length})`}>
               <p className="mb-3 text-xs text-grey">
                 {verified} verified · {onMap} on the map. Unverified entries show a &ldquo;call ahead to
-                confirm&rdquo; note on the public page — mark one verified once you&rsquo;ve confirmed it by
+                confirm&rdquo; note on the public page - mark one verified once you&rsquo;ve confirmed it by
                 phone or visit.
               </p>
               <LocateAll

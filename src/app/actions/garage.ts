@@ -66,7 +66,7 @@ export async function requestDealerAction(_prev: FormState, formData: FormData) 
         address: text(formData, "address") ?? undefined,
         phone: text(formData, "phone") ?? undefined,
       }),
-    "Request sent — we'll review it shortly."
+    "Request sent - we'll review it shortly."
   );
 }
 
@@ -107,7 +107,7 @@ export async function updateListingAction(id: string, _prev: FormState, formData
     return { error: "Engine size and mileage can't be negative." };
   }
   if (description && description.length > 3000) {
-    return { error: "Description is too long — keep it under 3,000 characters." };
+    return { error: "Description is too long - keep it under 3,000 characters." };
   }
 
   const supabase = await createClient();

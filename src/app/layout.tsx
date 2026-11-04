@@ -5,10 +5,11 @@ import "./globals.css";
 import SiteHeader from "@/app/components/SiteHeader";
 import SiteFooter from "@/app/components/SiteFooter";
 import Toaster from "@/app/components/Toaster";
+import CookieBar from "@/app/components/CookieBar";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: `${SITE_NAME} — North Macedonia's motorcycle marketplace`, template: `%s — ${SITE_NAME}` },
+  title: { default: `${SITE_NAME} - North Macedonia's motorcycle marketplace`, template: `%s - ${SITE_NAME}` },
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
   openGraph: { siteName: SITE_NAME, type: "website", locale: "en_GB" },
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div className="flex-1">{children}</div>
         <SiteFooter />
         <Toaster />
+        <CookieBar />
       </body>
     </html>
   );

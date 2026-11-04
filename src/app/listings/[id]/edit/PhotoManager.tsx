@@ -36,10 +36,10 @@ export default function PhotoManager({
       );
       setFiles([]);
       if (skipped < files.length) toast(`${files.length - skipped} photo${files.length - skipped > 1 ? "s" : ""} added`);
-      setStatus(skipped > 0 ? `${skipped} photo(s) couldn't be read — try JPEG or PNG.` : null);
+      setStatus(skipped > 0 ? `${skipped} photo(s) couldn't be read - try JPEG or PNG.` : null);
       router.refresh();
     } catch {
-      setStatus("Upload failed — please try again.");
+      setStatus("Upload failed - please try again.");
     } finally {
       setBusy(false);
     }

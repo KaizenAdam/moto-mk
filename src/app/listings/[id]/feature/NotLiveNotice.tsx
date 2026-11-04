@@ -6,7 +6,7 @@ export function NotLiveNotice({ status }: { status: string }) {
   return (
     <EmptyState>
       Only live bikes can be featured. This one is <strong className="text-ink">{status}</strong>
-      {status === "pending" ? " — you can feature it once it's approved." : "."}{" "}
+      {status === "pending" ? " - you can feature it once it's approved." : "."}{" "}
       <Link href="/garage" className="text-highlight hover:underline">
         Back to My Garage
       </Link>

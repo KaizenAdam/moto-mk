@@ -29,7 +29,7 @@ export default function AdminAction({
   const [state, formAction, pending] = useActionState(
     async (prev: AdminActionState, formData: FormData) => {
       const result = await action(prev, formData);
-      if (result.done) toast(`${label} — done`);
+      if (result.done) toast(`${label} - done`);
       return result;
     },
     initialState

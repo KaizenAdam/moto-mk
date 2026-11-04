@@ -123,7 +123,7 @@ function CentreCard({ centre: c, active, onClick }: { centre: Centre; active: bo
         )}
       </div>
       {!c.verified && (
-        <p className="mt-2.5 text-[11px] text-grey">From public directories — call ahead to confirm details.</p>
+        <p className="mt-2.5 text-[11px] text-grey">From public directories - call ahead to confirm details.</p>
       )}
     </div>
   );

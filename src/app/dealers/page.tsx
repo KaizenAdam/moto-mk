@@ -5,6 +5,7 @@ import { listActiveDealers } from "@/lib/data/dealers";
 import { countActiveBySeller } from "@/lib/data/listings";
 import { PinIcon, TickIcon } from "@/app/components/icons";
 import { BlockHero, Eyebrow, HighlightWord, RedBand, blackButton } from "@/app/components/Bands";
+import ShopPhoto from "@/app/components/ShopPhoto";
 import EmptyState from "@/app/components/EmptyState";
 
 export const metadata: Metadata = {
@@ -28,7 +29,7 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
   const dealers = await listActiveDealers(supabase);
   const stock = await countActiveBySeller(
     supabase,
-    dealers.map((d) => d.profile_id)
+    dealers.map((d) => d.profile_id),
   );
   const towns = [...new Set(dealers.map((d) => d.town).filter((t): t is string => !!t))].sort();
   // Dealers with bikes first, then alphabetical (the query's order).
@@ -45,7 +46,11 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
   return (
     <main className="pb-16">
       <BlockHero
-        shard={{ shape: "bent", className: "top-[-18%] right-[-90px] h-[136%] w-[360px] -scale-x-100 rotate-[-6deg] bg-highlight/[.13] sm:right-[5%] sm:w-[460px]" }}
+        shard={{
+          shape: "bent",
+          className:
+            "top-[-18%] right-[-90px] h-[136%] w-[360px] -scale-x-100 rotate-[-6deg] bg-highlight/[.13] sm:right-[5%] sm:w-[460px]",
+        }}
         title={
           <>
             Buy from a
@@ -96,10 +101,13 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
                   href={`/dealers/${d.slug}`}
                   className="group flex flex-col border border-line bg-panel transition hover:border-highlight"
                 >
+                  <div className="relative">
+                    <ShopPhoto name={d.business_name} className="aspect-[16/9] w-full" />
+                  </div>
                   <div className="flex items-start gap-4 p-5">
                     <span
                       aria-hidden
-                      className="font-display flex h-14 w-14 shrink-0 items-center justify-center bg-highlight text-3xl text-[#111]"
+                      className="font-display relative -mt-12 flex h-14 w-14 shrink-0 items-center justify-center bg-highlight text-3xl text-[#111] outline-4 outline-panel outline-solid"
                     >
                       {d.business_name.charAt(0)}
                     </span>
@@ -137,7 +145,10 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
 
       <RedBand
         className="mt-16"
-        shard={{ shape: "double", className: "top-[-50px] right-[-160px] h-[520px] w-[560px] -scale-x-100 rotate-[4deg] bg-black/[.16]" }}
+        shard={{
+          shape: "double",
+          className: "top-[-50px] right-[-160px] h-[520px] w-[560px] -scale-x-100 rotate-[4deg] bg-black/[.16]",
+        }}
       >
         <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-center">
           <div>

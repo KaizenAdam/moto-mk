@@ -14,6 +14,7 @@ import ListingsGrid from "@/app/components/ListingsGrid";
 import Badge from "@/app/components/Badge";
 import { button } from "@/app/components/ui";
 import { BlockHero, HighlightWord } from "@/app/components/Bands";
+import ShopPhoto from "@/app/components/ShopPhoto";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -48,12 +49,10 @@ export default async function DealerStorefrontPage({ params }: Props) {
   const covers = await getCoverPhotos(
     supabase,
     listings.map((l) => l.id),
-    cachedPhotoSigner(supabase)
+    cachedPhotoSigner(supabase),
   );
 
-  const wa = dealer.phone
-    ? whatsAppHref(dealer.phone, `Hi ${dealer.business_name}, I found you on Just5Up!`)
-    : null;
+  const wa = dealer.phone ? whatsAppHref(dealer.phone, `Hi ${dealer.business_name}, I found you on Just5Up!`) : null;
   const tel = dealer.phone ? telHref(dealer.phone) : null;
   const mapUrl = dealer.address
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(dealer.address)}`
@@ -65,16 +64,23 @@ export default async function DealerStorefrontPage({ params }: Props) {
       <BlockHero
         gradient
         compact
-        shard={{ shape: "double", className: "top-[-20%] right-[-120px] h-[140%] w-[320px] -rotate-[16deg] bg-red/[.20] sm:right-[16%]" }}
+        shard={{
+          shape: "double",
+          className: "top-[-20%] right-[-120px] h-[140%] w-[320px] -rotate-[16deg] bg-red/[.20] sm:right-[16%]",
+        }}
         above={
           <div className="flex flex-wrap items-center gap-3">
-            <Link href="/dealers" className="inline-flex items-center gap-1.5 text-sm text-[#bdbab2] hover:text-highlight">
+            <Link
+              href="/dealers"
+              className="inline-flex items-center gap-1.5 text-sm text-[#bdbab2] hover:text-highlight"
+            >
               <ArrowLeftIcon />
               All dealers
             </Link>
             <Badge size="md">Verified dealer</Badge>
           </div>
         }
+        aside={<ShopPhoto name={dealer.business_name} className="aspect-[16/10] w-full border border-line" />}
         title={<HighlightWord>{dealer.business_name}</HighlightWord>}
         intro={dealer.about ? <span className="whitespace-pre-line">{dealer.about}</span> : undefined}
       >
@@ -83,7 +89,12 @@ export default async function DealerStorefrontPage({ params }: Props) {
             <span className="flex items-center gap-1.5 text-[15px] text-[#d6d3cb]">
               <PinIcon className="h-4 w-4 text-highlight" />
               {mapUrl ? (
-                <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="hover:text-highlight hover:underline">
+                <a
+                  href={mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-highlight hover:underline"
+                >
                   {dealer.address ?? dealer.town}
                 </a>
               ) : (
@@ -116,8 +127,7 @@ export default async function DealerStorefrontPage({ params }: Props) {
       {listings.length === 0 ? (
         <div className="mx-auto max-w-[1280px] px-5 py-10">
           <div className="border border-dashed border-line px-5 py-10 text-center text-sm text-ink-dim">
-            {dealer.business_name} has no bikes listed right now — get in touch to ask what&rsquo;s
-            coming in.
+            {dealer.business_name} has no bikes listed right now - get in touch to ask what&rsquo;s coming in.
           </div>
         </div>
       ) : (

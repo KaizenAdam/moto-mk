@@ -27,6 +27,7 @@ export function BlockHero({
   gradient = false,
   compact = false,
   above,
+  aside,
   children,
 }: {
   /** A line above the headline: a back link or a badge. */
@@ -40,6 +41,8 @@ export function BlockHero({
   title: ReactNode;
   intro?: ReactNode;
   ticks?: string[];
+  /** A picture beside the text from `lg` (below it on phones): a dealer's shop photo. */
+  aside?: ReactNode;
   children?: ReactNode;
 }) {
   return (
@@ -48,27 +51,34 @@ export function BlockHero({
       style={gradient ? { background: heroBackground } : undefined}
     >
       <Shard shape={shard.shape} className={shard.className} />
-      <div className={`relative mx-auto max-w-[1280px] px-5 ${compact ? "pt-9 pb-8 sm:pt-11 sm:pb-10" : "pt-12 pb-10 sm:pt-16 sm:pb-12"}`}>
-        {above && <div className="mb-4">{above}</div>}
-        <h1
-          className={`font-display max-w-[760px] leading-none ${
-            compact ? "text-[38px] sm:text-5xl" : "text-[44px] sm:text-6xl lg:text-7xl"
-          }`}
-        >
-          {title}
-        </h1>
-        {intro && <p className="mt-5 max-w-[620px] text-[15px] text-[#d6d3cb] sm:text-base">{intro}</p>}
-        {ticks && (
-          <ul className="mt-5 grid max-w-[620px] gap-x-7 gap-y-2 text-sm text-[#d6d3cb] sm:grid-cols-2 sm:text-[15px]">
-            {ticks.map((t) => (
-              <li key={t} className="flex items-center gap-2.5">
-                <TickIcon className="h-4 w-4 shrink-0 text-[#ff6b70]" />
-                {t}
-              </li>
-            ))}
-          </ul>
-        )}
-        {children && <div className="mt-8">{children}</div>}
+      <div
+        className={`relative mx-auto max-w-[1280px] px-5 ${compact ? "pt-9 pb-8 sm:pt-11 sm:pb-10" : "pt-12 pb-10 sm:pt-16 sm:pb-12"}`}
+      >
+        <div className={aside ? "grid gap-8 lg:grid-cols-[minmax(0,1fr)_460px] lg:items-center lg:gap-12" : undefined}>
+          <div>
+            {above && <div className="mb-4">{above}</div>}
+            <h1
+              className={`font-display max-w-[760px] leading-none ${
+                compact ? "text-[38px] sm:text-5xl" : "text-[44px] sm:text-6xl lg:text-7xl"
+              }`}
+            >
+              {title}
+            </h1>
+            {intro && <p className="mt-5 max-w-[620px] text-[15px] text-[#d6d3cb] sm:text-base">{intro}</p>}
+            {ticks && (
+              <ul className="mt-5 grid max-w-[620px] gap-x-7 gap-y-2 text-sm text-[#d6d3cb] sm:grid-cols-2 sm:text-[15px]">
+                {ticks.map((t) => (
+                  <li key={t} className="flex items-center gap-2.5">
+                    <TickIcon className="h-4 w-4 shrink-0 text-[#ff6b70]" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {children && <div className="mt-8">{children}</div>}
+          </div>
+          {aside}
+        </div>
       </div>
     </section>
   );

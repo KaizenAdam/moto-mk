@@ -28,7 +28,7 @@ export default function Error({
       </Badge>
       <h1 className="font-display mb-3 text-3xl">We&rsquo;ve hit a pothole</h1>
       <p className="mb-6 text-[15px] text-ink-dim">
-        Something went wrong loading this page. It&rsquo;s usually brief — give it a moment and try
+        Something went wrong loading this page. It&rsquo;s usually brief - give it a moment and try
         again.
       </p>
       <div className="flex justify-center gap-3">

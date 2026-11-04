@@ -32,7 +32,7 @@ export default async function AdminPage() {
   if (profile.account_type !== "admin") {
     return (
       <main className="flex min-h-[60vh] items-center justify-center">
-        <p className="text-ink-dim">Not authorised — this page is admin-only.</p>
+        <p className="text-ink-dim">Not authorised - this page is admin-only.</p>
       </main>
     );
   }

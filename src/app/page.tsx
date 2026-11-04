@@ -11,7 +11,7 @@ import HomeView from "./_home/HomeView";
 export const metadata: Metadata = {
   // The layout's default title is the home page's; only the description is more specific.
   description:
-    "Motorcycles for sale across North Macedonia from riders and verified dealers — plus service centres, events and the riding community.",
+    "Motorcycles for sale across North Macedonia from riders and verified dealers - plus service centres, events and the riding community.",
 };
 
 /** The landing page. Fetches; HomeView lays it out. */

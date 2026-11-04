@@ -12,7 +12,7 @@ export default function ComingSoon({ title, description }: { title: string; desc
       <h1 className="font-display mb-3 text-3xl">{title}</h1>
       <p className="mb-2 text-[15px] text-ink-dim">{description}</p>
       <p className="mb-6 text-[13px] text-grey">
-        This section is on the roadmap but isn&rsquo;t built yet — it&rsquo;s here to show where it
+        This section is on the roadmap but isn&rsquo;t built yet - it&rsquo;s here to show where it
         will sit in the finished product.
       </p>
       <Link

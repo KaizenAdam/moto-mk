@@ -58,7 +58,7 @@ export async function createListingAction(
 
   const description = str(formData, "description");
   if (description && description.length > 3000) {
-    return { error: "Description is too long — keep it under 3,000 characters.", listing: null };
+    return { error: "Description is too long - keep it under 3,000 characters.", listing: null };
   }
 
   // Buyers contact sellers by phone/WhatsApp, so a listing needs one. It's

@@ -53,9 +53,6 @@ export default function HomeView({
                     className="h-full w-full object-cover brightness-[.55] grayscale transition duration-300 group-hover:scale-105 group-hover:brightness-75"
                   />
                 )}
-                <span className="font-display absolute top-2 left-[30%] text-lg sm:top-3 sm:text-[22px] font-normal text-white">
-                  {t.count}
-                </span>
                 <span className="font-display absolute bottom-3 left-[16%] bg-highlight px-1.5 py-0.5 text-xs sm:bottom-4 sm:left-[22%] sm:px-2.5 sm:text-[17px] text-[#111]">
                   {t.style}
                 </span>
@@ -118,7 +115,7 @@ export default function HomeView({
   );
 }
 
-const TICKS = ["Bikes only — no junk", "Every listing checked", "Riders & verified dealers", "Free to list"];
+const TICKS = ["Bikes only", "Every listing checked", "Riders & verified dealers", "Free to list"];
 
 function Hero() {
   return (
@@ -158,7 +155,7 @@ function Hero() {
             id="home-search"
             type="text"
             name="search"
-            placeholder="Make or model — e.g. Yamaha MT-07"
+            placeholder="Make or model - e.g. Yamaha MT-07"
             className="min-w-0 flex-1 border-0 px-4 py-4 text-base text-[#111] outline-none placeholder:text-[#77767c] sm:px-5 sm:py-[18px]"
           />
           <button

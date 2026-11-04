@@ -26,14 +26,14 @@ export async function generateMetadata({
 
   const name = [listing.year, listing.make, listing.model].filter(Boolean).join(" ");
   const price = `€${Number(listing.price_eur).toLocaleString("en-GB")}`;
-  const title = `${name} — ${price}${listing.town ? `, ${listing.town}` : ""}`;
+  const title = `${name} - ${price}${listing.town ? `, ${listing.town}` : ""}`;
   const specs = [
     listing.engine_cc != null ? `${listing.engine_cc}cc` : null,
     listing.mileage_km != null ? `${listing.mileage_km.toLocaleString("en-GB")} km` : null,
     listing.riding_style,
   ].filter(Boolean).join(" · ");
   const description = (listing.description?.replace(/\s+/g, " ").slice(0, 155) ||
-    `${name} for sale${listing.town ? ` in ${listing.town}` : ""}${specs ? ` — ${specs}` : ""}. On Just5Up!, North Macedonia's motorcycle marketplace.`);
+    `${name} for sale${listing.town ? ` in ${listing.town}` : ""}${specs ? ` - ${specs}` : ""}. On Just5Up!, North Macedonia's motorcycle marketplace.`);
 
   return {
     title,

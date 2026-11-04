@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { heroBackground } from "./ui";
-import Shard from "./Shard";
+import Shard, { type ShardShape } from "./Shard";
 
 const widths = {
   wide: "max-w-[1280px]",
@@ -16,7 +16,7 @@ export default function PageHero({
   intro,
   width = "wide",
   size = "md",
-  shard = false,
+  shard,
   children,
 }: {
   title: ReactNode;
@@ -24,8 +24,8 @@ export default function PageHero({
   width?: keyof typeof widths;
   /** lg for a big headline (the search page), md everywhere else. */
   size?: "md" | "lg";
-  /** Throw the brand's torn shard in behind the right-hand side. */
-  shard?: boolean;
+  /** A shard behind the hero, in the home page's style (see CLAUDE.md). */
+  shard?: { shape: ShardShape; className: string };
   children?: ReactNode;
 }) {
   return (
@@ -33,9 +33,7 @@ export default function PageHero({
       className={`relative overflow-hidden border-b border-line ${size === "lg" ? "py-10 sm:py-14" : "py-8"}`}
       style={{ background: heroBackground }}
     >
-      {shard && (
-        <Shard shape="torn" className="top-[-35%] right-[-40px] h-[170%] w-[300px] rotate-[8deg] bg-highlight/[.10] sm:right-[5%] sm:w-[440px]" />
-      )}
+      {shard && <Shard shape={shard.shape} className={shard.className} />}
       <div className={`relative mx-auto px-5 ${widths[width]}`}>
         <h1
           className={`font-display mb-2 ${

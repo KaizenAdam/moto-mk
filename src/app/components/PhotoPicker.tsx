@@ -132,7 +132,7 @@ export default function PhotoPicker({
           </span>
         </label>
       ) : (
-        <p className="text-xs text-grey">That&rsquo;s the maximum of {max} photos — remove one to add another.</p>
+        <p className="text-xs text-grey">That&rsquo;s the maximum of {max} photos - remove one to add another.</p>
       )}
     </div>
   );

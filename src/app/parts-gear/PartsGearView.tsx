@@ -6,7 +6,6 @@ import { PART_CATEGORIES } from "@/lib/constants/parts";
 import { BlockHero, Eyebrow, GoldBanner, HighlightWord, RedBand, blackButton } from "@/app/components/Bands";
 import EmptyState from "@/app/components/EmptyState";
 import Badge from "@/app/components/Badge";
-import { HelmetIcon, WrenchIcon } from "@/app/components/icons";
 
 /**
  * The Parts & Gear page. Picking a subcategory narrows the page to it —
@@ -20,7 +19,10 @@ export default function PartsGearView() {
   return (
     <main className="pb-16">
       <BlockHero
-        shard={{ shape: "fang", className: "top-0 right-[-80px] h-[140%] w-[340px] bg-red/[.24] sm:right-[3%] sm:w-[480px]" }}
+        shard={{
+          shape: "fang",
+          className: "top-0 right-[-80px] h-[140%] w-[340px] bg-red/[.24] sm:right-[3%] sm:w-[480px]",
+        }}
         title={
           <>
             Parts &amp;
@@ -71,14 +73,24 @@ export default function PartsGearView() {
                     type="button"
                     onClick={() => setSelected(active ? null : sub.id)}
                     aria-pressed={active}
-                    className={`group relative block aspect-[4/5] overflow-hidden text-left transition [clip-path:polygon(18%_0,100%_0,82%_100%,0_100%)] ${
-                      active ? "bg-highlight/25" : "bg-panel2 hover:bg-[#25252a]"
-                    }`}
+                    className="group relative block aspect-[4/5] overflow-hidden bg-panel2 text-left [clip-path:polygon(18%_0,100%_0,82%_100%,0_100%)]"
                   >
-                    <span className="absolute top-[22%] left-[34%] text-highlight [&_svg]:h-9 [&_svg]:w-9 sm:[&_svg]:h-11 sm:[&_svg]:w-11">
-                      {cat.id === "gear" ? <HelmetIcon /> : <WrenchIcon />}
-                    </span>
-                    <span className="font-display absolute bottom-3 left-[8%] bg-highlight px-1.5 py-0.5 text-[11px] text-[#111] sm:bottom-4 sm:left-[22%] sm:px-2.5 sm:text-[17px]">
+                    {/* eslint-disable-next-line @next/next/no-img-element -- small static, pre-sized tile photo */}
+                    <img
+                      src={`/parts/${sub.id}.jpg`}
+                      width={480}
+                      height={600}
+                      alt=""
+                      loading="lazy"
+                      className={`h-full w-full object-cover grayscale transition duration-300 group-hover:scale-105 ${
+                        active ? "brightness-90" : "brightness-[.55] group-hover:brightness-75"
+                      }`}
+                    />
+                    <span
+                      className={`font-display absolute bottom-3 left-[8%] px-1.5 py-0.5 text-[11px] sm:bottom-4 sm:left-[22%] sm:px-2.5 sm:text-[17px] ${
+                        active ? "bg-red text-white" : "bg-highlight text-[#111]"
+                      }`}
+                    >
                       {sub.name}
                     </span>
                   </button>
@@ -101,7 +113,10 @@ export default function PartsGearView() {
 
       <RedBand
         className="mt-16"
-        shard={{ shape: "double", className: "top-[10%] right-[-120px] h-[110%] w-[420px] rotate-[-8deg] bg-black/[.16] sm:right-[-20px]" }}
+        shard={{
+          shape: "double",
+          className: "top-[10%] right-[-120px] h-[110%] w-[420px] rotate-[-8deg] bg-black/[.16] sm:right-[-20px]",
+        }}
       >
         <Eyebrow>Coming soon</Eyebrow>
         <h2 className="font-display mb-6 text-4xl leading-none sm:text-[44px]">How it&rsquo;ll work</h2>
@@ -114,7 +129,10 @@ export default function PartsGearView() {
             </li>
           ))}
         </ol>
-        <Link href="/bikes" className="font-display mt-6 inline-block border-b-2 border-white font-normal tracking-[.06em]">
+        <Link
+          href="/bikes"
+          className="font-display mt-6 inline-block border-b-2 border-white font-normal tracking-[.06em]"
+        >
           Browse bikes meanwhile &gt;&gt;&gt;
         </Link>
       </RedBand>

@@ -36,7 +36,7 @@ export default function ProfileForm({
       <label className={labelClass}>
         Town
         <select name="town" defaultValue={town ?? ""} className={inputClass}>
-          <option value="">—</option>
+          <option value="">-</option>
           {TOWNS.map((t) => (
             <option key={t} value={t}>
               {t}

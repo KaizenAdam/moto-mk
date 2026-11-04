@@ -22,7 +22,7 @@ type Item = {
 const precisionNote: Record<GeocodeResult["precision"], string> = {
   address: "matched the street address",
   name: "matched the business name",
-  town: "only found the town — drag it to the workshop",
+  town: "only found the town - drag it to the workshop",
 };
 
 /**
@@ -145,13 +145,13 @@ export default function LocateAll({ centres }: { centres: Centre[] }) {
                       : it.state === "saving"
                         ? "Saving…"
                         : it.state === "saved"
-                          ? "✓ Saved — now on the public map"
+                          ? "✓ Saved - now on the public map"
                           : it.state === "not-found"
-                            ? "Not found — use Set location below and click the map"
+                            ? "Not found - use Set location below and click the map"
                             : it.state === "failed"
                               ? `Search failed: ${it.error}`
                               : it.moved
-                                ? "Pin moved by you — ready to save"
+                                ? "Pin moved by you - ready to save"
                                 : precisionNote[it.result!.precision]}
                   </p>
                   {it?.error && it.state === "found" && <p className="text-xs text-red">{it.error}</p>}

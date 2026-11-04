@@ -150,6 +150,19 @@ release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
   The first attempt used a lightning bolt and claw slashes in heroes;
   Billy said they weren't the brand's style.
 
+**Pre-demo fixes (4 Nov 2026, Billy's list)**
+- Every em and en dash in visible copy is now a hyphen (" - "), site-wide.
+- Home: "no junk" dropped from the hero ticks; the Browse by type tiles
+  have no counts.
+- Buy: a new red chevron shard in the hero (`PageHero` now takes a
+  shard spec like `BlockHero`).
+- A cookies & preferred-language bar on first visit (`CookieBar`), which
+  the footer can reopen.
+- Parts & Gear: greyed photos on every tile instead of spanner/helmet
+  icons (`public/parts/`).
+- Dealers: a shop-front photo slot on cards and storefronts, showing a
+  "coming soon" placeholder until uploads exist (backend handover).
+
 **Waiting on the client:** a contact email or phone for business
 enquiries, so the For business page's "Enquire" button can work. It's
 listed in `docs/HANDOVER-backend.md`.

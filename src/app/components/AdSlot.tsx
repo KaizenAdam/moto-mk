@@ -35,7 +35,7 @@ export default function AdSlot({ slot, ad }: { slot: AdSlotId; ad?: Ad | null })
           <div>
             <p className="font-display text-xl text-highlight sm:text-2xl">Your ad here</p>
             <p className="mt-1 text-sm text-ink-dim">
-              Reach riders across North Macedonia — workshops, gear shops, insurers.{" "}
+              Reach riders across North Macedonia - workshops, gear shops, insurers.{" "}
               <span className="text-grey">({AD_SLOTS[slot].name})</span>
             </p>
           </div>

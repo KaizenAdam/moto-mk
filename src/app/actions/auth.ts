@@ -51,7 +51,7 @@ export async function signUp(
   if (!data.session) {
     return {
       error: null,
-      message: `Almost there — we've sent a confirmation link to ${email}. Click it to activate your account.`,
+      message: `Almost there - we've sent a confirmation link to ${email}. Click it to activate your account.`,
     };
   }
 
@@ -97,7 +97,7 @@ export async function requestPasswordReset(
   // Only a rate limit is worth surfacing. Anything else gets the same reply
   // as success, so the form can't be used to test which emails have accounts.
   if (error?.status === 429) {
-    return { error: "Too many requests — please wait a few minutes and try again." };
+    return { error: "Too many requests - please wait a few minutes and try again." };
   }
   return {
     error: null,

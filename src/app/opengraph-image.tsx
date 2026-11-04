@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { OG, OG_SIZE, OgBrand, brandIconDataUrl } from "@/lib/og/brand";
 
-export const alt = "Just5Up! — North Macedonia's motorcycle marketplace";
+export const alt = "Just5Up! - North Macedonia's motorcycle marketplace";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 

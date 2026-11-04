@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CookieSettingsLink from "./CookieSettingsLink";
 
 const columns = [
   {
@@ -43,7 +44,7 @@ export default function SiteFooter() {
           {/* eslint-disable-next-line @next/next/no-img-element -- pre-sized PNG wordmark */}
           <img src="/brand/wordmark-white.png" width={621} height={168} alt="Just5Up!" className="mb-3 h-10 w-auto" />
           <p className="mb-4 max-w-xs text-sm text-ink-dim">
-            North Macedonia&rsquo;s motorcycle marketplace — bikes from riders and verified dealers.
+            North Macedonia&rsquo;s motorcycle marketplace - bikes from riders and verified dealers.
           </p>
           <Link
             href="/sell"
@@ -68,7 +69,7 @@ export default function SiteFooter() {
         ))}
       </div>
       <div className="border-t border-line px-5 py-4 text-center text-xs text-grey">
-        © {new Date().getFullYear()} Just5Up! · Every listing is checked before it goes live
+        © {new Date().getFullYear()} Just5Up! · Every listing is checked before it goes live · <CookieSettingsLink />
       </div>
     </footer>
   );

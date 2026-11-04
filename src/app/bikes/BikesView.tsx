@@ -9,7 +9,7 @@ import { SearchIcon } from "@/app/components/icons";
 import type { SearchParams } from "@/app/listings/queryParams";
 
 /**
- * The search page: the glow hero the client liked (with one torn shard),
+ * The search page: the glow hero the client liked (with one red chevron shard),
  * a white search box like the home page's, the filter bar, then results.
  * Markup only; page.tsx fetches.
  */
@@ -40,7 +40,11 @@ export default function BikesView({
     <main>
       <PageHero
         size="lg"
-        shard
+        shard={{
+          shape: "double",
+          className:
+            "bottom-[-30%] right-[-160px] h-[150%] w-[420px] rotate-[-24deg] bg-red/[.20] sm:right-[4%] sm:w-[560px]",
+        }}
         title={
           <>
             Bikes for sale in <span className="text-highlight">North Macedonia</span>
@@ -60,7 +64,7 @@ export default function BikesView({
             type="text"
             name="search"
             defaultValue={filters.search ?? ""}
-            placeholder="Make or model — e.g. Yamaha R6"
+            placeholder="Make or model - e.g. Yamaha R6"
             className="min-w-0 flex-1 border-0 px-3 py-4 text-base text-[#111] outline-none placeholder:text-[#77767c]"
           />
           <button
@@ -89,7 +93,11 @@ export default function BikesView({
         dealerNames={dealerNames}
       />
       <div className="-mt-10 px-6 pb-14">
-        <Pagination page={filters.page ?? 1} pageCount={Math.ceil(total / BROWSE_PAGE_SIZE)} searchParams={searchParams} />
+        <Pagination
+          page={filters.page ?? 1}
+          pageCount={Math.ceil(total / BROWSE_PAGE_SIZE)}
+          searchParams={searchParams}
+        />
       </div>
     </main>
   );

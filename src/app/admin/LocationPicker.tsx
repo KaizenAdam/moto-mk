@@ -40,17 +40,17 @@ export default function LocationPicker({
     try {
       const hit = await geocodePlace({ name, address, town });
       if (!hit) {
-        setNote("Couldn't find it — click the map to place the pin.");
+        setNote("Couldn't find it - click the map to place the pin.");
         return;
       }
       setPoint({ lat: hit.lat, lng: hit.lng });
       setNote(
         hit.precision === "town"
-          ? `Only found the town (${town}) — drag the pin to the workshop.`
+          ? `Only found the town (${town}) - drag the pin to the workshop.`
           : `Found "${hit.label}". Check it, drag the pin if needed, then save.`
       );
     } catch {
-      setNote("Address search failed — click the map to place the pin.");
+      setNote("Address search failed - click the map to place the pin.");
     }
   }
 

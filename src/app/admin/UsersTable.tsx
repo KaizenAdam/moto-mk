@@ -41,9 +41,9 @@ export default function UsersTable({ profiles }: { profiles: Tables<"profiles">[
           <tbody>
             {shown.map((p) => (
               <tr key={p.id} className="border-b border-line/60 last:border-0">
-                <td className="px-3 py-2 text-ink">{p.name ?? "—"}</td>
-                <td className="px-3 py-2 text-ink-dim">{p.town ?? "—"}</td>
-                <td className="px-3 py-2 whitespace-nowrap text-ink-dim">{p.phone ?? "—"}</td>
+                <td className="px-3 py-2 text-ink">{p.name ?? "-"}</td>
+                <td className="px-3 py-2 text-ink-dim">{p.town ?? "-"}</td>
+                <td className="px-3 py-2 whitespace-nowrap text-ink-dim">{p.phone ?? "-"}</td>
                 <td className="px-3 py-2">
                   <Badge tone={ROLE_TONE[p.account_type] ?? "muted"}>{p.account_type}</Badge>
                 </td>

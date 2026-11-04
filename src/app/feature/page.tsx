@@ -65,7 +65,7 @@ export default async function FeatureABikePage() {
             <p className="mb-4">
               Only live bikes can be featured.{" "}
               {waiting > 0
-                ? `You have ${waiting} waiting for review — once one is approved you can feature it.`
+                ? `You have ${waiting} waiting for review - once one is approved you can feature it.`
                 : "You don't have a bike on sale right now."}
             </p>
             <div className="flex flex-wrap justify-center gap-2.5">

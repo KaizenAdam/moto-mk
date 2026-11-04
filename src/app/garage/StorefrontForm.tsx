@@ -47,7 +47,7 @@ export default function StorefrontForm({ dealer }: { dealer: Tables<"dealers"> }
         <label className={labelClass}>
           Town
           <select name="town" defaultValue={dealer.town ?? ""} className={inputClass}>
-            <option value="">—</option>
+            <option value="">-</option>
             {TOWNS.map((t) => (
               <option key={t} value={t}>
                 {t}

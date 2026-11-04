@@ -77,7 +77,7 @@ export default function EditListingForm({ listing }: { listing: Tables<"listings
         <label className={labelClass}>
           Engine type
           <select name="engine_type" defaultValue={listing.engine_type ?? ""} className={inputClass}>
-            <option value="">—</option>
+            <option value="">-</option>
             {ENGINE_TYPES.map((t) => (
               <option key={t.value} value={t.value}>
                 {t.label}
@@ -88,7 +88,7 @@ export default function EditListingForm({ listing }: { listing: Tables<"listings
         <label className={labelClass}>
           Riding style
           <select name="riding_style" defaultValue={listing.riding_style ?? ""} className={inputClass}>
-            <option value="">—</option>
+            <option value="">-</option>
             {RIDING_STYLES.map((s) => (
               <option key={s} value={s}>
                 {s}
@@ -99,7 +99,7 @@ export default function EditListingForm({ listing }: { listing: Tables<"listings
         <label className={labelClass}>
           Town
           <select name="town" defaultValue={listing.town ?? ""} className={inputClass}>
-            <option value="">—</option>
+            <option value="">-</option>
             {TOWNS.map((t) => (
               <option key={t} value={t}>
                 {t}

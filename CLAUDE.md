@@ -272,7 +272,9 @@ demo state — not test residue to clean up.
 - **`Shard`** — the brand's one decorative shape: an irregular torn
   shard (`double`, `torn`, `bent`, `sliver`), absolutely positioned and
   `aria-hidden`. One per section at most; Billy found several busy.
-  `PageHero shard` adds one behind a hero (the search page uses it).
+  `PageHero shard={{ shape, className }}` adds one behind a hero (the
+  search page's is a red `double`, redone Nov 2026 when Billy didn't like
+  its `torn` one).
 - **`ListingCard`**: square-cornered, photo count, spec line (cc, km,
   style), the gold `highlight` price tag, dealer or private seller,
   Contact (red outline) / View bike (gold). Its
@@ -296,6 +298,18 @@ demo state — not test residue to clean up.
   listings (`#service`). It's linked from the footer's "For business"
   column and the AdSlot house card, like Auto Trader keeping its trade
   side separate. The header is for riders buying and selling.
+- **Copy uses hyphens, not dashes** (Billy, 4 Nov 2026): write " - "
+  where you'd reach for an em or en dash (—, –), in anything a visitor
+  reads, including page titles and form messages.
+- **Cookies & language bar** (`components/CookieBar.tsx`, in the root
+  layout): shown at the bottom until the visitor picks a language and
+  clicks OK, then saved as first-party cookies `j5_consent` and `j5_lang`
+  for a year. The footer's "Cookies & language" link reopens it. The site
+  sets **only essential cookies** (Supabase sign-in plus these two), which
+  is what the bar says; if analytics or ad cookies are ever added, the bar
+  needs a real Reject choice and they must not load before consent.
+  Only English exists, so choosing Македонски or Shqip is remembered and
+  says "coming soon" (no fake switch). `j5_lang` is there for real i18n.
 - **Toasts:** `toast("Saved")` from any client component
   (`components/Toaster.tsx`, mounted once in the root layout). For
   successes only; errors stay next to what failed.
@@ -430,7 +444,8 @@ is 8, checked in the server actions.
   `src/app/_home/HomeView.tsx` renders: a black-and-white hero photo
   (`public/brand/hero-bike.jpg`, torn left edge from `lg` via
   `.j5-hero-photo` in `globals.css`, a faint backdrop on phones) with
-  search; angled "Browse by type" tiles with live counts; Latest bikes
+  search; angled "Browse by type" tiles (no counts on them, Billy 4 Nov
+  2026; a greyed listing photo and the type name); Latest bikes
   (4, "See all {total}"); the `home-banner` `AdSlot` (the advertise page
   sells it, so keep it); a full-width red band with up to 3 upcoming
   events and "Keep it rolling" (service centres, Parts & gear, forum);
@@ -459,7 +474,10 @@ is 8, checked in the server actions.
 - **`/parts-gear`** — the finished page shell (14 Oct 2026), honest that
   nothing can be listed yet: categories and sub-category tiles from
   `src/lib/constants/parts.ts` each show an empty state, never sample
-  items; brand search and "Sell parts & gear" are disabled. `PartCard`
+  items; brand search and "Sell parts & gear" are disabled. Each tile has
+  a greyed photo, `public/parts/{subcategory id}.jpg` (480×600, generated
+  for the site in Nov 2026 with Higgsfield, no brands or people), styled
+  like the home page's type tiles. A new subcategory needs its own photo. `PartCard`
   is built for when the parts backend exists (`docs/HANDOVER-backend.md`).
 - **`/events`** — `EventsView.tsx` (client): search, place and When
   filters in the browser (no refetch), the soonest matching event in a red
@@ -536,6 +554,10 @@ is 8, checked in the server actions.
   `listing_photos` rows, never the files. Seller actions live in
   `src/app/actions/garage.ts`; ownership is RLS, not code.
 - **`/dealers`** — directory of live storefronts, most stock first.
+  Cards and storefront heroes have a shop-front photo slot
+  (`components/ShopPhoto.tsx`); dealers can't upload one yet, so it shows
+  a "Shop photo coming soon" placeholder. Never fill it with a stock shop
+  photo: buyers would take it for the real one.
   **`/dealers/[slug]`** — a storefront: business details, public
   WhatsApp/Call to the shop line, Google Maps link for the address, and
   the dealer's live listings. Dealer listings carry a badge on cards
