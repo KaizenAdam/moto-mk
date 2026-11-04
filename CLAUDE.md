@@ -302,18 +302,24 @@ demo state — not test residue to clean up.
   where you'd reach for an em or en dash (—, –), in anything a visitor
   reads, including page titles and form messages.
 - **Cookies & language bar** (`components/CookieBar.tsx`, in the root
-  layout): shown at the bottom until the visitor picks a language and
-  clicks OK, then saved as first-party cookies `j5_consent` and `j5_lang`
-  for a year. The footer's "Cookies & language" link reopens it. The site
+  layout): shown at the bottom of a first visit until the visitor clicks
+  OK (`j5_consent`). Picking a flag in it switches the site straight away
+  (`j5_lang`); both are first-party cookies for a year. The footer's
+  "Cookies" link reopens it. The site
   sets **only essential cookies** (Supabase sign-in plus these two), which
   is what the bar says; if analytics or ad cookies are ever added, the bar
   needs a real Reject choice and they must not load before consent.
-  OK also switches the site to the chosen language.
+- **The language picker is flags, in two places only** (Billy, 4 Nov
+  2026): the cookies bar and the footer, both `components/LanguageFlags.tsx`.
+  Not in the header. Flags are `public/flags/{gb,mk,al}.svg` from
+  flag-icons (MIT, licence beside them): the UK for English, North
+  Macedonia for Macedonian, Albania for Albanian. Never emoji flags (they
+  show as letters on Windows).
 - **Three languages: English, Macedonian, Albanian (Nov 2026).** Billy
   asked for the language buttons to work, so every visible string now
   lives in `src/lib/i18n/dictionaries/{en,mk,sq}.ts`. The visitor's
-  choice is the `j5_lang` cookie (header EN · MK · SQ switch, the phone
-  menu, or the cookies bar), read by `getLocale()`; URLs don't change and
+  choice is the `j5_lang` cookie (the flags in the cookies bar or the
+  footer), read by `getLocale()`; URLs don't change and
   `<html lang>` follows it. The rules:
   - **Never hard-code visible text.** Add the English to `en.ts` and the
     same key to `mk.ts` and `sq.ts` (TypeScript fails the build if a key

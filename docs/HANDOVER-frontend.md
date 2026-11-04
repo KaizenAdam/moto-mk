@@ -182,8 +182,8 @@ release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
     dealer-written data, editable from that dealer's My Garage
 
 **Three languages (4 Nov 2026)**
-- English, Macedonian and Albanian, switched from the header (EN · MK ·
-  SQ), the phone menu or the cookies bar. Every public and account page,
+- English, Macedonian and Albanian, switched with the flags in the
+  cookies bar (first visit) or the footer. Every public and account page,
   form, message, page title and the legal drafts are translated; the
   admin portal stays English. How it works is in `CLAUDE.md` ("Three
   languages").

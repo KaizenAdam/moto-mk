@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CookieSettingsLink from "./CookieSettingsLink";
+import LanguageFlags from "./LanguageFlags";
 import { CONTACT_EMAIL } from "@/lib/site";
 
 import { getI18n } from "@/lib/i18n/server";
@@ -74,9 +75,12 @@ export default async function SiteFooter() {
       </div>
       <div className="border-t border-line">
         <div className="mx-auto flex max-w-[1280px] flex-col gap-3 px-5 py-4 text-xs text-grey md:flex-row md:items-center md:justify-between">
-          <p>
-            © {new Date().getFullYear()} Just5Up! · {f.checked}
-          </p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+            <LanguageFlags />
+            <p>
+              © {new Date().getFullYear()} Just5Up! · {f.checked}
+            </p>
+          </div>
           {/* CONTACT_EMAIL is a placeholder until the client gives a real address (src/lib/site.ts). */}
           <ul className="flex flex-wrap gap-x-5 gap-y-2">
             <li>

@@ -14,8 +14,14 @@ export const LOCALE_TAGS: Record<Locale, string> = { en: "en-GB", mk: "mk-MK", s
 
 /** Each language's name in itself, for the switchers. */
 export const LOCALE_NAMES: Record<Locale, string> = { en: "English", mk: "Македонски", sq: "Shqip" };
-export const LOCALE_SHORT: Record<Locale, string> = { en: "EN", mk: "MK", sq: "SQ" };
 
 export function isLocale(value: unknown): value is Locale {
   return typeof value === "string" && (LOCALES as readonly string[]).includes(value);
 }
+
+/**
+ * Each language's flag (public/flags, from flag-icons, MIT; see LICENSE.txt
+ * there): the UK for English, North Macedonia for Macedonian, Albania for
+ * Albanian.
+ */
+export const LOCALE_FLAGS: Record<Locale, string> = { en: "/flags/gb.svg", mk: "/flags/mk.svg", sq: "/flags/al.svg" };

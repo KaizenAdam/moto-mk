@@ -65,7 +65,6 @@ const sq: Dictionary = {
     events: "Ngjarje",
   },
   lang: {
-    label: "Gjuha",
     switchTo: "Ndrysho gjuhën",
   },
   cookies: {
@@ -74,7 +73,7 @@ const sq: Dictionary = {
     body: "Përdorim vetëm cookies të domosdoshme: të mbajnë të identifikuar dhe mbajnë mend zgjedhjet që bën këtu. Pa gjurmim, pa cookies reklamash.",
     preferred: "Gjuha e preferuar",
     ok: "Në rregull",
-    settings: "Cookies dhe gjuha",
+    link: "Cookies",
   },
   footer: {
     tagline: "Tregu i motorëve në Maqedoninë e Veriut - motorë nga motoristë dhe tregtarë të verifikuar.",
@@ -210,7 +209,7 @@ const sq: Dictionary = {
               "**Cookie e identifikimit** (nga Supabase): të mban të identifikuar. Fshihet kur del.",
               "**j5_consent** dhe **j5_lang**: mbajnë mend që e ke parë mesazhin për cookies dhe gjuhën që preferon, për një vit.",
             ],
-            "Gjuhën mund ta ndryshosh nga koka e faqes ose nga \"Cookies dhe gjuha\" në fund të çdo faqeje.",
+            "Gjuhën mund ta ndryshosh me flamujt në fund të çdo faqeje.",
           ],
         },
         {

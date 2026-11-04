@@ -4,7 +4,6 @@ import { getOwnProfile } from "@/lib/data/profiles";
 import NavLinks from "./NavLinks";
 import MobileMenu from "./MobileMenu";
 import AccountMenu from "./AccountMenu";
-import LanguageSwitch from "./LanguageSwitch";
 import { getI18n } from "@/lib/i18n/server";
 
 export default async function SiteHeader() {
@@ -29,7 +28,6 @@ export default async function SiteHeader() {
 
         <div className="flex items-center gap-2.5 xl:gap-3">
           <div className="hidden items-center gap-3 xl:flex">
-            <LanguageSwitch />
             {profile ? (
               <AccountMenu name={profile.name} />
             ) : (

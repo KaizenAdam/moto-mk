@@ -1,17 +1,16 @@
 "use client";
 
-import { useState, useSyncExternalStore, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useSyncExternalStore } from "react";
 import { button } from "./ui";
 import { useI18n } from "./I18nProvider";
-import { LOCALES, LOCALE_NAMES, type Locale } from "@/lib/i18n/config";
+import LanguageFlags from "./LanguageFlags";
 import { saveLocale, setCookie } from "@/lib/i18n/client";
 
 /**
  * The bar at the bottom of the screen on a first visit: what cookies the
- * site uses, and which language the visitor would like. OK saves two
- * first-party cookies (`j5_consent`, `j5_lang`) for a year, and switches
- * the site to the chosen language.
+ * site uses, and which language the visitor would like. Picking a flag
+ * switches the site straight away (`j5_lang`); OK saves `j5_consent` and
+ * closes the bar. Both cookies are first-party and last a year.
  *
  * The site only sets essential cookies (the Supabase sign-in session and
  * these two), so there's nothing to opt out of. If analytics or ad cookies
@@ -34,7 +33,7 @@ function subscribe(onChange: () => void) {
 let reopened = false;
 const needsChoice = () => reopened || !hasConsent();
 
-/** Opens the bar again (the footer's "Cookies & language" link). */
+/** Opens the bar again (the footer's "Cookies" link). */
 export function openCookieSettings() {
   reopened = true;
   window.dispatchEvent(new Event(REOPEN));
@@ -42,21 +41,15 @@ export function openCookieSettings() {
 
 export default function CookieBar() {
   const { locale, t } = useI18n();
-  const router = useRouter();
-  const [, startTransition] = useTransition();
   const open = useSyncExternalStore(subscribe, needsChoice, () => false);
-  const [picked, setPicked] = useState<Locale | null>(null);
-  const chosen = picked ?? locale;
 
   if (!open) return null;
 
   function save() {
     setCookie(CONSENT, "essential");
-    saveLocale(chosen);
+    saveLocale(locale);
     reopened = false;
-    setPicked(null);
     window.dispatchEvent(new Event(REOPEN));
-    if (chosen !== locale) startTransition(() => router.refresh());
   }
 
   return (
@@ -71,31 +64,8 @@ export default function CookieBar() {
         </div>
 
         <div>
-          <p id="lang-label" className="font-display mb-1.5 text-xs tracking-[.08em] text-grey">
-            {t.cookies.preferred}
-          </p>
-          <div role="radiogroup" aria-labelledby="lang-label" className="flex">
-            {LOCALES.map((l) => {
-              const active = l === chosen;
-              return (
-                <button
-                  key={l}
-                  type="button"
-                  role="radio"
-                  lang={l}
-                  aria-checked={active}
-                  onClick={() => setPicked(l)}
-                  className={`font-display -ml-px border-2 px-3.5 py-2 text-sm first:ml-0 transition ${
-                    active
-                      ? "relative z-10 border-highlight bg-highlight text-[#111]"
-                      : "border-line text-ink hover:border-highlight"
-                  }`}
-                >
-                  {LOCALE_NAMES[l]}
-                </button>
-              );
-            })}
-          </div>
+          <p className="font-display mb-1.5 text-xs tracking-[.08em] text-grey">{t.cookies.preferred}</p>
+          <LanguageFlags labelled />
         </div>
 
         <button type="button" onClick={save} className={`${button("primary", "md")} lg:self-center`}>

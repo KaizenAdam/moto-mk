@@ -68,7 +68,6 @@ const en = {
     events: "Events",
   },
   lang: {
-    label: "Language",
     switchTo: "Switch language",
   },
   cookies: {
@@ -77,7 +76,7 @@ const en = {
     body: "We only use essential cookies: they keep you signed in and remember the choices you make here. No tracking, no advertising cookies.",
     preferred: "Preferred language",
     ok: "OK, got it",
-    settings: "Cookies & language",
+    link: "Cookies",
   },
   footer: {
     tagline: "North Macedonia's motorcycle marketplace - bikes from riders and verified dealers.",
@@ -220,7 +219,7 @@ const en = {
               "**Sign-in cookie** (set by Supabase): keeps you signed in. It's removed when you sign out.",
               "**j5_consent** and **j5_lang**: remember that you've seen the cookies message and your preferred language, for a year.",
             ],
-            'You can change your language from the header, or from "Cookies & language" at the bottom of any page.',
+            "You can change your language with the flags at the bottom of any page.",
           ],
         },
         {

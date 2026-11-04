@@ -8,7 +8,6 @@ import { ACCOUNT_LINKS } from "./AccountMenu";
 import { button } from "./ui";
 import { CloseIcon, MenuIcon } from "./icons";
 import { useI18n } from "./I18nProvider";
-import LanguageSwitch from "./LanguageSwitch";
 
 /**
  * Phone-size menu: a ☰ button that drops the navigation down under the
@@ -74,10 +73,6 @@ export default function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                   {t.common.logIn}
                 </Link>
               )}
-            </div>
-            <div className="border-t border-line px-4 pt-4 mt-4">
-              <p className="font-display mb-2 text-xs tracking-wider text-grey">{t.lang.label}</p>
-              <LanguageSwitch size="lg" onSwitch={close} />
             </div>
           </div>
         </>
