@@ -3,6 +3,9 @@
 > **Backend work (featured listings, ads, payments)?** Read
 > `docs/HANDOVER-backend.md` first: it lists what the Oct 2026 front-end
 > pass left for the backend, the UI contracts to fill, and known issues.
+>
+> **Front-end / design work?** `docs/HANDOVER-frontend.md` says where the
+> Oct–Nov 2026 redesign is up to and which pages still need the new look.
 
 ## Purpose
 
