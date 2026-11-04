@@ -1,14 +1,17 @@
 import Link from "next/link";
 import EmptyState from "@/app/components/EmptyState";
+import { getI18n } from "@/lib/i18n/server";
+import { fill } from "@/lib/i18n/format";
 
 /** Only live bikes can be featured — say why and where to go. */
-export function NotLiveNotice({ status }: { status: string }) {
+export async function NotLiveNotice({ status }: { status: string }) {
+  const { t } = await getI18n();
   return (
     <EmptyState>
-      Only live bikes can be featured. This one is <strong className="text-ink">{status}</strong>
-      {status === "pending" ? " - you can feature it once it's approved." : "."}{" "}
+      {fill(t.feature.onlyLive, { status: t.statuses[status] ?? status })}
+      {status === "pending" ? t.feature.onceApproved : "."}{" "}
       <Link href="/garage" className="text-highlight hover:underline">
-        Back to My Garage
+        {t.feature.backToGarage}
       </Link>
     </EmptyState>
   );

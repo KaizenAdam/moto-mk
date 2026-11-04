@@ -7,6 +7,8 @@ import { canWhatsApp, formatPhone, telHref, whatsAppHref } from "@/lib/contact/p
 import { PinIcon } from "@/app/components/icons";
 import { button } from "@/app/components/ui";
 import Badge from "@/app/components/Badge";
+import { useI18n } from "@/app/components/I18nProvider";
+import { fill } from "@/lib/i18n/format";
 
 const LeafletMap = dynamic(() => import("@/app/components/map/LeafletMap"), {
   ssr: false,
@@ -21,6 +23,7 @@ type Centre = Tables<"service_centres">;
  */
 export default function ServiceCentresExplorer({ centres }: { centres: Centre[] }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const { t } = useI18n();
 
   const pinned = centres.filter((c) => c.lat != null && c.lng != null);
   const unpinned = centres.filter((c) => c.lat == null || c.lng == null);
@@ -35,9 +38,7 @@ export default function ServiceCentresExplorer({ centres }: { centres: Centre[] 
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px]">
       <div className="lg:sticky lg:top-24 lg:self-start">
         <LeafletMap pins={pins} selectedId={selectedId} onSelect={select} className="h-[360px] lg:h-[560px]" />
-        {pins.length === 0 && (
-          <p className="mt-2 text-xs text-grey">Pins appear here as each centre&rsquo;s location is confirmed.</p>
-        )}
+        {pins.length === 0 && <p className="mt-2 text-xs text-grey">{t.service.pinsSoon}</p>}
       </div>
 
       <div className="space-y-3 lg:max-h-[560px] lg:overflow-y-auto lg:pr-1">
@@ -47,7 +48,7 @@ export default function ServiceCentresExplorer({ centres }: { centres: Centre[] 
         {unpinned.length > 0 && (
           <>
             {pinned.length > 0 && (
-              <p className="pt-3 text-xs font-bold tracking-wide text-grey uppercase">Not on the map yet</p>
+              <p className="pt-3 text-xs font-bold tracking-wide text-grey uppercase">{t.service.notOnMap}</p>
             )}
             {unpinned.map((c) => (
               <CentreCard key={c.id} centre={c} active={false} />
@@ -60,8 +61,10 @@ export default function ServiceCentresExplorer({ centres }: { centres: Centre[] 
 }
 
 function CentreCard({ centre: c, active, onClick }: { centre: Centre; active: boolean; onClick?: () => void }) {
+  const { t } = useI18n();
   const tel = c.phone ? telHref(c.phone) : null;
-  const wa = c.phone && canWhatsApp(c.phone) ? whatsAppHref(c.phone, `Hi ${c.name}, I found you on Just5Up!`) : null;
+  const wa =
+    c.phone && canWhatsApp(c.phone) ? whatsAppHref(c.phone, fill(t.service.whatsappMessage, { name: c.name })) : null;
   const mapQuery =
     c.lat != null && c.lng != null
       ? `${c.lat},${c.lng}`
@@ -77,9 +80,7 @@ function CentreCard({ centre: c, active, onClick }: { centre: Centre; active: bo
     >
       <div className="mb-1 flex items-start justify-between gap-3">
         <h2 className="font-display text-xl leading-tight text-ink">{c.name}</h2>
-        {c.verified && (
-          <Badge>Verified</Badge>
-        )}
+        {c.verified && <Badge>{t.service.verified}</Badge>}
       </div>
       <a
         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`}
@@ -94,21 +95,13 @@ function CentreCard({ centre: c, active, onClick }: { centre: Centre; active: bo
       {c.specialties && <p className="mb-3 text-[13px] text-ink-dim">{c.specialties}</p>}
       <div className="flex flex-wrap items-center gap-2" onClick={(e) => e.stopPropagation()}>
         {wa && (
-          <a
-            href={wa}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={button("whatsapp", "sm")}
-          >
-            WhatsApp
+          <a href={wa} target="_blank" rel="noopener noreferrer" className={button("whatsapp", "sm")}>
+            {t.common.whatsapp}
           </a>
         )}
         {tel && c.phone && (
-          <a
-            href={tel}
-            className={button("outline", "sm")}
-          >
-            Call {formatPhone(c.phone)}
+          <a href={tel} className={button("outline", "sm")}>
+            {fill(t.common.callNumber, { phone: formatPhone(c.phone) })}
           </a>
         )}
         {c.website && (
@@ -118,13 +111,11 @@ function CentreCard({ centre: c, active, onClick }: { centre: Centre; active: bo
             rel="noopener noreferrer"
             className="text-[11px] font-bold tracking-wide text-highlight uppercase hover:underline"
           >
-            Website
+            {t.common.website}
           </a>
         )}
       </div>
-      {!c.verified && (
-        <p className="mt-2.5 text-[11px] text-grey">From public directories - call ahead to confirm details.</p>
-      )}
+      {!c.verified && <p className="mt-2.5 text-[11px] text-grey">{t.service.callAhead}</p>}
     </div>
   );
 }

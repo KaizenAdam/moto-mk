@@ -7,6 +7,8 @@ import NavLinks from "./NavLinks";
 import { ACCOUNT_LINKS } from "./AccountMenu";
 import { button } from "./ui";
 import { CloseIcon, MenuIcon } from "./icons";
+import { useI18n } from "./I18nProvider";
+import LanguageSwitch from "./LanguageSwitch";
 
 /**
  * Phone-size menu: a ☰ button that drops the navigation down under the
@@ -15,6 +17,7 @@ import { CloseIcon, MenuIcon } from "./icons";
 export default function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
+  const { t } = useI18n();
 
   useEffect(() => {
     if (!open) return;
@@ -30,7 +33,7 @@ export default function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-controls="mobile-menu"
-        aria-label={open ? "Close menu" : "Open menu"}
+        aria-label={open ? t.common.closeMenu : t.common.openMenu}
         className="flex h-10 w-10 items-center justify-center border border-line text-ink xl:hidden"
       >
         {open ? <CloseIcon /> : <MenuIcon />}
@@ -49,23 +52,32 @@ export default function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
             <div className="flex flex-col gap-2.5 border-t border-line px-4 pt-4">
               {isLoggedIn ? (
                 <>
-                  <p className="font-display text-xs tracking-wider text-grey">My account</p>
+                  <p className="font-display text-xs tracking-wider text-grey">{t.common.myAccount}</p>
                   {ACCOUNT_LINKS.map((l) => (
-                    <Link key={l.href} href={l.href} onClick={close} className={button(l.href === "/sell" ? "primary" : "outline", "lg")}>
-                      {l.label}
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      onClick={close}
+                      className={button(l.href === "/sell" ? "primary" : "outline", "lg")}
+                    >
+                      {t.common[l.key]}
                     </Link>
                   ))}
                   <form action={signOut} onSubmit={close}>
                     <button type="submit" className={`${button("danger", "lg")} w-full`}>
-                      Sign out
+                      {t.common.signOut}
                     </button>
                   </form>
                 </>
               ) : (
                 <Link href="/login" onClick={close} className={button("outline", "lg")}>
-                  Log in
+                  {t.common.logIn}
                 </Link>
               )}
+            </div>
+            <div className="border-t border-line px-4 pt-4 mt-4">
+              <p className="font-display mb-2 text-xs tracking-wider text-grey">{t.lang.label}</p>
+              <LanguageSwitch size="lg" onSwitch={close} />
             </div>
           </div>
         </>

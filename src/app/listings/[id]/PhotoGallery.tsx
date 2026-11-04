@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CameraIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "@/app/components/icons";
+import { useI18n } from "@/app/components/I18nProvider";
+import { fill } from "@/lib/i18n/format";
 
 /**
  * Listing photos, Auto Trader-style: on desktop a mosaic (one big photo,
@@ -11,6 +13,7 @@ import { CameraIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "@/app/
  */
 export default function PhotoGallery({ urls, alt }: { urls: string[]; alt: string }) {
   const [open, setOpen] = useState<number | null>(null);
+  const { t } = useI18n();
   const [mobileIndex, setMobileIndex] = useState(0);
   const touchX = useRef<number | null>(null);
 
@@ -18,7 +21,7 @@ export default function PhotoGallery({ urls, alt }: { urls: string[]; alt: strin
     return (
       <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-[#26262b] to-[#18181b] text-sm text-grey lg:aspect-auto lg:h-[460px]">
         <CameraIcon className="h-8 w-8" />
-        No photos yet
+        {t.gallery.noPhotos}
       </div>
     );
   }
@@ -31,7 +34,7 @@ export default function PhotoGallery({ urls, alt }: { urls: string[]; alt: strin
       className="font-display absolute bottom-3 left-3 flex items-center gap-1.5 bg-black/80 px-3 py-2 text-sm font-medium tracking-wider text-white transition hover:bg-highlight hover:text-[#111]"
     >
       <CameraIcon className="h-4 w-4" />
-      Gallery ({urls.length})
+      {fill(t.gallery.gallery, { n: urls.length })}
     </button>
   );
 
@@ -49,7 +52,12 @@ export default function PhotoGallery({ urls, alt }: { urls: string[]; alt: strin
           setMobileIndex((i) => (i + (dx < 0 ? 1 : -1) + urls.length) % urls.length);
         }}
       >
-        <button type="button" onClick={() => setOpen(mobileIndex)} className="block h-full w-full" aria-label="Open gallery">
+        <button
+          type="button"
+          onClick={() => setOpen(mobileIndex)}
+          className="block h-full w-full"
+          aria-label={t.gallery.open}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element -- signed URL rotates per request */}
           <img src={urls[mobileIndex]} alt={alt} className="h-full w-full object-cover" draggable={false} />
         </button>
@@ -64,7 +72,11 @@ export default function PhotoGallery({ urls, alt }: { urls: string[]; alt: strin
       {/* Desktop: mosaic. */}
       <div
         className={`relative hidden h-[480px] gap-1.5 overflow-hidden lg:grid ${
-          small.length === 0 ? "grid-cols-1" : small.length === 1 ? "grid-cols-2" : "grid-cols-[2fr_1fr_1fr] grid-rows-2"
+          small.length === 0
+            ? "grid-cols-1"
+            : small.length === 1
+              ? "grid-cols-2"
+              : "grid-cols-[2fr_1fr_1fr] grid-rows-2"
         }`}
       >
         <MosaicTile
@@ -144,6 +156,7 @@ function MosaicTile({
 
 /** Full-screen viewer: arrows, swipe, keyboard (← → Esc), thumbnail strip. */
 function Lightbox({ urls, alt, start, onClose }: { urls: string[]; alt: string; start: number; onClose: () => void }) {
+  const { t } = useI18n();
   const [index, setIndex] = useState(start);
   const touchX = useRef<number | null>(null);
   const go = useCallback((step: number) => setIndex((i) => (i + step + urls.length) % urls.length), [urls.length]);
@@ -167,12 +180,22 @@ function Lightbox({ urls, alt, start, onClose }: { urls: string[]; alt: string; 
     "absolute top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center bg-black/70 text-ink hover:bg-highlight hover:text-[#111]";
 
   return (
-    <div role="dialog" aria-modal="true" aria-label="Photo gallery" className="fixed inset-0 z-[60] flex flex-col bg-black/95">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={t.gallery.dialog}
+      className="fixed inset-0 z-[60] flex flex-col bg-black/95"
+    >
       <div className="flex items-center justify-between px-4 py-3 text-sm text-ink-dim">
         <span>
           {index + 1} / {urls.length}
         </span>
-        <button type="button" onClick={onClose} className="flex h-10 w-10 items-center justify-center text-ink hover:text-highlight" aria-label="Close gallery">
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex h-10 w-10 items-center justify-center text-ink hover:text-highlight"
+          aria-label={t.gallery.close}
+        >
           <CloseIcon className="h-6 w-6" />
         </button>
       </div>
@@ -190,10 +213,10 @@ function Lightbox({ urls, alt, start, onClose }: { urls: string[]; alt: string; 
         <img src={urls[index]} alt={alt} className="max-h-full max-w-full object-contain" draggable={false} />
         {urls.length > 1 && (
           <>
-            <button type="button" onClick={() => go(-1)} className={`${arrow} left-3`} aria-label="Previous photo">
+            <button type="button" onClick={() => go(-1)} className={`${arrow} left-3`} aria-label={t.gallery.previous}>
               <ChevronLeftIcon />
             </button>
-            <button type="button" onClick={() => go(1)} className={`${arrow} right-3`} aria-label="Next photo">
+            <button type="button" onClick={() => go(1)} className={`${arrow} right-3`} aria-label={t.gallery.next}>
               <ChevronRightIcon />
             </button>
           </>
@@ -206,7 +229,7 @@ function Lightbox({ urls, alt, start, onClose }: { urls: string[]; alt: string; 
               key={url}
               type="button"
               onClick={() => setIndex(i)}
-              aria-label={`Photo ${i + 1}`}
+              aria-label={fill(t.gallery.photoN, { n: i + 1 })}
               className={`h-14 w-20 shrink-0 overflow-hidden border-2 ${
                 i === index ? "border-highlight" : "border-transparent opacity-60 hover:opacity-100"
               }`}

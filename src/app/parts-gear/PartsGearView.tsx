@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { PART_CATEGORIES } from "@/lib/constants/parts";
+import { useI18n } from "@/app/components/I18nProvider";
+import { fill } from "@/lib/i18n/format";
 import { BlockHero, Eyebrow, GoldBanner, HighlightWord, RedBand, blackButton } from "@/app/components/Bands";
 import EmptyState from "@/app/components/EmptyState";
 import Badge from "@/app/components/Badge";
@@ -14,7 +16,9 @@ import Badge from "@/app/components/Badge";
  */
 export default function PartsGearView() {
   const [selected, setSelected] = useState<string | null>(null);
-  const selectedName = PART_CATEGORIES.flatMap((c) => c.subcategories).find((s) => s.id === selected)?.name;
+  const { t } = useI18n();
+  const P = t.parts;
+  const selectedName = selected ? (P.subs[selected]?.lower ?? selected) : "";
 
   return (
     <main className="pb-16">
@@ -25,21 +29,21 @@ export default function PartsGearView() {
         }}
         title={
           <>
-            Parts &amp; <HighlightWord>gear</HighlightWord>
+            {P.title1} <HighlightWord>{P.title2}</HighlightWord>
           </>
         }
-        intro="Everything else motorcycle: spare parts, accessories and riding gear from riders and shops across North Macedonia."
+        intro={P.intro}
       >
         <div className="max-w-[640px]">
           <div className="flex bg-white opacity-90">
             <label htmlFor="parts-search" className="sr-only">
-              Search parts and gear
+              {P.searchLabel}
             </label>
             <input
               id="parts-search"
               type="text"
               disabled
-              placeholder="Search by brand, e.g. Alpinestars, Akrapovič"
+              placeholder={P.searchPlaceholder}
               className="min-w-0 flex-1 cursor-not-allowed border-0 bg-transparent px-4 py-4 text-base text-[#111] outline-none placeholder:text-[#77767c] sm:px-5"
             />
             <button
@@ -47,12 +51,12 @@ export default function PartsGearView() {
               disabled
               className="font-display cursor-not-allowed bg-highlight px-4 text-base font-semibold tracking-[.08em] text-[#111] sm:px-6"
             >
-              Search
+              {t.common.search}
             </button>
           </div>
           <p className="mt-3 flex items-center gap-2 text-sm text-[#d6d3cb]">
-            <Badge tone="red">Coming soon</Badge>
-            Buying and selling opens shortly. Here&rsquo;s what&rsquo;ll be on offer.
+            <Badge tone="red">{t.common.comingSoon}</Badge>
+            {P.openingSoon}
           </p>
         </div>
       </BlockHero>
@@ -60,8 +64,10 @@ export default function PartsGearView() {
       <div className="mx-auto max-w-[1280px] space-y-14 px-5 pt-12">
         {PART_CATEGORIES.map((cat) => (
           <section key={cat.id}>
-            <h2 className="font-display text-[28px] font-semibold sm:text-[32px]">{cat.name}</h2>
-            <p className="mt-1 mb-5 text-sm text-ink-dim">{cat.summary}</p>
+            <h2 className="font-display text-[28px] font-semibold sm:text-[32px]">
+              {P.categories[cat.id]?.name ?? cat.name}
+            </h2>
+            <p className="mt-1 mb-5 text-sm text-ink-dim">{P.categories[cat.id]?.summary ?? cat.summary}</p>
             <div className="grid grid-cols-3 gap-1.5 lg:grid-cols-6">
               {cat.subcategories.map((sub) => {
                 const active = sub.id === selected;
@@ -89,7 +95,7 @@ export default function PartsGearView() {
                         active ? "bg-red text-white" : "bg-highlight text-[#111]"
                       }`}
                     >
-                      {sub.name}
+                      {P.subs[sub.id]?.name ?? sub.name}
                     </span>
                   </button>
                 );
@@ -98,9 +104,9 @@ export default function PartsGearView() {
             {cat.subcategories.some((s) => s.id === selected) && (
               <div className="mt-4">
                 <EmptyState>
-                  No {selectedName?.toLowerCase()} listed yet. Selling opens soon.{" "}
+                  {fill(P.noneYet, { name: selectedName })}{" "}
                   <button type="button" onClick={() => setSelected(null)} className="text-highlight hover:underline">
-                    Show all
+                    {t.common.showAll}
                   </button>
                 </EmptyState>
               </div>
@@ -116,10 +122,10 @@ export default function PartsGearView() {
           className: "top-[10%] right-[-120px] h-[110%] w-[420px] rotate-[-8deg] bg-black/[.16] sm:right-[-20px]",
         }}
       >
-        <Eyebrow>Coming soon</Eyebrow>
-        <h2 className="font-display mb-6 text-4xl leading-none sm:text-[44px]">How it&rsquo;ll work</h2>
+        <Eyebrow>{t.common.comingSoon}</Eyebrow>
+        <h2 className="font-display mb-6 text-4xl leading-none sm:text-[44px]">{P.howItWorks}</h2>
         <ol className="grid gap-3 md:grid-cols-3">
-          {STEPS.map(([title, body], i) => (
+          {P.steps.map(({ title, body }, i) => (
             <li key={title} className="bg-[#0a0a0a] px-5 py-5">
               <span className="font-display text-4xl leading-none text-highlight">{i + 1}</span>
               <p className="font-display mt-2 text-[22px] font-normal">{title}</p>
@@ -131,18 +137,18 @@ export default function PartsGearView() {
           href="/bikes"
           className="font-display mt-6 inline-block border-b-2 border-white font-normal tracking-[.06em]"
         >
-          Browse bikes meanwhile &gt;&gt;&gt;
+          {P.browseMeanwhile}
         </Link>
       </RedBand>
 
       <div className="mt-16">
         <GoldBanner
-          title="Clearing out the garage?"
+          title={P.clearingOut}
           shard={{ shape: "claw", className: "inset-y-0 right-[-4%] hidden w-[40%] bg-[#111] opacity-90 md:block" }}
-          body="Selling parts and gear opens soon. You can already list a whole bike for free."
+          body={P.clearingBody}
           action={
             <Link href="/sell" className={blackButton}>
-              List a bike free &gt;&gt;&gt;
+              {P.listBikeFree}
             </Link>
           }
         />
@@ -150,9 +156,3 @@ export default function PartsGearView() {
     </main>
   );
 }
-
-const STEPS = [
-  ["One profile", "List parts and gear under the same profile as your bike, so buyers see everything you're selling."],
-  ["Search by brand", "Find the exact helmet, exhaust or tyre by brand, size and condition."],
-  ["Contact like bikes", "Call or WhatsApp the seller straight from the listing, same as buying a bike."],
-];

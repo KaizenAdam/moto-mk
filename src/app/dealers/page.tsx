@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { getI18n } from "@/lib/i18n/server";
+import { fill, plural } from "@/lib/i18n/format";
 import { createClient } from "@/lib/supabase/server";
 import { listActiveDealers } from "@/lib/data/dealers";
 import { countActiveBySeller } from "@/lib/data/listings";
@@ -8,25 +10,23 @@ import { BlockHero, Eyebrow, HighlightWord, RedBand, blackButton } from "@/app/c
 import ShopPhoto from "@/app/components/ShopPhoto";
 import EmptyState from "@/app/components/EmptyState";
 
-export const metadata: Metadata = {
-  title: "Motorcycle dealers in North Macedonia",
-  description: "Browse North Macedonia's motorcycle dealerships and their bikes for sale.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getI18n();
+  return {
+    title: t.meta.dealersTitle,
+    description: t.meta.dealersDescription,
+  };
+}
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
-
-const DEALER_PERKS = [
-  "Your own storefront with every bike you have",
-  "A Verified dealer badge on each listing",
-  "Your shop line on every bike, with WhatsApp and Call",
-];
 
 export default async function DealersPage({ searchParams }: { searchParams: SearchParams }) {
   const { town: townParam } = await searchParams;
   const selectedTown = typeof townParam === "string" ? townParam : null;
 
   const supabase = await createClient();
-  const dealers = await listActiveDealers(supabase);
+  const [dealers, { locale, t }] = await Promise.all([listActiveDealers(supabase), getI18n()]);
+  const D = t.dealers;
   const stock = await countActiveBySeller(
     supabase,
     dealers.map((d) => d.profile_id),
@@ -53,19 +53,15 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
         }}
         title={
           <>
-            Buy from a
+            {D.title1}
             <br />
-            <HighlightWord>verified dealer</HighlightWord>
+            <HighlightWord>{D.title2}</HighlightWord>
           </>
         }
-        intro="Motorcycle dealerships across North Macedonia, every one checked by us before it appears here."
+        intro={D.intro}
         ticks={
           dealers.length > 0
-            ? [
-                `${dealers.length} dealer${dealers.length === 1 ? "" : "s"}`,
-                `${totalBikes} bike${totalBikes === 1 ? "" : "s"} in stock`,
-                "Shop phone on every listing",
-              ]
+            ? [plural(locale, dealers.length, D.count), plural(locale, totalBikes, D.inStock), D.shopPhone]
             : undefined
         }
       />
@@ -74,7 +70,7 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
         {towns.length > 1 && (
           <div className="mb-6 flex flex-wrap gap-2">
             <Link href="/dealers" className={chip(!selectedTown)}>
-              All towns
+              {t.common.allTowns}
             </Link>
             {towns.map((t) => (
               <Link key={t} href={`/dealers?town=${encodeURIComponent(t)}`} className={chip(selectedTown === t)}>
@@ -86,9 +82,9 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
 
         {sorted.length === 0 ? (
           <EmptyState>
-            No dealers {selectedTown ? `in ${selectedTown}` : ""} yet.{" "}
+            {selectedTown ? fill(D.noDealersIn, { town: selectedTown }) : D.noDealers}{" "}
             <Link href="/for-business#dealers" className="text-highlight hover:underline">
-              Run a dealership? Apply here.
+              {D.apply}
             </Link>
           </EmptyState>
         ) : (
@@ -126,14 +122,14 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
                   {d.about && <p className="line-clamp-2 px-5 text-sm text-ink-dim">{d.about}</p>}
                   <div className="mt-auto flex items-center justify-between gap-3 border-t border-line px-5 py-4 pt-4">
                     {count === 0 ? (
-                      <span className="text-sm text-grey">No bikes listed right now</span>
+                      <span className="text-sm text-grey">{D.noBikes}</span>
                     ) : (
                       <span className="font-display bg-highlight px-2.5 py-0.5 text-lg text-[#111]">
-                        {count} bike{count > 1 ? "s" : ""}
+                        {plural(locale, count, t.common.bikes)}
                       </span>
                     )}
                     <span className="font-display text-sm tracking-[.06em] text-ink group-hover:text-highlight">
-                      View storefront &gt;&gt;&gt;
+                      {D.viewStorefront}
                     </span>
                   </div>
                 </Link>
@@ -152,17 +148,15 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
       >
         <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-center">
           <div>
-            <Eyebrow>For business</Eyebrow>
-            <h2 className="font-display text-4xl leading-none sm:text-[44px]">Run a dealership?</h2>
-            <p className="mt-3 max-w-md text-[15px]">
-              Put your stock in front of riders all over North Macedonia. Listing bikes is free.
-            </p>
+            <Eyebrow>{D.forBusiness}</Eyebrow>
+            <h2 className="font-display text-4xl leading-none sm:text-[44px]">{D.runDealership}</h2>
+            <p className="mt-3 max-w-md text-[15px]">{D.runPitch}</p>
             <Link href="/for-business#dealers" className={`${blackButton} mt-6`}>
-              Apply now &gt;&gt;&gt;
+              {D.applyNow}
             </Link>
           </div>
           <ul className="space-y-3">
-            {DEALER_PERKS.map((p) => (
+            {D.perks.map((p) => (
               <li key={p} className="flex items-center gap-4 bg-[#0a0a0a] px-5 py-4">
                 <TickIcon className="h-5 w-5 shrink-0 text-highlight" />
                 <span className="font-display text-lg font-normal">{p}</span>

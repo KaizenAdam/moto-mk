@@ -2,14 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useI18n } from "./I18nProvider";
 
+/** Labels come from the dictionary's `nav` section, by key. */
 export const NAV_ITEMS = [
-  { href: "/", label: "Home" },
-  { href: "/bikes", label: "Buy" },
-  { href: "/parts-gear", label: "Parts & Gear" },
-  { href: "/dealers", label: "Dealers" },
-  { href: "/service-centres", label: "Service Centres" },
-  { href: "/events", label: "Events" },
+  { href: "/", key: "home" },
+  { href: "/bikes", key: "buy" },
+  { href: "/parts-gear", key: "partsGear" },
+  { href: "/dealers", key: "dealers" },
+  { href: "/service-centres", key: "serviceCentres" },
+  { href: "/events", key: "events" },
 ] as const;
 
 function isActive(pathname: string, href: string) {
@@ -19,14 +21,9 @@ function isActive(pathname: string, href: string) {
 }
 
 /** Main navigation, with the current section marked. */
-export default function NavLinks({
-  variant,
-  onNavigate,
-}: {
-  variant: "bar" | "menu";
-  onNavigate?: () => void;
-}) {
+export default function NavLinks({ variant, onNavigate }: { variant: "bar" | "menu"; onNavigate?: () => void }) {
   const pathname = usePathname();
+  const { t } = useI18n();
 
   return NAV_ITEMS.map((item) => {
     const active = isActive(pathname, item.href);
@@ -46,7 +43,7 @@ export default function NavLinks({
               }`
         }
       >
-        {item.label}
+        {t.nav[item.key]}
       </Link>
     );
   });

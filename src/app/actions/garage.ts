@@ -1,5 +1,8 @@
 "use server";
 
+import { getI18n } from "@/lib/i18n/server";
+import { fill } from "@/lib/i18n/format";
+
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getById, remove, update } from "@/lib/data/listings";
@@ -29,19 +32,21 @@ function optionalNumber(formData: FormData, key: string) {
 }
 
 async function attempt(task: () => Promise<unknown>, message?: string): Promise<FormState> {
+  const { t } = await getI18n();
   try {
     await task();
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Something went wrong." };
+    return { error: e instanceof Error ? e.message : t.errors.generic };
   }
   revalidatePath("/garage");
   return { error: null, message };
 }
 
 export async function updateProfileAction(_prev: FormState, formData: FormData) {
+  const { t } = await getI18n();
   const phone = text(formData, "phone");
   if (phone && !toInternationalDigits(phone)) {
-    return { error: "That phone number doesn't look right." };
+    return { error: t.errors.badPhone };
   }
   const supabase = await createClient();
   return attempt(
@@ -51,13 +56,14 @@ export async function updateProfileAction(_prev: FormState, formData: FormData) 
         phone,
         town: text(formData, "town"),
       }),
-    "Profile saved."
+    t.messages.profileSaved,
   );
 }
 
 export async function requestDealerAction(_prev: FormState, formData: FormData) {
+  const { t } = await getI18n();
   const businessName = text(formData, "business_name");
-  if (!businessName) return { error: "Business name is required." };
+  if (!businessName) return { error: t.errors.businessRequired };
   const supabase = await createClient();
   return attempt(
     () =>
@@ -66,7 +72,7 @@ export async function requestDealerAction(_prev: FormState, formData: FormData) 
         address: text(formData, "address") ?? undefined,
         phone: text(formData, "phone") ?? undefined,
       }),
-    "Request sent - we'll review it shortly."
+    t.messages.requestSent,
   );
 }
 
@@ -86,6 +92,7 @@ export async function removePhotoAction(photo: { id: string; storage_path: strin
 }
 
 export async function updateListingAction(id: string, _prev: FormState, formData: FormData) {
+  const { t } = await getI18n();
   const make = text(formData, "make");
   const model = text(formData, "model");
   const price = optionalNumber(formData, "price_eur");
@@ -95,24 +102,24 @@ export async function updateListingAction(id: string, _prev: FormState, formData
   const description = text(formData, "description");
   const maxYear = new Date().getFullYear() + 1;
 
-  if (!make || !model || price == null) return { error: "Make, model and price are required." };
+  if (!make || !model || price == null) return { error: t.errors.makeModelPrice };
   if ([price, year, engineCc, mileageKm].some((n) => Number.isNaN(n))) {
-    return { error: "Numbers only in the price, year, engine and mileage fields." };
+    return { error: t.errors.numbersOnly };
   }
-  if (price <= 0) return { error: "Price must be more than €0." };
+  if (price <= 0) return { error: t.errors.pricePositive };
   if (year != null && (year < 1900 || year > maxYear)) {
-    return { error: `Year must be between 1900 and ${maxYear}.` };
+    return { error: fill(t.errors.yearRange, { max: maxYear }) };
   }
   if ((engineCc ?? 0) < 0 || (mileageKm ?? 0) < 0) {
-    return { error: "Engine size and mileage can't be negative." };
+    return { error: t.errors.notNegative };
   }
   if (description && description.length > 3000) {
-    return { error: "Description is too long - keep it under 3,000 characters." };
+    return { error: t.errors.descriptionTooLong };
   }
 
   const supabase = await createClient();
   const current = await getById(supabase, id);
-  if (!current) return { error: "Listing not found." };
+  if (!current) return { error: t.errors.listingNotFound };
 
   const result = await attempt(
     () =>
@@ -131,22 +138,21 @@ export async function updateListingAction(id: string, _prev: FormState, formData
         // Fixing a rejected listing resubmits it for review.
         ...(current.status === "rejected" ? { status: "pending", rejection_reason: null } : {}),
       }),
-    current.status === "active"
-      ? "Saved. Changes other than price go back for a quick review before they show."
-      : "Saved."
+    current.status === "active" ? t.messages.savedRereview : t.messages.saved,
   );
   revalidatePath(`/listings/${id}`);
   return result;
 }
 
 export async function updateStorefrontAction(_prev: FormState, formData: FormData) {
+  const { t } = await getI18n();
   const businessName = text(formData, "business_name");
   const phone = text(formData, "phone");
   const about = text(formData, "about");
-  if (!businessName) return { error: "Business name is required." };
-  if (businessName.length > 120) return { error: "Business name is too long." };
-  if (phone && !toInternationalDigits(phone)) return { error: "That phone number doesn't look right." };
-  if (about && about.length > 2000) return { error: "Keep the description under 2,000 characters." };
+  if (!businessName) return { error: t.errors.businessRequired };
+  if (businessName.length > 120) return { error: t.errors.businessTooLong };
+  if (phone && !toInternationalDigits(phone)) return { error: t.errors.badPhone };
+  if (about && about.length > 2000) return { error: t.errors.aboutTooLong };
 
   const supabase = await createClient();
   const dealer = await getOwnDealer(supabase);
@@ -159,7 +165,7 @@ export async function updateStorefrontAction(_prev: FormState, formData: FormDat
         phone,
         about,
       }),
-    "Storefront saved."
+    t.messages.storefrontSaved,
   );
   if (dealer) revalidatePath(`/dealers/${dealer.slug}`);
   revalidatePath("/dealers");

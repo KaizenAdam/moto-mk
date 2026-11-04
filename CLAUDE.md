@@ -308,8 +308,42 @@ demo state — not test residue to clean up.
   sets **only essential cookies** (Supabase sign-in plus these two), which
   is what the bar says; if analytics or ad cookies are ever added, the bar
   needs a real Reject choice and they must not load before consent.
-  Only English exists, so choosing Македонски or Shqip is remembered and
-  says "coming soon" (no fake switch). `j5_lang` is there for real i18n.
+  OK also switches the site to the chosen language.
+- **Three languages: English, Macedonian, Albanian (Nov 2026).** Billy
+  asked for the language buttons to work, so every visible string now
+  lives in `src/lib/i18n/dictionaries/{en,mk,sq}.ts`. The visitor's
+  choice is the `j5_lang` cookie (header EN · MK · SQ switch, the phone
+  menu, or the cookies bar), read by `getLocale()`; URLs don't change and
+  `<html lang>` follows it. The rules:
+  - **Never hard-code visible text.** Add the English to `en.ts` and the
+    same key to `mk.ts` and `sq.ts` (TypeScript fails the build if a key
+    is missing or extra). Server components, metadata and Server Actions
+    use `await getI18n()` (`src/lib/i18n/server.ts`); client components use
+    `useI18n()` (`components/I18nProvider.tsx`, mounted in the root
+    layout). Legal and `meta` text is server-only and never reaches the
+    browser bundle.
+  - **Placeholders:** `{name}` via `fill()`, counts via `plural()` with
+    `{ one, other }` (Macedonian's "one" is 1, 21, 31… not 11). Keep every
+    placeholder in all three languages; a gold headline split across two
+    keys can put `{name}` in either part (Macedonian word order differs).
+  - **Format with `src/lib/i18n/format.ts`, never `toLocaleString` or
+    `Intl` in a component.** Not every browser has Macedonian or Albanian
+    locale data, and a client component that formats differently from the
+    server breaks hydration (found on the events page). Month and day
+    names, digit grouping (11.500 in Macedonian) and plural rules are
+    spelled out there; `formatPrice(eur, currency, locale)` uses them.
+  - Stored values stay English in the database (riding styles, engine
+    types, statuses) and are translated for display (`t.styles[...]`,
+    `t.engineTypes[...]`, `t.statuses[...]`). What people type (bike
+    descriptions, dealer "about", events) isn't translated.
+  - **The admin portal stays English** (internal), and so do Supabase's
+    auth emails until their templates are translated in the dashboard.
+  - The Macedonian and Albanian were written by Claude, informal "ти" /
+    "ti" for the brand's tone. **A native speaker should review both
+    before launch.**
+  - `HighlightWord` (the gold block) is inline with cloned edges and a
+    band sized to the capitals, so a phrase that wraps in a longer
+    language gets a block per line without covering the line above.
 - **Search engines and headers (pre-launch check, 4 Nov 2026):**
   `app/robots.ts` (account, admin and edit pages disallowed) and
   `app/sitemap.ts` (section pages, live listings, live storefronts), both
@@ -370,10 +404,10 @@ serif until Oct 2026, which didn't match the punk/rock brief). Every real page
 uses this system — the old ad-hoc black/amber Tailwind on the auth pages
 is gone.
 
-Two things the demo has that were deliberately **not** ported: the MK/SQ
-language switcher (decorative in the demo — real i18n would mean
-authoring and maintaining actual translated copy, a separate piece of
-work) and the FEATURED/NEW card badges (mock-data flourishes with no
+Two things the demo has that were deliberately **not** ported at first:
+the MK/SQ language switcher (decorative in the demo; real translations
+were added in Nov 2026, see "Three languages" above) and the FEATURED/NEW
+card badges (mock-data flourishes with no
 backing column in the real schema). The EUR/MKD currency toggle **was**
 ported, since it's pure client-side math on the real `price_eur` value,
 not decoration. `/listings` also gained working free-text search

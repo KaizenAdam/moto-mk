@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { button } from "./ui";
 import { ArrowLeftIcon, ArrowRightIcon } from "@/app/components/icons";
+import { useI18n } from "./I18nProvider";
+import { fill } from "@/lib/i18n/format";
 
 /**
  * Pick photos before they're uploaded: drop or browse, a big cover, ← → to
@@ -28,6 +30,7 @@ export default function PhotoPicker({
 }) {
   const input = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
+  const { t } = useI18n();
   const previews = useMemo(() => files.map((f) => URL.createObjectURL(f)), [files]);
   useEffect(() => () => previews.forEach((u) => URL.revokeObjectURL(u)), [previews]);
 
@@ -68,19 +71,25 @@ export default function PhotoPicker({
               <img src={url} alt="" className="h-full w-full object-cover" />
               {coverFirst && i === 0 && (
                 <span className="font-display absolute top-2 left-2 bg-highlight px-2 py-0.5 text-[11px] font-semibold tracking-wider text-[#141414]">
-                  Cover
+                  {t.photoPicker.cover}
                 </span>
               )}
               <div className="absolute inset-x-1 bottom-1 flex items-center justify-between gap-1">
                 <div className="flex gap-1">
-                  <button type="button" onClick={() => move(i, i - 1)} disabled={i === 0} aria-label="Move earlier" className={tool}>
+                  <button
+                    type="button"
+                    onClick={() => move(i, i - 1)}
+                    disabled={i === 0}
+                    aria-label={t.photoPicker.moveEarlier}
+                    className={tool}
+                  >
                     <ArrowLeftIcon className="h-3.5 w-3.5" />
                   </button>
                   <button
                     type="button"
                     onClick={() => move(i, i + 1)}
                     disabled={i === files.length - 1}
-                    aria-label="Move later"
+                    aria-label={t.photoPicker.moveLater}
                     className={tool}
                   >
                     <ArrowRightIcon className="h-3.5 w-3.5" />
@@ -88,14 +97,20 @@ export default function PhotoPicker({
                 </div>
                 <div className="flex gap-1">
                   {coverFirst && i > 0 && (
-                    <button type="button" onClick={() => move(i, 0)} title="Make cover" aria-label="Make cover" className={`${tool} whitespace-nowrap`}>
-                      ★ Cover
+                    <button
+                      type="button"
+                      onClick={() => move(i, 0)}
+                      title={t.photoPicker.makeCover}
+                      aria-label={t.photoPicker.makeCover}
+                      className={`${tool} whitespace-nowrap`}
+                    >
+                      {t.photoPicker.starCover}
                     </button>
                   )}
                   <button
                     type="button"
                     onClick={() => onChange(files.filter((_, j) => j !== i))}
-                    aria-label="Remove photo"
+                    aria-label={t.photoPicker.remove}
                     className={`${tool} hover:bg-red hover:text-white`}
                   >
                     ✕
@@ -123,16 +138,23 @@ export default function PhotoPicker({
             dragging ? "border-highlight bg-highlight/10 text-ink" : "border-line text-ink-dim hover:border-highlight"
           }`}
         >
-          <input ref={input} type="file" accept="image/*" multiple className="hidden" onChange={(e) => add(e.target.files)} />
-          <span className={`${button("outline", "sm")} pointer-events-none`}>+ Add photos</span>
-          <span className="mt-2 block">or drop them here</span>
+          <input
+            ref={input}
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={(e) => add(e.target.files)}
+          />
+          <span className={`${button("outline", "sm")} pointer-events-none`}>{t.photoPicker.add}</span>
+          <span className="mt-2 block">{t.photoPicker.orDrop}</span>
           <span className="mt-1 block text-xs text-grey">
-            {files.length} of {max}
-            {coverFirst ? " · the first photo is the cover" : " · added after your current photos"}
+            {fill(t.photoPicker.count, { n: files.length, max })}
+            {coverFirst ? t.photoPicker.coverHint : t.photoPicker.afterHint}
           </span>
         </label>
       ) : (
-        <p className="text-xs text-grey">That&rsquo;s the maximum of {max} photos - remove one to add another.</p>
+        <p className="text-xs text-grey">{fill(t.photoPicker.max, { max })}</p>
       )}
     </div>
   );

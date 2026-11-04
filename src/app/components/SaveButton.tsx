@@ -5,6 +5,7 @@ import Link from "next/link";
 import { toggleSavedAction } from "@/app/actions/savedListings";
 import { toast } from "./Toaster";
 import { HeartFilledIcon, HeartIcon } from "./icons";
+import { useI18n } from "./I18nProvider";
 
 export default function SaveButton({
   listingId,
@@ -20,19 +21,20 @@ export default function SaveButton({
 }) {
   const [saved, setSaved] = useState(initiallySaved);
   const [pending, startTransition] = useTransition();
+  const { t } = useI18n();
 
   const badgeClass =
     "flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-sm transition hover:scale-105 hover:bg-black/80";
 
   if (!isLoggedIn) {
     return variant === "badge" ? (
-      <Link href="/login" className={badgeClass} title="Log in to save" aria-label="Log in to save">
+      <Link href="/login" className={badgeClass} title={t.save.logInToSave} aria-label={t.save.logInToSave}>
         <HeartIcon className="h-[18px] w-[18px]" />
       </Link>
     ) : (
       <Link href="/login" className="flex items-center gap-1.5 text-sm text-ink-dim hover:text-highlight">
         <HeartIcon />
-        Log in to save
+        {t.save.logInToSave}
       </Link>
     );
   }
@@ -43,7 +45,7 @@ export default function SaveButton({
     startTransition(async () => {
       try {
         await toggleSavedAction(listingId, wasSaved);
-        toast(wasSaved ? "Removed from saved bikes" : "Saved to My Garage");
+        toast(wasSaved ? t.save.removed : t.save.savedToGarage);
       } catch {
         setSaved(wasSaved); // the heart shouldn't claim a save that didn't happen
       }
@@ -56,7 +58,7 @@ export default function SaveButton({
         type="button"
         disabled={pending}
         onClick={toggle}
-        aria-label={saved ? "Remove from saved" : "Save"}
+        aria-label={saved ? t.save.remove : t.common.save}
         aria-pressed={saved}
         className={`${badgeClass} ${saved ? "bg-red hover:bg-red" : ""} disabled:opacity-60`}
       >
@@ -74,7 +76,7 @@ export default function SaveButton({
       className="flex items-center gap-1.5 text-sm text-ink-dim hover:text-highlight disabled:opacity-60"
     >
       {saved ? <HeartFilledIcon className="h-4 w-4 text-red" /> : <HeartIcon />}
-      {saved ? "Saved" : "Save"}
+      {saved ? t.common.saved : t.common.save}
     </button>
   );
 }

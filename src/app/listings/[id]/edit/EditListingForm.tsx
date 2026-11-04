@@ -7,12 +7,16 @@ import { ENGINE_TYPES, RIDING_STYLES, TOWNS } from "@/lib/constants/listings";
 import { toast } from "@/app/components/Toaster";
 import { input as inputClass, label as labelClass, button } from "@/app/components/ui";
 
+import { useI18n } from "@/app/components/I18nProvider";
+
 const initialState: FormState = { error: null };
 
 export default function EditListingForm({ listing }: { listing: Tables<"listings"> }) {
+  const { t } = useI18n();
+  const F = t.bikeForm;
   const [state, formAction, pending] = useActionState(async (prev: FormState, data: FormData) => {
     const result = await updateListingAction(listing.id, prev, data);
-    if (!result.error) toast("Changes saved");
+    if (!result.error) toast(t.edit.changesSaved);
     return result;
   }, initialState);
 
@@ -27,24 +31,20 @@ export default function EditListingForm({ listing }: { listing: Tables<"listings
 
   return (
     <form onSubmit={submit} className="space-y-3.5">
-      {state.error && (
-        <p className="border-l-4 border-red bg-red/15 px-3 py-2 text-sm text-ink">{state.error}</p>
-      )}
-      {state.message && (
-        <p className=" bg-panel2 px-3 py-2 text-sm text-highlight">{state.message}</p>
-      )}
+      {state.error && <p className="border-l-4 border-red bg-red/15 px-3 py-2 text-sm text-ink">{state.error}</p>}
+      {state.message && <p className=" bg-panel2 px-3 py-2 text-sm text-highlight">{state.message}</p>}
 
       <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
         <label className={labelClass}>
-          Make <span className="text-red">*</span>
+          {F.make} <span className="text-red">*</span>
           <input name="make" required defaultValue={listing.make} className={inputClass} />
         </label>
         <label className={labelClass}>
-          Model <span className="text-red">*</span>
+          {F.model} <span className="text-red">*</span>
           <input name="model" required defaultValue={listing.model} className={inputClass} />
         </label>
         <label className={labelClass}>
-          Year
+          {F.year}
           <input
             name="year"
             type="number"
@@ -55,7 +55,7 @@ export default function EditListingForm({ listing }: { listing: Tables<"listings
           />
         </label>
         <label className={labelClass}>
-          Price (€) <span className="text-red">*</span>
+          {F.price} <span className="text-red">*</span>
           <input
             name="price_eur"
             type="number"
@@ -67,42 +67,48 @@ export default function EditListingForm({ listing }: { listing: Tables<"listings
           />
         </label>
         <label className={labelClass}>
-          Engine size (cc)
+          {F.engineSize}
           <input name="engine_cc" type="number" min="0" defaultValue={listing.engine_cc ?? ""} className={inputClass} />
         </label>
         <label className={labelClass}>
-          Mileage (km)
-          <input name="mileage_km" type="number" min="0" defaultValue={listing.mileage_km ?? ""} className={inputClass} />
+          {F.mileage}
+          <input
+            name="mileage_km"
+            type="number"
+            min="0"
+            defaultValue={listing.mileage_km ?? ""}
+            className={inputClass}
+          />
         </label>
         <label className={labelClass}>
-          Engine type
+          {F.engineType}
           <select name="engine_type" defaultValue={listing.engine_type ?? ""} className={inputClass}>
             <option value="">-</option>
-            {ENGINE_TYPES.map((t) => (
-              <option key={t.value} value={t.value}>
-                {t.label}
+            {ENGINE_TYPES.map((e) => (
+              <option key={e.value} value={e.value}>
+                {t.engineTypes[e.value] ?? e.label}
               </option>
             ))}
           </select>
         </label>
         <label className={labelClass}>
-          Riding style
+          {F.style}
           <select name="riding_style" defaultValue={listing.riding_style ?? ""} className={inputClass}>
             <option value="">-</option>
             {RIDING_STYLES.map((s) => (
               <option key={s} value={s}>
-                {s}
+                {t.styles[s] ?? s}
               </option>
             ))}
           </select>
         </label>
         <label className={labelClass}>
-          Town
+          {F.town}
           <select name="town" defaultValue={listing.town ?? ""} className={inputClass}>
             <option value="">-</option>
-            {TOWNS.map((t) => (
-              <option key={t} value={t}>
-                {t}
+            {TOWNS.map((town) => (
+              <option key={town} value={town}>
+                {town}
               </option>
             ))}
           </select>
@@ -110,7 +116,7 @@ export default function EditListingForm({ listing }: { listing: Tables<"listings
       </div>
 
       <label className={labelClass}>
-        Description
+        {F.description}
         <textarea
           name="description"
           rows={6}
@@ -120,12 +126,8 @@ export default function EditListingForm({ listing }: { listing: Tables<"listings
         />
       </label>
 
-      <button
-        type="submit"
-        disabled={pending}
-        className={button("primary", "lg")}
-      >
-        {pending ? "Saving…" : listing.status === "rejected" ? "Save and resubmit" : "Save changes"}
+      <button type="submit" disabled={pending} className={button("primary", "lg")}>
+        {pending ? t.common.saving : listing.status === "rejected" ? t.edit.saveResubmit : t.edit.saveChanges}
       </button>
     </form>
   );

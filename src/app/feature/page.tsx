@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { getI18n } from "@/lib/i18n/server";
+import { fill } from "@/lib/i18n/format";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/data/auth";
@@ -12,7 +14,10 @@ import EmptyState from "@/app/components/EmptyState";
 import { BlockHero, HighlightWord } from "@/app/components/Bands";
 import { button } from "@/app/components/ui";
 
-export const metadata: Metadata = { title: "Feature a bike", robots: { index: false } };
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getI18n();
+  return { title: t.meta.featurePickerTitle, robots: { index: false } };
+}
 
 /**
  * "Feature a bike" from the account menu. Featuring is per listing, so:
@@ -21,8 +26,9 @@ export const metadata: Metadata = { title: "Feature a bike", robots: { index: fa
  */
 export default async function FeatureABikePage() {
   const supabase = await createClient();
-  const user = await getCurrentUser(supabase);
+  const [user, { locale, t }] = await Promise.all([getCurrentUser(supabase), getI18n()]);
   if (!user) redirect("/login");
+  const P = t.feature;
 
   const mine = await listOwn(supabase);
   const live = mine.filter((l) => l.status === "active");
@@ -42,7 +48,7 @@ export default async function FeatureABikePage() {
         above={
           <Link href="/garage" className="inline-flex items-center gap-1.5 text-sm text-[#bdbab2] hover:text-highlight">
             <ArrowLeftIcon />
-            My Garage
+            {t.common.myGarage}
           </Link>
         }
         shard={{
@@ -51,29 +57,26 @@ export default async function FeatureABikePage() {
         }}
         title={
           <>
-            Feature a
+            {P.pickerTitle1}
             <br />
-            <HighlightWord>bike</HighlightWord>
+            <HighlightWord>{P.pickerTitle2}</HighlightWord>
           </>
         }
-        intro="Featured bikes sit above ordinary listings in search and appear on the home page. Pick the bike you want more buyers for."
+        intro={P.pickerIntro}
       />
 
       <div className="mx-auto max-w-[1100px] px-5 pt-10">
         {live.length === 0 ? (
           <EmptyState>
             <p className="mb-4">
-              Only live bikes can be featured.{" "}
-              {waiting > 0
-                ? `You have ${waiting} waiting for review - once one is approved you can feature it.`
-                : "You don't have a bike on sale right now."}
+              {P.onlyLiveShort} {waiting > 0 ? fill(P.waiting, { n: waiting }) : P.noneOnSale}
             </p>
             <div className="flex flex-wrap justify-center gap-2.5">
               <Link href="/sell" className={button("primary", "md")}>
-                Sell your bike &gt;&gt;&gt;
+                {t.garage.sellButton}
               </Link>
               <Link href="/garage" className={button("outline", "md")}>
-                My Garage
+                {t.common.myGarage}
               </Link>
             </div>
           </EmptyState>
@@ -88,18 +91,18 @@ export default async function FeatureABikePage() {
                     <img src={cover} alt="" className="aspect-[4/3] w-full object-cover" />
                   ) : (
                     <div className="flex aspect-[4/3] items-center justify-center bg-panel2 text-xs text-grey">
-                      No photo
+                      {t.garage.noPhoto}
                     </div>
                   )}
                   <div className="flex flex-1 flex-col px-4 pt-3.5 pb-4">
                     <p className="font-display text-[19px] leading-tight">{l.title}</p>
                     <p className="mt-2">
                       <span className="font-display bg-highlight px-2.5 py-0.5 text-lg text-[#111]">
-                        {formatPrice(Number(l.price_eur), "EUR").main}
+                        {formatPrice(Number(l.price_eur), "EUR", locale).main}
                       </span>
                     </p>
                     <Link href={`/listings/${l.id}/feature`} className={`${button("primary", "md")} mt-4`}>
-                      Feature this bike &gt;&gt;&gt;
+                      {P.featureThis}
                     </Link>
                   </div>
                 </div>

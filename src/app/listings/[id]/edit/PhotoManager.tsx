@@ -6,25 +6,21 @@ import { removePhotoAction } from "@/app/actions/garage";
 import ActionButton from "@/app/components/ActionButton";
 import PhotoPicker from "@/app/components/PhotoPicker";
 import { uploadListingPhotos } from "@/app/components/uploadPhotos";
+import { useI18n } from "@/app/components/I18nProvider";
+import { fill, plural } from "@/lib/i18n/format";
 import { toast } from "@/app/components/Toaster";
 import { button } from "@/app/components/ui";
 
 type Photo = { id: string; storage_path: string; sort_order: number; url: string | null };
 
 /** Existing photos (remove) plus new ones (pick, then upload). */
-export default function PhotoManager({
-  listingId,
-  photos,
-  max,
-}: {
-  listingId: string;
-  photos: Photo[];
-  max: number;
-}) {
+export default function PhotoManager({ listingId, photos, max }: { listingId: string; photos: Photo[]; max: number }) {
   const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
   const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const { locale, t } = useI18n();
+  const E = t.edit;
 
   async function upload() {
     setBusy(true);
@@ -32,14 +28,14 @@ export default function PhotoManager({
     try {
       const nextOrder = photos.reduce((m, p) => Math.max(m, p.sort_order + 1), 0);
       const { skipped } = await uploadListingPhotos(listingId, files, nextOrder, (done, total) =>
-        setStatus(`Uploading ${done} of ${total}…`)
+        setStatus(fill(E.uploadingProgress, { done, total })),
       );
       setFiles([]);
-      if (skipped < files.length) toast(`${files.length - skipped} photo${files.length - skipped > 1 ? "s" : ""} added`);
-      setStatus(skipped > 0 ? `${skipped} photo(s) couldn't be read - try JPEG or PNG.` : null);
+      if (skipped < files.length) toast(plural(locale, files.length - skipped, E.photosAdded));
+      setStatus(skipped > 0 ? plural(locale, skipped, E.unreadable) : null);
       router.refresh();
     } catch {
-      setStatus("Upload failed - please try again.");
+      setStatus(E.uploadFailed);
     } finally {
       setBusy(false);
     }
@@ -58,17 +54,17 @@ export default function PhotoManager({
                 <div className="aspect-[4/3]" />
               )}
               <div className="flex items-center justify-between p-1.5">
-                <span className="text-[10px] text-grey uppercase">{i === 0 ? "Cover" : `#${i + 1}`}</span>
+                <span className="text-[10px] text-grey uppercase">{i === 0 ? E.cover : `#${i + 1}`}</span>
                 <ActionButton
                   action={async () => {
                     const r = await removePhotoAction({ id: p.id, storage_path: p.storage_path });
                     router.refresh();
                     return r;
                   }}
-                  label="Remove"
+                  label={E.remove}
                   tone="danger"
-                  confirm="Remove this photo?"
-                  successMessage="Photo removed"
+                  confirm={E.removeConfirm}
+                  successMessage={E.removed}
                 />
               </div>
             </div>
@@ -79,13 +75,8 @@ export default function PhotoManager({
       <PhotoPicker files={files} onChange={setFiles} max={max - photos.length} coverFirst={photos.length === 0} />
 
       {files.length > 0 && (
-        <button
-          type="button"
-          onClick={upload}
-          disabled={busy}
-          className={`${button("primary", "sm")} mt-3`}
-        >
-          {busy ? "Uploading…" : `Upload ${files.length} photo${files.length > 1 ? "s" : ""}`}
+        <button type="button" onClick={upload} disabled={busy} className={`${button("primary", "sm")} mt-3`}>
+          {busy ? E.uploading : plural(locale, files.length, E.upload)}
         </button>
       )}
       {status && <p className="mt-2 text-xs text-ink-dim">{status}</p>}

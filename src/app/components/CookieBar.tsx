@@ -1,38 +1,27 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { button } from "./ui";
+import { useI18n } from "./I18nProvider";
+import { LOCALES, LOCALE_NAMES, type Locale } from "@/lib/i18n/config";
+import { saveLocale, setCookie } from "@/lib/i18n/client";
 
 /**
  * The bar at the bottom of the screen on a first visit: what cookies the
- * site uses, and which language the visitor would like. Choosing saves two
- * first-party cookies (`j5_consent`, `j5_lang`) for a year.
+ * site uses, and which language the visitor would like. OK saves two
+ * first-party cookies (`j5_consent`, `j5_lang`) for a year, and switches
+ * the site to the chosen language.
  *
  * The site only sets essential cookies (the Supabase sign-in session and
  * these two), so there's nothing to opt out of. If analytics or ad cookies
  * are ever added, this needs a real "Reject" choice before they load.
- *
- * Only English exists so far (real translations are separate work, see
- * CLAUDE.md), so picking Macedonian or Albanian is remembered and says so
- * honestly, rather than pretending to switch.
  */
 const CONSENT = "j5_consent";
-const LANG = "j5_lang";
 const REOPEN = "j5-cookie-settings";
-const YEAR = 60 * 60 * 24 * 365;
 
-export const LANGUAGES = [
-  { id: "en", label: "English", soon: false },
-  { id: "mk", label: "Македонски", soon: true },
-  { id: "sq", label: "Shqip", soon: true },
-] as const;
-type LangId = (typeof LANGUAGES)[number]["id"];
-
-function readCookie(name: string) {
-  return document.cookie
-    .split("; ")
-    .find((c) => c.startsWith(`${name}=`))
-    ?.slice(name.length + 1);
+function hasConsent() {
+  return document.cookie.split("; ").some((c) => c.startsWith(`${CONSENT}=`));
 }
 
 // The bar's visibility is derived from document.cookie, so it's read through
@@ -43,7 +32,7 @@ function subscribe(onChange: () => void) {
   return () => window.removeEventListener(REOPEN, onChange);
 }
 let reopened = false;
-const needsChoice = () => reopened || !readCookie(CONSENT);
+const needsChoice = () => reopened || !hasConsent();
 
 /** Opens the bar again (the footer's "Cookies & language" link). */
 export function openCookieSettings() {
@@ -52,69 +41,65 @@ export function openCookieSettings() {
 }
 
 export default function CookieBar() {
+  const { locale, t } = useI18n();
+  const router = useRouter();
+  const [, startTransition] = useTransition();
   const open = useSyncExternalStore(subscribe, needsChoice, () => false);
-  const [lang, setLang] = useState<LangId | null>(null);
-  const chosen = lang ?? ((open && (readCookie(LANG) as LangId | undefined)) || "en");
-  const choice = LANGUAGES.find((l) => l.id === chosen) ?? LANGUAGES[0];
+  const [picked, setPicked] = useState<Locale | null>(null);
+  const chosen = picked ?? locale;
 
   if (!open) return null;
 
   function save() {
-    const attrs = `; path=/; max-age=${YEAR}; samesite=lax${location.protocol === "https:" ? "; secure" : ""}`;
-    document.cookie = `${CONSENT}=essential${attrs}`;
-    document.cookie = `${LANG}=${chosen}${attrs}`;
+    setCookie(CONSENT, "essential");
+    saveLocale(chosen);
     reopened = false;
+    setPicked(null);
     window.dispatchEvent(new Event(REOPEN));
+    if (chosen !== locale) startTransition(() => router.refresh());
   }
 
   return (
     <section
-      aria-label="Cookies and language"
+      aria-label={t.cookies.region}
       className="fixed inset-x-0 bottom-0 z-[90] border-t-4 border-red bg-[#0b0b0d] shadow-[0_-12px_40px_rgba(0,0,0,.6)]"
     >
       <div className="mx-auto grid max-w-[1280px] gap-4 px-5 py-4 sm:py-5 lg:grid-cols-[1fr_auto_auto] lg:items-center lg:gap-8">
         <div>
-          <p className="font-display text-lg font-semibold">Cookies &amp; language</p>
-          <p className="mt-1 max-w-xl text-sm text-ink-dim">
-            We only use essential cookies: they keep you signed in and remember the choices you make here. No tracking,
-            no advertising cookies.
-          </p>
+          <p className="font-display text-lg font-semibold">{t.cookies.title}</p>
+          <p className="mt-1 max-w-xl text-sm text-ink-dim">{t.cookies.body}</p>
         </div>
 
         <div>
           <p id="lang-label" className="font-display mb-1.5 text-xs tracking-[.08em] text-grey">
-            Preferred language
+            {t.cookies.preferred}
           </p>
           <div role="radiogroup" aria-labelledby="lang-label" className="flex">
-            {LANGUAGES.map((l) => {
-              const active = l.id === chosen;
+            {LOCALES.map((l) => {
+              const active = l === chosen;
               return (
                 <button
-                  key={l.id}
+                  key={l}
                   type="button"
                   role="radio"
+                  lang={l}
                   aria-checked={active}
-                  onClick={() => setLang(l.id)}
+                  onClick={() => setPicked(l)}
                   className={`font-display -ml-px border-2 px-3.5 py-2 text-sm first:ml-0 transition ${
                     active
                       ? "relative z-10 border-highlight bg-highlight text-[#111]"
                       : "border-line text-ink hover:border-highlight"
                   }`}
                 >
-                  {l.label}
+                  {LOCALE_NAMES[l]}
                 </button>
               );
             })}
           </div>
-          {choice.soon && (
-            <p className="mt-1.5 text-xs text-highlight">
-              {choice.label} is coming soon. We&rsquo;ll remember your choice; the site is in English for now.
-            </p>
-          )}
         </div>
 
         <button type="button" onClick={save} className={`${button("primary", "md")} lg:self-center`}>
-          OK, got it
+          {t.cookies.ok}
         </button>
       </div>
     </section>

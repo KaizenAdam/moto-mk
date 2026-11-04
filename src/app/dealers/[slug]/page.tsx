@@ -14,19 +14,19 @@ import ListingsGrid from "@/app/components/ListingsGrid";
 import Badge from "@/app/components/Badge";
 import { button } from "@/app/components/ui";
 import { BlockHero, HighlightWord } from "@/app/components/Bands";
+import { getI18n } from "@/lib/i18n/server";
+import { fill } from "@/lib/i18n/format";
 import ShopPhoto from "@/app/components/ShopPhoto";
 
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const dealer = await getBySlug(await createClient(), slug);
-  if (!dealer) return { title: "Dealer not found" };
+  const [dealer, { t }] = await Promise.all([getBySlug(await createClient(), slug), getI18n()]);
+  if (!dealer) return { title: t.storefront.notFound };
   return {
     title: `${dealer.business_name}${dealer.town ? `, ${dealer.town}` : ""}`,
-    description:
-      dealer.about?.slice(0, 160) ??
-      `Motorcycles for sale from ${dealer.business_name} on Just5Up!, North Macedonia's motorcycle marketplace.`,
+    description: dealer.about?.slice(0, 160) ?? fill(t.storefront.metaDescription, { name: dealer.business_name }),
   };
 }
 
@@ -41,10 +41,11 @@ export default async function DealerStorefrontPage({ params }: Props) {
   const dealer = await getBySlug(supabase, slug);
   if (!dealer) notFound();
 
-  const [listings, profile, saved] = await Promise.all([
+  const [listings, profile, saved, { t }] = await Promise.all([
     listActiveBySeller(supabase, dealer.profile_id),
     getOwnProfile(supabase),
     listSaved(supabase),
+    getI18n(),
   ]);
   const covers = await getCoverPhotos(
     supabase,
@@ -52,7 +53,9 @@ export default async function DealerStorefrontPage({ params }: Props) {
     cachedPhotoSigner(supabase),
   );
 
-  const wa = dealer.phone ? whatsAppHref(dealer.phone, `Hi ${dealer.business_name}, I found you on Just5Up!`) : null;
+  const wa = dealer.phone
+    ? whatsAppHref(dealer.phone, fill(t.storefront.whatsappMessage, { name: dealer.business_name }))
+    : null;
   const tel = dealer.phone ? telHref(dealer.phone) : null;
   const mapUrl = dealer.address
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(dealer.address)}`
@@ -75,9 +78,9 @@ export default async function DealerStorefrontPage({ params }: Props) {
               className="inline-flex items-center gap-1.5 text-sm text-[#bdbab2] hover:text-highlight"
             >
               <ArrowLeftIcon />
-              All dealers
+              {t.storefront.allDealers}
             </Link>
-            <Badge size="md">Verified dealer</Badge>
+            <Badge size="md">{t.common.verifiedDealer}</Badge>
           </div>
         }
         aside={<ShopPhoto name={dealer.business_name} className="aspect-[16/10] w-full border border-line" />}
@@ -106,19 +109,19 @@ export default async function DealerStorefrontPage({ params }: Props) {
             <div className="flex flex-wrap gap-2.5">
               {wa && (
                 <a href={wa} target="_blank" rel="noopener noreferrer" className={button("whatsapp", "lg")}>
-                  WhatsApp
+                  {t.common.whatsapp}
                 </a>
               )}
               {tel && dealer.phone && (
                 <a href={tel} className={button("outline", "lg")}>
-                  Call {formatPhone(dealer.phone)}
+                  {fill(t.common.callNumber, { phone: formatPhone(dealer.phone) })}
                 </a>
               )}
             </div>
           )}
           {isOwner && (
             <Link href="/garage#storefront" className="text-sm text-highlight hover:underline">
-              Edit your storefront
+              {t.storefront.editStorefront}
             </Link>
           )}
         </div>
@@ -127,7 +130,7 @@ export default async function DealerStorefrontPage({ params }: Props) {
       {listings.length === 0 ? (
         <div className="mx-auto max-w-[1280px] px-5 py-10">
           <div className="border border-dashed border-line px-5 py-10 text-center text-sm text-ink-dim">
-            {dealer.business_name} has no bikes listed right now - get in touch to ask what&rsquo;s coming in.
+            {fill(t.storefront.noBikes, { name: dealer.business_name })}
           </div>
         </div>
       ) : (

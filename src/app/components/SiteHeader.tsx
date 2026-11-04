@@ -4,26 +4,22 @@ import { getOwnProfile } from "@/lib/data/profiles";
 import NavLinks from "./NavLinks";
 import MobileMenu from "./MobileMenu";
 import AccountMenu from "./AccountMenu";
+import LanguageSwitch from "./LanguageSwitch";
+import { getI18n } from "@/lib/i18n/server";
 
 export default async function SiteHeader() {
   const supabase = await createClient();
   // The header wraps every page, including ones that need no data. If
   // Supabase is unreachable, show the logged-out header rather than taking
   // the whole site down with it.
-  const profile = await getOwnProfile(supabase).catch(() => null);
+  const [profile, { t }] = await Promise.all([getOwnProfile(supabase).catch(() => null), getI18n()]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-[#1c1c1e] bg-[#0a0a0a]">
       <div className="relative mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-4 py-3 sm:px-5">
-        <Link href="/" className="flex shrink-0 items-center" aria-label="Just5Up! home">
+        <Link href="/" className="flex shrink-0 items-center" aria-label={t.common.homeLink}>
           {/* eslint-disable-next-line @next/next/no-img-element -- pre-sized PNG wordmark (public/brand), no next/image needed */}
-          <img
-            src="/brand/wordmark-white.png"
-            width={621}
-            height={168}
-            alt="Just5Up!"
-            className="h-9 w-auto xl:h-10"
-          />
+          <img src="/brand/wordmark-white.png" width={621} height={168} alt="Just5Up!" className="h-9 w-auto xl:h-10" />
         </Link>
 
         {/* Desktop: everything in one row. */}
@@ -33,6 +29,7 @@ export default async function SiteHeader() {
 
         <div className="flex items-center gap-2.5 xl:gap-3">
           <div className="hidden items-center gap-3 xl:flex">
+            <LanguageSwitch />
             {profile ? (
               <AccountMenu name={profile.name} />
             ) : (
@@ -40,7 +37,7 @@ export default async function SiteHeader() {
                 href="/login"
                 className="font-display border-2 border-red px-4 py-2 text-sm font-semibold tracking-[.06em] text-white transition hover:bg-red"
               >
-                Log in
+                {t.common.logIn}
               </Link>
             )}
           </div>
@@ -48,8 +45,8 @@ export default async function SiteHeader() {
             href="/sell"
             className="font-display bg-highlight px-3.5 py-2.5 text-sm font-semibold tracking-[.06em] whitespace-nowrap text-[#111] transition hover:brightness-110 sm:px-[18px]"
           >
-            <span className="sm:hidden">Sell &gt;&gt;&gt;</span>
-            <span className="hidden sm:inline">Sell your bike &gt;&gt;&gt;</span>
+            <span className="sm:hidden">{t.common.sell} &gt;&gt;&gt;</span>
+            <span className="hidden sm:inline">{t.common.sellYourBike} &gt;&gt;&gt;</span>
           </Link>
           {/* Below 1280px: the rest lives behind ☰. */}
           <MobileMenu isLoggedIn={!!profile} />

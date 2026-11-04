@@ -116,9 +116,14 @@ Suggested backend, following the listings pattern:
   - add an upload to `StorefrontForm` (reuse `compressImage` from
     `src/lib/images/compress.ts`), then pass the URL to `ShopPhoto` on
     `/dealers` and `/dealers/[slug]`
-- **Preferred language.** The cookies bar saves `j5_lang` (`en`, `mk`,
-  `sq`). Nothing reads it yet: only English copy exists. Real
-  translations are separate work (see `CLAUDE.md`, Brand direction).
+- **Language.** The site is in English, Macedonian and Albanian, chosen
+  by the `j5_lang` cookie (`en`, `mk`, `sq`; see `CLAUDE.md`, "Three
+  languages"). Server Actions return their messages in that language
+  (`getI18n()`), so any new action should too. Still English: Supabase's
+  auth email templates (Dashboard → Auth → Email templates; Supabase has
+  one template per project, so either pick a bilingual one or send emails
+  yourself), and the admin portal. If a user's language should follow
+  them across devices, store it on `profiles` too; today it's per browser.
 
 ## Known issues found during the front-end pass
 

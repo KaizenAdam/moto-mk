@@ -1,5 +1,8 @@
 "use server";
 
+import { getI18n } from "@/lib/i18n/server";
+import { fill } from "@/lib/i18n/format";
+
 import { createClient } from "@/lib/supabase/server";
 import { create } from "@/lib/data/listings";
 import { getOwnProfile, updateOwnProfile } from "@/lib/data/profiles";
@@ -25,14 +28,15 @@ function str(formData: FormData, key: string): string | undefined {
 
 export async function createListingAction(
   _prevState: CreateListingState,
-  formData: FormData
+  formData: FormData,
 ): Promise<CreateListingState> {
+  const { t } = await getI18n();
   const supabase = await createClient();
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "You need to log in to list a bike.", listing: null };
+  if (!user) return { error: t.errors.logInToList, listing: null };
 
   const make = str(formData, "make");
   const model = str(formData, "model");
@@ -40,7 +44,7 @@ export async function createListingAction(
   const year = num(formData, "year");
 
   if (!make || !model || priceEur == null) {
-    return { error: "Make, model and price are required.", listing: null };
+    return { error: t.errors.makeModelPrice, listing: null };
   }
 
   // The form's min/max are only a browser hint, and the database's check
@@ -48,24 +52,24 @@ export async function createListingAction(
   const engineCc = num(formData, "engine_cc");
   const mileageKm = num(formData, "mileage_km");
   const maxYear = new Date().getFullYear() + 1;
-  if (priceEur <= 0) return { error: "Price must be more than €0.", listing: null };
+  if (priceEur <= 0) return { error: t.errors.pricePositive, listing: null };
   if (year != null && (year < 1900 || year > maxYear)) {
-    return { error: `Year must be between 1900 and ${maxYear}.`, listing: null };
+    return { error: fill(t.errors.yearRange, { max: maxYear }), listing: null };
   }
   if ((engineCc ?? 0) < 0 || (mileageKm ?? 0) < 0) {
-    return { error: "Engine size and mileage can't be negative.", listing: null };
+    return { error: t.errors.notNegative, listing: null };
   }
 
   const description = str(formData, "description");
   if (description && description.length > 3000) {
-    return { error: "Description is too long - keep it under 3,000 characters.", listing: null };
+    return { error: t.errors.descriptionTooLong, listing: null };
   }
 
   // Buyers contact sellers by phone/WhatsApp, so a listing needs one. It's
   // kept on the profile (not the listing) so it's entered once.
   const phone = str(formData, "phone");
   if (!phone || !toInternationalDigits(phone)) {
-    return { error: "Add a phone number buyers can call or WhatsApp.", listing: null };
+    return { error: t.errors.phoneRequired, listing: null };
   }
 
   // The sell form doesn't ask for a headline — a title is derived from the
@@ -93,6 +97,6 @@ export async function createListingAction(
     });
     return { error: null, listing };
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Failed to create listing.", listing: null };
+    return { error: e instanceof Error ? e.message : t.errors.createFailed, listing: null };
   }
 }

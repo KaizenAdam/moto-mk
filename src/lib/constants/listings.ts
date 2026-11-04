@@ -1,3 +1,6 @@
+import { formatNumber } from "@/lib/i18n/format";
+import type { Locale } from "@/lib/i18n/config";
+
 // Free-text convention shared by the sell form and browse filters — riding_style
 // has no DB check constraint, so this list is an app-level convention, not schema.
 export const RIDING_STYLES = ["Sport", "Enduro", "Cruiser", "Scooter", "Naked", "Touring"] as const;
@@ -22,15 +25,16 @@ export const EUR_TO_MKD = 61.5;
 
 export type Currency = "EUR" | "MKD";
 
-export function formatPrice(eur: number, currency: Currency) {
+/**
+ * "€6,400" / "≈ 393,600 MKD". Grouped by our own formatter, not the
+ * browser's locale, so the server and every browser print the same thing
+ * (a mismatch breaks hydration). Pass the page's language for its digit
+ * grouping (6.400 in Macedonian).
+ */
+export function formatPrice(eur: number, currency: Currency, locale: Locale = "en") {
+  const mkd = formatNumber(locale, Math.round(eur * EUR_TO_MKD));
   if (currency === "MKD") {
-    return {
-      main: `${Math.round(eur * EUR_TO_MKD).toLocaleString()} MKD`,
-      alt: `≈ €${eur.toLocaleString()}`,
-    };
+    return { main: `${mkd} MKD`, alt: `≈ €${formatNumber(locale, eur)}` };
   }
-  return {
-    main: `€${eur.toLocaleString()}`,
-    alt: `≈ ${Math.round(eur * EUR_TO_MKD).toLocaleString()} MKD`,
-  };
+  return { main: `€${formatNumber(locale, eur)}`, alt: `≈ ${mkd} MKD` };
 }

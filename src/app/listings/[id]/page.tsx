@@ -11,29 +11,33 @@ import { listSaved } from "@/lib/data/savedListings";
 import { getActiveBySeller, listActiveDealers } from "@/lib/data/dealers";
 import { type ContactProps } from "./ContactSeller";
 import ListingView from "./ListingView";
+import { getI18n } from "@/lib/i18n/server";
+import { fill, formatNumber } from "@/lib/i18n/format";
 
 // generateMetadata and the page both need the listing; cache() makes it one query per request.
 const loadListing = cache(async (id: string) => getById(await createClient(), id));
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const listing = await loadListing(id);
-  if (!listing) return { title: "Listing not found" };
+  const [listing, { locale, t }] = await Promise.all([loadListing(id), getI18n()]);
+  if (!listing) return { title: t.listing.notFound };
 
   const name = [listing.year, listing.make, listing.model].filter(Boolean).join(" ");
-  const price = `€${Number(listing.price_eur).toLocaleString("en-GB")}`;
+  const price = `€${formatNumber(locale, Number(listing.price_eur))}`;
   const title = `${name} - ${price}${listing.town ? `, ${listing.town}` : ""}`;
   const specs = [
     listing.engine_cc != null ? `${listing.engine_cc}cc` : null,
-    listing.mileage_km != null ? `${listing.mileage_km.toLocaleString("en-GB")} km` : null,
-    listing.riding_style,
-  ].filter(Boolean).join(" · ");
-  const description = (listing.description?.replace(/\s+/g, " ").slice(0, 155) ||
-    `${name} for sale${listing.town ? ` in ${listing.town}` : ""}${specs ? ` - ${specs}` : ""}. On Just5Up!, North Macedonia's motorcycle marketplace.`);
+    listing.mileage_km != null ? `${formatNumber(locale, listing.mileage_km)} km` : null,
+    listing.riding_style ? (t.styles[listing.riding_style] ?? listing.riding_style) : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+  const forSale = listing.town
+    ? fill(t.listing.forSaleIn, { name, town: listing.town })
+    : fill(t.listing.forSale, { name });
+  const description =
+    listing.description?.replace(/\s+/g, " ").slice(0, 155) ||
+    `${forSale}${specs ? ` - ${specs}` : ""}. ${t.listing.metaTail}`;
 
   return {
     title,
@@ -46,11 +50,7 @@ export async function generateMetadata({
 }
 
 /** Fetches everything a bike's page shows; ListingView lays it out. */
-export default async function ListingDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function ListingDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const supabase = await createClient();
 
@@ -71,7 +71,7 @@ export default async function ListingDetailPage({
   const similarCovers = await getCoverPhotos(
     supabase,
     similar.map((l) => l.id),
-    cachedPhotoSigner(supabase)
+    cachedPhotoSigner(supabase),
   );
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? `https://${h.get("host")}`;

@@ -7,6 +7,8 @@ import ListingCard from "@/app/components/ListingCard";
 import CurrencyToggle from "@/app/listings/CurrencyToggle";
 import EmptyState from "@/app/components/EmptyState";
 import AdSlot from "@/app/components/AdSlot";
+import { useI18n } from "@/app/components/I18nProvider";
+import { formatNumber, plural } from "@/lib/i18n/format";
 
 export default function ListingsGrid({
   listings,
@@ -32,14 +34,19 @@ export default function ListingsGrid({
   showAd?: boolean;
 }) {
   const [currency, setCurrency] = useState<Currency>("EUR");
+  const { locale, t } = useI18n();
+  const count = total ?? listings.length;
+  // "8 motorcycles", with the number picked out in gold.
+  const [before, after] = plural(locale, count, t.common.motorcycles, { n: "\u0000" }).split("\u0000");
   const savedIdSet = new Set(savedIds);
 
   return (
     <div className="px-6 py-6 pb-14">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-2.5">
         <h2 className="font-display text-2xl font-medium">
-          <span className="text-highlight">{(total ?? listings.length).toLocaleString("en-GB")}</span>{" "}
-          {(total ?? listings.length) === 1 ? "motorcycle" : "motorcycles"}
+          {before}
+          <span className="text-highlight">{formatNumber(locale, count)}</span>
+          {after}
         </h2>
         <div className="flex items-center gap-2.5 text-[13px]">
           <CurrencyToggle value={currency} onChange={setCurrency} />
@@ -48,7 +55,7 @@ export default function ListingsGrid({
       </div>
 
       {listings.length === 0 ? (
-        <EmptyState>No motorcycles match your filters. Try clearing a few.</EmptyState>
+        <EmptyState>{t.grid.noMatch}</EmptyState>
       ) : (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {listings.map((listing, i) => (

@@ -1,6 +1,7 @@
 "use client";
 
 import type { Currency } from "@/lib/constants/listings";
+import { useI18n } from "@/app/components/I18nProvider";
 
 /**
  * Pure client-side display toggle — currency never changes which rows come
@@ -15,9 +16,10 @@ export default function CurrencyToggle({
   value: Currency;
   onChange: (currency: Currency) => void;
 }) {
+  const { t } = useI18n();
   const base = "font-display px-3 py-2 text-xs font-medium tracking-wider";
   return (
-    <div className="flex border border-line bg-panel2" role="group" aria-label="Currency">
+    <div className="flex border border-line bg-panel2" role="group" aria-label={t.currency.label}>
       <button
         type="button"
         onClick={() => onChange("EUR")}

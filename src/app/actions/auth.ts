@@ -1,5 +1,8 @@
 "use server";
 
+import { getI18n } from "@/lib/i18n/server";
+import { fill } from "@/lib/i18n/format";
+
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -8,6 +11,16 @@ import { createClient } from "@/lib/supabase/server";
 export type AuthState = { error: string | null; message?: string };
 
 const MIN_PASSWORD = 8;
+
+type T = Awaited<ReturnType<typeof getI18n>>["t"];
+
+/** Supabase's common sign-in errors in the visitor's language; anything else as Supabase wrote it. */
+function authError(message: string, t: T) {
+  if (/invalid login credentials/i.test(message)) return t.errors.invalidLogin;
+  if (/email not confirmed/i.test(message)) return t.errors.emailNotConfirmed;
+  if (/already registered/i.test(message)) return t.errors.alreadyRegistered;
+  return message;
+}
 
 /**
  * Base URL for links in auth emails. NEXT_PUBLIC_SITE_URL wins when set;
@@ -22,16 +35,14 @@ async function siteUrl() {
   return h.get("origin") ?? `https://${h.get("host")}`;
 }
 
-export async function signUp(
-  _prevState: AuthState,
-  formData: FormData
-): Promise<AuthState> {
+export async function signUp(_prevState: AuthState, formData: FormData): Promise<AuthState> {
+  const { t } = await getI18n();
   const email = String(formData.get("email") ?? "");
   const password = String(formData.get("password") ?? "");
   const name = String(formData.get("name") ?? "");
 
   if (password.length < MIN_PASSWORD) {
-    return { error: `Password must be at least ${MIN_PASSWORD} characters.` };
+    return { error: fill(t.errors.passwordLength, { n: MIN_PASSWORD }) };
   }
 
   const supabase = await createClient();
@@ -44,24 +55,22 @@ export async function signUp(
     },
   });
 
-  if (error) return { error: error.message };
+  if (error) return { error: authError(error.message, t) };
 
   // With email confirmation on, there's no session until they click the
   // link — redirecting to "/" would just show them logged out, confused.
   if (!data.session) {
     return {
       error: null,
-      message: `Almost there - we've sent a confirmation link to ${email}. Click it to activate your account.`,
+      message: fill(t.messages.confirmEmail, { email }),
     };
   }
 
   redirect("/");
 }
 
-export async function signIn(
-  _prevState: AuthState,
-  formData: FormData
-): Promise<AuthState> {
+export async function signIn(_prevState: AuthState, formData: FormData): Promise<AuthState> {
+  const { t } = await getI18n();
   const email = String(formData.get("email") ?? "");
   const password = String(formData.get("password") ?? "");
 
@@ -71,7 +80,7 @@ export async function signIn(
     password,
   });
 
-  if (error) return { error: error.message };
+  if (error) return { error: authError(error.message, t) };
 
   redirect("/");
 }
@@ -82,12 +91,10 @@ export async function signOut() {
   redirect("/login");
 }
 
-export async function requestPasswordReset(
-  _prevState: AuthState,
-  formData: FormData
-): Promise<AuthState> {
+export async function requestPasswordReset(_prevState: AuthState, formData: FormData): Promise<AuthState> {
+  const { t } = await getI18n();
   const email = String(formData.get("email") ?? "").trim();
-  if (!email) return { error: "Enter your email address." };
+  if (!email) return { error: t.errors.enterEmail };
 
   const supabase = await createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -97,29 +104,27 @@ export async function requestPasswordReset(
   // Only a rate limit is worth surfacing. Anything else gets the same reply
   // as success, so the form can't be used to test which emails have accounts.
   if (error?.status === 429) {
-    return { error: "Too many requests - please wait a few minutes and try again." };
+    return { error: t.errors.tooManyRequests };
   }
   return {
     error: null,
-    message: `If ${email} has an account, a reset link is on its way. Check your inbox (and spam).`,
+    message: fill(t.messages.resetSent, { email }),
   };
 }
 
-export async function updatePassword(
-  _prevState: AuthState,
-  formData: FormData
-): Promise<AuthState> {
+export async function updatePassword(_prevState: AuthState, formData: FormData): Promise<AuthState> {
+  const { t } = await getI18n();
   const password = String(formData.get("password") ?? "");
   const confirm = String(formData.get("confirm") ?? "");
 
   if (password.length < MIN_PASSWORD) {
-    return { error: `Password must be at least ${MIN_PASSWORD} characters.` };
+    return { error: fill(t.errors.passwordLength, { n: MIN_PASSWORD }) };
   }
-  if (password !== confirm) return { error: "The two passwords don't match." };
+  if (password !== confirm) return { error: t.errors.passwordsDiffer };
 
   const supabase = await createClient();
   const { error } = await supabase.auth.updateUser({ password });
-  if (error) return { error: error.message };
+  if (error) return { error: authError(error.message, t) };
 
   redirect("/");
 }

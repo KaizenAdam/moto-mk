@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getI18n } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { countActive, listLatest, listStyleShowcase } from "@/lib/data/listings";
 import { getCoverPhotos } from "@/lib/data/listingPhotos";
@@ -8,11 +9,11 @@ import { listServiceCentres } from "@/lib/data/serviceCentres";
 import { RIDING_STYLES } from "@/lib/constants/listings";
 import HomeView from "./_home/HomeView";
 
-export const metadata: Metadata = {
+export async function generateMetadata(): Promise<Metadata> {
   // The layout's default title is the home page's; only the description is more specific.
-  description:
-    "Motorcycles for sale across North Macedonia from riders and verified dealers - plus service centres, events and the riding community.",
-};
+  const { t } = await getI18n();
+  return { description: t.meta.homeDescription };
+}
 
 /** The landing page. Fetches; HomeView lays it out. */
 export default async function Home() {
@@ -31,7 +32,7 @@ export default async function Home() {
   const covers = await getCoverPhotos(
     supabase,
     [...new Set([...latest.map((l) => l.id), ...styleCoverIds])],
-    cachedPhotoSigner(supabase)
+    cachedPhotoSigner(supabase),
   );
 
   return (

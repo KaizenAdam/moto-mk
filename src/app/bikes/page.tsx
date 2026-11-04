@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
+import { getI18n } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
-import {
-  listActiveFiltered,
-  listFilterOptions,
-  type ListingFilters,
-} from "@/lib/data/listings";
+import { listActiveFiltered, listFilterOptions, type ListingFilters } from "@/lib/data/listings";
 import { listSaved } from "@/lib/data/savedListings";
 import { getOwnProfile } from "@/lib/data/profiles";
 import { getCoverPhotos } from "@/lib/data/listingPhotos";
@@ -40,17 +37,15 @@ function parseFilters(sp: SearchParams): ListingFilters {
   };
 }
 
-export const metadata: Metadata = {
-  title: "Motorcycles for sale in North Macedonia",
-  description:
-    "Search used and new motorcycles for sale across North Macedonia by make, riding style, engine size, price and town.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getI18n();
+  return {
+    title: t.meta.bikesTitle,
+    description: t.meta.bikesDescription,
+  };
+}
 
-export default async function BikesPage({
-  searchParams,
-}: {
-  searchParams: Promise<SearchParams>;
-}) {
+export default async function BikesPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const sp = await searchParams;
   const filters = parseFilters(sp);
 
@@ -72,7 +67,7 @@ export default async function BikesPage({
   const covers = await getCoverPhotos(
     supabase,
     listings.map((l) => l.id),
-    cachedPhotoSigner(supabase)
+    cachedPhotoSigner(supabase),
   );
 
   return (

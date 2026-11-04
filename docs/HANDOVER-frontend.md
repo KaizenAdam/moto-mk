@@ -181,6 +181,19 @@ release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
   - Skopje Moto Garage's "about" text has an en dash ("Mon–Sat"); it's
     dealer-written data, editable from that dealer's My Garage
 
+**Three languages (4 Nov 2026)**
+- English, Macedonian and Albanian, switched from the header (EN · MK ·
+  SQ), the phone menu or the cookies bar. Every public and account page,
+  form, message, page title and the legal drafts are translated; the
+  admin portal stays English. How it works is in `CLAUDE.md` ("Three
+  languages").
+- **Before launch:** a native Macedonian speaker and a native Albanian
+  speaker should read `src/lib/i18n/dictionaries/mk.ts` and `sq.ts`
+  (Claude wrote them). The legal drafts need the lawyer's review in all
+  three languages.
+- Supabase's own emails (confirm sign-up, reset password) are still
+  English: their templates are set in the Supabase dashboard.
+
 **Waiting on the client:** a contact email or phone for business
 enquiries, so the For business page's "Enquire" button can work. It's
 listed in `docs/HANDOVER-backend.md`.

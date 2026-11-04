@@ -3,10 +3,17 @@ import { createClient } from "@/lib/supabase/server";
 import { getOwnProfile } from "@/lib/data/profiles";
 import SellForm from "./SellForm";
 import { BlockHero, HighlightWord } from "@/app/components/Bands";
+import type { Metadata } from "next";
+import { getI18n } from "@/lib/i18n/server";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getI18n();
+  return { title: t.meta.sellTitle, robots: { index: false } };
+}
 
 export default async function SellPage() {
   const supabase = await createClient();
-  const profile = await getOwnProfile(supabase);
+  const [profile, { t }] = await Promise.all([getOwnProfile(supabase), getI18n()]);
 
   if (!profile) redirect("/login");
 
@@ -15,16 +22,19 @@ export default async function SellPage() {
       <BlockHero
         gradient
         compact
-        shard={{ shape: "bent", className: "top-[-25%] right-[-90px] h-[150%] w-[400px] rotate-[8deg] bg-highlight/[.12] sm:right-[12%]" }}
+        shard={{
+          shape: "bent",
+          className: "top-[-25%] right-[-90px] h-[150%] w-[400px] rotate-[8deg] bg-highlight/[.12] sm:right-[12%]",
+        }}
         title={
           <>
-            Sell your
+            {t.sellPage.title1}
             <br />
-            <HighlightWord>bike</HighlightWord>
+            <HighlightWord>{t.sellPage.title2}</HighlightWord>
           </>
         }
-        intro="Fill in the details below. It takes a few minutes."
-        ticks={["Free to list", "Checked before it goes live", "Seen by riders all over North Macedonia"]}
+        intro={t.sellPage.intro}
+        ticks={t.sellPage.ticks}
       />
 
       <SellForm profilePhone={profile.phone} />

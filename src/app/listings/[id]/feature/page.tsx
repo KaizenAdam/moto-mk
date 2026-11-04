@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { getI18n } from "@/lib/i18n/server";
+import { fill } from "@/lib/i18n/format";
 import Link from "next/link";
 import { BlockHero, HighlightWord } from "@/app/components/Bands";
 import { notFound, redirect } from "next/navigation";
@@ -11,7 +13,10 @@ import { NotLiveNotice } from "./NotLiveNotice";
 import FeatureForm from "./FeatureForm";
 import { ArrowLeftIcon } from "@/app/components/icons";
 
-export const metadata: Metadata = { title: "Feature your bike", robots: { index: false } };
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getI18n();
+  return { title: t.meta.featureTitle, robots: { index: false } };
+}
 
 /**
  * Step one of paying to promote a listing: pick a package. Owner only.
@@ -21,7 +26,7 @@ export const metadata: Metadata = { title: "Feature your bike", robots: { index:
 export default async function FeatureListingPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const supabase = await createClient();
-  const [user, listing] = await Promise.all([getCurrentUser(supabase), getById(supabase, id)]);
+  const [user, listing, { t }] = await Promise.all([getCurrentUser(supabase), getById(supabase, id), getI18n()]);
 
   if (!user) redirect("/login");
   if (!listing || listing.seller_id !== user.id) notFound();
@@ -39,7 +44,7 @@ export default async function FeatureListingPage({ params }: { params: Promise<{
         above={
           <Link href="/garage" className="inline-flex items-center gap-1.5 text-sm text-[#bdbab2] hover:text-highlight">
             <ArrowLeftIcon />
-            My Garage
+            {t.common.myGarage}
           </Link>
         }
         shard={{
@@ -48,12 +53,12 @@ export default async function FeatureListingPage({ params }: { params: Promise<{
         }}
         title={
           <>
-            Get more
+            {t.feature.getMore}
             <br />
-            <HighlightWord>buyers</HighlightWord>
+            <HighlightWord>{t.feature.buyers}</HighlightWord>
           </>
         }
-        intro={`Featured bikes sit above ordinary listings in search, wear a gold frame and appear on the home page. A bump sends your ${listing.make} back to the top of the newest listings.`}
+        intro={fill(t.feature.intro, { make: listing.make })}
       />
 
       <div className="mx-auto max-w-[1100px] px-5 pt-10">

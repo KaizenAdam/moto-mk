@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowLeftIcon, ArrowRightIcon } from "./icons";
+import { getI18n } from "@/lib/i18n/server";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -15,7 +16,7 @@ function hrefFor(searchParams: SearchParams, page: number) {
 }
 
 /** Numbered page links that keep the current filters. Window of pages around the current one. */
-export default function Pagination({
+export default async function Pagination({
   page,
   pageCount,
   searchParams,
@@ -25,17 +26,22 @@ export default function Pagination({
   searchParams: SearchParams;
 }) {
   if (pageCount <= 1) return null;
+  const { t } = await getI18n();
 
   const pages = new Set([1, pageCount, page - 1, page, page + 1].filter((p) => p >= 1 && p <= pageCount));
   const sorted = [...pages].sort((a, b) => a - b);
 
   const cell = "font-display flex h-10 min-w-10 items-center justify-center gap-1.5 border px-3 text-sm font-medium";
   return (
-    <nav aria-label="Pages" className="mt-8 flex flex-wrap items-center justify-center gap-2">
+    <nav aria-label={t.pagination.label} className="mt-8 flex flex-wrap items-center justify-center gap-2">
       {page > 1 && (
-        <Link href={hrefFor(searchParams, page - 1)} aria-label="Previous page" className={`${cell} border-line text-ink hover:border-highlight`}>
+        <Link
+          href={hrefFor(searchParams, page - 1)}
+          aria-label={t.pagination.previousPage}
+          className={`${cell} border-line text-ink hover:border-highlight`}
+        >
           <ArrowLeftIcon />
-          <span className="hidden sm:inline">Prev</span>
+          <span className="hidden sm:inline">{t.pagination.prev}</span>
         </Link>
       )}
       {sorted.map((p, i) => (
@@ -51,8 +57,12 @@ export default function Pagination({
         </span>
       ))}
       {page < pageCount && (
-        <Link href={hrefFor(searchParams, page + 1)} aria-label="Next page" className={`${cell} border-line text-ink hover:border-highlight`}>
-          <span className="hidden sm:inline">Next</span>
+        <Link
+          href={hrefFor(searchParams, page + 1)}
+          aria-label={t.pagination.nextPage}
+          className={`${cell} border-line text-ink hover:border-highlight`}
+        >
+          <span className="hidden sm:inline">{t.pagination.next}</span>
           <ArrowRightIcon />
         </Link>
       )}

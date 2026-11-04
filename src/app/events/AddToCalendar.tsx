@@ -1,6 +1,7 @@
 "use client";
 
 import { button } from "@/app/components/ui";
+import { useI18n } from "@/app/components/I18nProvider";
 
 /**
  * Downloads an all-day .ics for one event, built in the browser from the
@@ -23,14 +24,22 @@ export default function AddToCalendar({
   /** Override the button style (e.g. on the red band). */
   className?: string;
 }) {
+  const { t } = useI18n();
   function download() {
     const day = date.replaceAll("-", "");
     const next = new Date(`${date}T00:00:00Z`);
     next.setUTCDate(next.getUTCDate() + 1);
     const dayAfter = next.toISOString().slice(0, 10).replaceAll("-", "");
     // RFC 5545 text: escape backslashes, commas, semicolons and newlines.
-    const esc = (s: string) => s.replace(/\\/g, "\\\\").replace(/([,;])/g, "\\$1").replace(/\r?\n/g, "\\n");
-    const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+    const esc = (s: string) =>
+      s
+        .replace(/\\/g, "\\\\")
+        .replace(/([,;])/g, "\\$1")
+        .replace(/\r?\n/g, "\\n");
+    const stamp = new Date()
+      .toISOString()
+      .replace(/[-:]/g, "")
+      .replace(/\.\d{3}/, "");
     const ics = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
@@ -59,7 +68,7 @@ export default function AddToCalendar({
 
   return (
     <button type="button" onClick={download} className={className ?? button("outline", "sm")}>
-      + Add to calendar
+      {t.events.addToCalendar}
     </button>
   );
 }

@@ -6,6 +6,7 @@ import SortSelect from "@/app/listings/SortSelect";
 import ListingsGrid from "@/app/components/ListingsGrid";
 import PageHero from "@/app/components/PageHero";
 import { SearchIcon } from "@/app/components/icons";
+import { getI18n } from "@/lib/i18n/server";
 import type { SearchParams } from "@/app/listings/queryParams";
 
 /**
@@ -13,7 +14,7 @@ import type { SearchParams } from "@/app/listings/queryParams";
  * a white search box like the home page's, the filter bar, then results.
  * Markup only; page.tsx fetches.
  */
-export default function BikesView({
+export default async function BikesView({
   filters,
   searchParams,
   listings,
@@ -36,6 +37,8 @@ export default function BikesView({
   photos: Record<string, { url: string | null; count: number }>;
   dealerNames: Record<string, string>;
 }) {
+  const { t } = await getI18n();
+  const b = t.bikes;
   return (
     <main>
       <PageHero
@@ -47,14 +50,14 @@ export default function BikesView({
         }}
         title={
           <>
-            Bikes for sale in <span className="text-highlight">North Macedonia</span>
+            {b.title1} <span className="text-highlight">{b.title2}</span>
           </>
         }
-        intro="From riders and verified dealers across Skopje, Ohrid, Bitola and beyond. Every listing is checked before it goes live."
+        intro={b.intro}
       >
         <form action="/bikes" method="GET" className="flex max-w-[640px] bg-white">
           <label htmlFor="bikes-search" className="sr-only">
-            Search bikes
+            {b.searchLabel}
           </label>
           <span className="flex items-center pl-4 text-[#77767c]">
             <SearchIcon />
@@ -64,14 +67,15 @@ export default function BikesView({
             type="text"
             name="search"
             defaultValue={filters.search ?? ""}
-            placeholder="Make or model - e.g. Yamaha R6"
+            placeholder={b.searchPlaceholder}
             className="min-w-0 flex-1 border-0 px-3 py-4 text-base text-[#111] outline-none placeholder:text-[#77767c]"
           />
           <button
             type="submit"
             className="font-display bg-highlight px-4 text-base font-semibold tracking-[.08em] text-[#111] transition hover:brightness-110 sm:px-6"
           >
-            Search<span className="hidden sm:inline"> &gt;&gt;&gt;</span>
+            {b.searchButton}
+            <span className="hidden sm:inline"> &gt;&gt;&gt;</span>
           </button>
         </form>
       </PageHero>

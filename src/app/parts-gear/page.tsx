@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
+import { getI18n } from "@/lib/i18n/server";
 import PartsGearView from "./PartsGearView";
 
-export const metadata: Metadata = {
-  title: "Motorcycle parts & gear",
-  description:
-    "Spare parts, accessories and riding gear from riders and shops across North Macedonia - helmets, jackets, tyres, exhausts and more.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getI18n();
+  return {
+    title: t.meta.partsTitle,
+    description: t.meta.partsDescription,
+  };
+}
 
 /**
  * Parts & Gear: the finished page shell. There's no parts table yet

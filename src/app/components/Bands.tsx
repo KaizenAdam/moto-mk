@@ -14,8 +14,19 @@ import { heroBackground } from "./ui";
 export type ShardSpec = { shape: ShardShape; className: string };
 
 /** Wrap one word of a headline in this for the gold block ("next ride"). */
+/**
+ * The gold block behind a headline word. Inline with cloned edges, so a
+ * phrase that wraps (longer in Macedonian and Albanian) gets a block per
+ * line instead of one wide box. The gold is a band sized to Oswald's
+ * capitals (1.16em, centred on them), not the whole line box, which is
+ * taller than the line spacing and would cover the line above.
+ */
 export function HighlightWord({ children }: { children: ReactNode }) {
-  return <span className="mt-2 inline-block bg-highlight px-3 pb-1 text-[#111]">{children}</span>;
+  return (
+    <span className="px-3 text-[#111] [-webkit-box-decoration-break:clone] [background-image:linear-gradient(var(--highlight),var(--highlight))] [background-position:0_53%] [background-repeat:no-repeat] [background-size:100%_1.16em] [box-decoration-break:clone]">
+      {children}
+    </span>
+  );
 }
 
 /** Black hero: big headline, intro, optional red ticks, and room for a search box. */
@@ -58,7 +69,7 @@ export function BlockHero({
           <div>
             {above && <div className="mb-4">{above}</div>}
             <h1
-              className={`font-display max-w-[760px] leading-none ${
+              className={`font-display max-w-[760px] leading-[1.08] ${
                 compact ? "text-[38px] sm:text-5xl" : "text-[44px] sm:text-6xl lg:text-7xl"
               }`}
             >
@@ -170,7 +181,7 @@ export function AuthShell({
       <Shard shape={shard.shape} className={shard.className} />
       <div className="relative mx-auto grid max-w-[1280px] items-center gap-10 px-5 py-12 lg:min-h-[640px] lg:grid-cols-2 lg:py-20">
         <div>
-          <p className="font-display text-[44px] leading-none sm:text-6xl lg:text-7xl">{line}</p>
+          <p className="font-display text-[44px] leading-[1.08] sm:text-6xl lg:text-7xl">{line}</p>
           {ticks && (
             <ul className="mt-6 space-y-2 text-[15px] text-[#d6d3cb]">
               {ticks.map((t) => (
