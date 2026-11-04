@@ -20,6 +20,7 @@ export default function PartsGearView() {
   return (
     <main className="pb-16">
       <BlockHero
+        shard={{ shape: "fang", className: "top-0 right-[-80px] h-[90%] w-[340px] bg-red/[.24] sm:right-[3%] sm:w-[480px]" }}
         title={
           <>
             Parts &amp;
@@ -98,7 +99,10 @@ export default function PartsGearView() {
         ))}
       </div>
 
-      <RedBand className="mt-16">
+      <RedBand
+        className="mt-16"
+        shard={{ shape: "crack", className: "top-[-40px] right-[-40px] h-[130%] w-[300px] rotate-[12deg] bg-black/[.16] sm:right-[6%]" }}
+      >
         <Eyebrow>Coming soon</Eyebrow>
         <h2 className="font-display mb-6 text-4xl leading-none sm:text-[44px]">How it&rsquo;ll work</h2>
         <ol className="grid gap-3 md:grid-cols-3">
@@ -118,6 +122,7 @@ export default function PartsGearView() {
       <div className="mt-16">
         <GoldBanner
           title="Clearing out the garage?"
+          shard={{ shape: "claw", className: "inset-y-0 right-[-4%] hidden w-[40%] bg-[#111] opacity-90 md:block" }}
           body="Selling parts and gear opens soon. You can already list a whole bike for free."
           action={
             <Link href="/sell" className={blackButton}>

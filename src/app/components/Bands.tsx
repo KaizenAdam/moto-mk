@@ -1,12 +1,16 @@
 import type { ReactNode } from "react";
-import Shard from "./Shard";
+import Shard, { type ShardShape } from "./Shard";
 import { TickIcon } from "./icons";
 
 /**
  * The home page's building blocks, shared so section pages can carry the
  * same look: a black hero with a gold-block headline, a full-width red
- * band, and a gold banner. One Shard each, never more.
+ * band, and a gold banner. One Shard each, never more, and each page
+ * passes its own shape and placement so no two heroes look alike.
  */
+
+/** Which shard a band draws, and where (position, size, colour classes). */
+export type ShardSpec = { shape: ShardShape; className: string };
 
 /** Wrap one word of a headline in this for the gold block ("next ride"). */
 export function HighlightWord({ children }: { children: ReactNode }) {
@@ -18,8 +22,11 @@ export function BlockHero({
   title,
   intro,
   ticks,
+  shard,
   children,
 }: {
+  /** This page's own shard. Pick one no other hero uses. */
+  shard: ShardSpec;
   title: ReactNode;
   intro?: ReactNode;
   ticks?: string[];
@@ -27,7 +34,7 @@ export function BlockHero({
 }) {
   return (
     <section className="relative overflow-hidden border-b border-line bg-[#141416]">
-      <Shard shape="torn" className="top-[-30%] right-[-120px] h-[160%] w-[380px] rotate-[8deg] bg-red/[.22] sm:right-[4%] sm:w-[520px]" />
+      <Shard shape={shard.shape} className={shard.className} />
       <div className="relative mx-auto max-w-[1280px] px-5 pt-12 pb-10 sm:pt-16 sm:pb-12">
         <h1 className="font-display max-w-[760px] text-[44px] leading-none sm:text-6xl lg:text-7xl">{title}</h1>
         {intro && <p className="mt-5 max-w-[620px] text-[15px] text-[#d6d3cb] sm:text-base">{intro}</p>}
@@ -48,10 +55,25 @@ export function BlockHero({
 }
 
 /** Full-width red band, as on the home page's events section. */
-export function RedBand({ children, id, className = "" }: { children: ReactNode; id?: string; className?: string }) {
+const HOME_RED_SHARD: ShardSpec = {
+  shape: "double",
+  className: "top-[-40px] left-[-140px] h-[560px] w-[520px] -rotate-[4deg] bg-black/[.16]",
+};
+
+export function RedBand({
+  children,
+  id,
+  className = "",
+  shard = HOME_RED_SHARD,
+}: {
+  children: ReactNode;
+  id?: string;
+  className?: string;
+  shard?: ShardSpec;
+}) {
   return (
     <section id={id} className={`relative scroll-mt-20 overflow-hidden bg-red text-white ${className}`}>
-      <Shard className="top-[-40px] left-[-140px] h-[560px] w-[520px] -rotate-[4deg] bg-black/[.16]" />
+      <Shard shape={shard.shape} className={shard.className} />
       <div className="relative mx-auto max-w-[1280px] px-5 py-12 sm:py-14">{children}</div>
     </section>
   );
@@ -67,11 +89,26 @@ export const blackButton =
   "font-display inline-block bg-[#111] px-6 py-3.5 font-semibold tracking-[.08em] text-white outline-[3px] outline-offset-[3px] outline-red outline-solid transition hover:bg-black";
 
 /** Gold banner with a black shard, as on the home page's "Sell your bike today". */
-export function GoldBanner({ title, body, action }: { title: ReactNode; body: ReactNode; action?: ReactNode }) {
+const HOME_GOLD_SHARD: ShardSpec = {
+  shape: "double",
+  className: "inset-y-0 right-0 hidden w-[46%] bg-[#111] opacity-90 md:block",
+};
+
+export function GoldBanner({
+  title,
+  body,
+  action,
+  shard = HOME_GOLD_SHARD,
+}: {
+  title: ReactNode;
+  body: ReactNode;
+  action?: ReactNode;
+  shard?: ShardSpec;
+}) {
   return (
     <section className="mx-auto max-w-[1280px] px-5">
       <div className="relative overflow-hidden bg-highlight px-6 py-9 text-[#111] sm:px-12 sm:py-11">
-        <Shard className="inset-y-0 right-0 hidden w-[46%] bg-[#111] opacity-90 md:block" />
+        <Shard shape={shard.shape} className={shard.className} />
         <div className="relative max-w-[620px]">
           <h2 className="font-display text-4xl leading-none sm:text-5xl">{title}</h2>
           <p className="mt-3 text-[17px] leading-normal">{body}</p>

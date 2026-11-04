@@ -45,6 +45,7 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
   return (
     <main className="pb-16">
       <BlockHero
+        shard={{ shape: "claw", className: "top-[-10%] right-[-40px] h-[120%] w-[260px] rotate-[14deg] bg-highlight/[.14] sm:right-[6%] sm:w-[380px]" }}
         title={
           <>
             Buy from a
@@ -134,7 +135,10 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
         )}
       </div>
 
-      <RedBand className="mt-16">
+      <RedBand
+        className="mt-16"
+        shard={{ shape: "bent", className: "bottom-[-60px] left-[30%] h-[420px] w-[360px] rotate-[18deg] bg-black/[.16]" }}
+      >
         <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-center">
           <div>
             <Eyebrow>For business</Eyebrow>

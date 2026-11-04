@@ -99,6 +99,7 @@ export default function EventsView({ events }: { events: Event[] }) {
         }
         intro="Moto Sobori, track days and group rides: the calendar for North Macedonia's riding community."
         ticks={["Add any event to your calendar", "Every event added by our team"]}
+        shard={{ shape: "crack", className: "top-[-8%] right-[-60px] h-[118%] w-[300px] -rotate-[6deg] bg-red/[.30] sm:right-[8%] sm:w-[420px]" }}
       >
         <div className="flex max-w-[640px] flex-col gap-2 sm:flex-row">
           <label className="flex min-w-0 flex-1 items-center bg-white">
@@ -178,7 +179,11 @@ export default function EventsView({ events }: { events: Event[] }) {
       ) : null}
 
       {next && (
-        <RedBand id={`event-${next.id}`} className="mt-10">
+        <RedBand
+          id={`event-${next.id}`}
+          className="mt-10"
+          shard={{ shape: "sliver", className: "top-[-30px] right-[-60px] h-[130%] w-[360px] rotate-[10deg] bg-black/[.18]" }}
+        >
           <Eyebrow>Next up</Eyebrow>
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
             <BigDate date={next.event_date!} />
@@ -261,6 +266,7 @@ export default function EventsView({ events }: { events: Event[] }) {
       <div className="mt-16">
         <GoldBanner
           title="Got an event?"
+          shard={{ shape: "bent", className: "top-[-20%] right-[4%] hidden h-[140%] w-[34%] rotate-[-8deg] bg-[#111] opacity-90 md:block" }}
           body="Running a rally, track day or group ride? The Just5Up! team adds events to the calendar. Online submissions are on the way."
         />
       </div>
