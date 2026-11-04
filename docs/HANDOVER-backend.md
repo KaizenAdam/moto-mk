@@ -15,7 +15,7 @@ overrides them.
 | Result cards | `src/app/components/ListingCard.tsx` | Bikesales-style: photo count, spec icons, dealer/private line, Contact / View details |
 | Listing page | `src/app/listings/[id]/` (`page.tsx` fetches, `ListingView.tsx` renders) | Auto Trader-style: photo mosaic + full-screen gallery, sticky contact card, sticky Call/WhatsApp bar on phones, similar bikes. Contact rules unchanged (now in `resolveContact()` in `ContactSeller.tsx`). |
 | Feature your bike | `/listings/[id]/feature` | Owner-only package picker. **"Continue to payment" is disabled.** Linked from My Garage. |
-| Advertise | `/advertise` | Ad slots, how booking works. **"Enquire" is disabled**, because there's no contact address yet. |
+| For business | `/for-business#advertise` | Ad slots, how booking works. **"Enquire" is disabled**, because there's no contact address yet. |
 | Ad slots | `src/app/components/AdSlot.tsx` | Home banner, results banner (after 12 bikes), listing sidebar. They all show a house "Your ad here" card for now. |
 
 New read-only data functions are in `src/lib/data/listings.ts`: `listLatest`, `listStyleShowcase`, `listSimilar`. `getCoverPhotos` in `listingPhotos.ts` now returns photo counts too.

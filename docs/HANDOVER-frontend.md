@@ -27,7 +27,7 @@ release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
   - similar bikes
   - a fix so a single photo is shown whole, not cropped
 - **Feature and advertise:** `/listings/[id]/feature` (feature your bike)
-  and `/advertise` (ad slots). Both are front end only and their pay
+  and `/advertise` (ad slots, now part of `/for-business`). Both are front end only and their pay
   buttons are disabled until the backend exists.
 - **Parts & Gear:** an honest page shell, with categories and empty
   states but no fake items.

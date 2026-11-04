@@ -28,8 +28,9 @@ const columns = [
     // riders buying and selling (Auto Trader keeps its trade side separate too).
     title: "For business",
     links: [
-      { href: "/garage#storefront", label: "Become a dealer" },
-      { href: "/advertise", label: "Advertise with us" },
+      { href: "/for-business", label: "Just5Up! for business" },
+      { href: "/for-business#dealers", label: "Become a dealer" },
+      { href: "/for-business#advertise", label: "Advertise with us" },
     ],
   },
 ];

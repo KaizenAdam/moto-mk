@@ -27,7 +27,7 @@ export default function AdSlot({ slot, ad }: { slot: AdSlotId; ad?: Ad | null })
         </a>
       ) : (
         <Link
-          href="/advertise"
+          href="/for-business#advertise"
           className={`group flex border border-dashed border-highlight/50 bg-[repeating-linear-gradient(135deg,var(--panel),var(--panel)_14px,var(--panel2)_14px,var(--panel2)_28px)] p-5 transition hover:border-highlight ${
             tall ? "min-h-[220px] flex-col justify-center text-center" : "flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
           }`}

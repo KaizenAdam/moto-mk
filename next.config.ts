@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async redirects() {
+    // /advertise became the For business page (Nov 2026); keep old links working.
+    return [{ source: "/advertise", destination: "/for-business#advertise", permanent: true }];
+  },
 };
 
 export default nextConfig;

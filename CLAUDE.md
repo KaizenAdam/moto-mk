@@ -270,10 +270,13 @@ demo state — not test residue to clean up.
   Sell your bike, Sign out) sit in one `AccountMenu` dropdown
   (`ACCOUNT_LINKS`, shared with the phone menu), so the bar matches the
   signed-out one (Nov 2026: Billy found it too busy).
-- **Business offers stay out of the main nav.** Advertise and Become a
-  dealer are in the footer's "For business" column (and the AdSlot house
-  card links to `/advertise`), like Auto Trader keeping its trade side
-  separate. The header is for riders buying and selling.
+- **Business offers stay out of the main nav.** `/for-business` (Nov
+  2026, was `/advertise`, which now 308-redirects to
+  `/for-business#advertise` in `next.config.ts`) holds dealer
+  storefronts (`#dealers`), ad slots (`#advertise`) and service-centre
+  listings (`#service`). It's linked from the footer's "For business"
+  column and the AdSlot house card, like Auto Trader keeping its trade
+  side separate. The header is for riders buying and selling.
 - **Toasts:** `toast("Saved")` from any client component
   (`components/Toaster.tsx`, mounted once in the root layout). For
   successes only; errors stay next to what failed.
@@ -472,7 +475,8 @@ is 8, checked in the server actions.
   (`listSimilar`). All contact rules live in `resolveContact()` in
   `ContactSeller.tsx`; card "Contact" buttons jump to `#contact`.
 - **`/listings/[id]/feature`** — owner-only "feature your bike" package
-  picker (live bikes only). **`/advertise`** — ad slots for businesses.
+  picker (live bikes only). **`/for-business`** — dealers, ad slots and
+  service-centre listings for businesses.
   Both are front end only: their pay/enquire buttons are disabled until
   the backend in `docs/HANDOVER-backend.md` exists. Packages and slots
   are defined once in `src/lib/constants/monetisation.ts`.
