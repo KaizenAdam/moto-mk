@@ -13,6 +13,7 @@ import {
   IconBuildingStore,
   IconCalendar,
   IconCamera,
+  IconChevronDown,
   IconChevronLeft,
   IconChevronRight,
   IconCircleCheckFilled,
@@ -33,6 +34,7 @@ import {
   IconShieldCheck,
   IconTool,
   IconUser,
+  IconUserCircle,
   IconX,
   type Icon,
 } from "@tabler/icons-react";
@@ -88,3 +90,5 @@ export const ArrowLeftIcon = make(IconArrowLeft, "h-4 w-4", 2);
 export const ArrowRightIcon = make(IconArrowRight, "h-4 w-4", 2);
 export const ChevronLeftIcon = make(IconChevronLeft, "h-6 w-6", 2);
 export const ChevronRightIcon = make(IconChevronRight, "h-6 w-6", 2);
+export const ChevronDownIcon = make(IconChevronDown, "h-4 w-4", 2);
+export const AccountIcon = make(IconUserCircle, "h-5 w-5");

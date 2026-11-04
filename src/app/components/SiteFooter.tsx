@@ -21,6 +21,13 @@ const columns = [
     links: [
       { href: "/garage", label: "My Garage" },
       { href: "/sell", label: "List your bike" },
+    ],
+  },
+  {
+    // Business offers live down here, not in the main nav: the header is for
+    // riders buying and selling (Auto Trader keeps its trade side separate too).
+    title: "For business",
+    links: [
       { href: "/garage#storefront", label: "Become a dealer" },
       { href: "/advertise", label: "Advertise with us" },
     ],
@@ -30,7 +37,7 @@ const columns = [
 export default function SiteFooter() {
   return (
     <footer className="bg-[#1a1a1c]">
-      <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-8 px-5 py-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+      <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-8 px-5 py-10 md:grid-cols-[1.4fr_repeat(4,1fr)]">
         <div className="col-span-2 md:col-span-1">
           {/* eslint-disable-next-line @next/next/no-img-element -- pre-sized PNG wordmark */}
           <img src="/brand/wordmark-white.png" width={621} height={168} alt="Just5Up!" className="mb-3 h-10 w-auto" />

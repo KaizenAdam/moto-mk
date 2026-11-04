@@ -260,8 +260,15 @@ demo state — not test residue to clean up.
   components` in `globals.css`, so utilities like `font-semibold` or
   `normal-case` still override it. Body text stays on the system stack.
 - **Header:** `SiteHeader` + `NavLinks` (current section highlighted) +
-  `MobileMenu` (☰ below `xl` — seven items don't fit a 1024px bar). Nav
-  items live in `NAV_ITEMS` in `NavLinks.tsx`.
+  `MobileMenu` (☰ below `xl`). Nav items live in `NAV_ITEMS` in
+  `NavLinks.tsx`. Signed in, the account links (My Garage, Feature a bike,
+  Sell your bike, Sign out) sit in one `AccountMenu` dropdown
+  (`ACCOUNT_LINKS`, shared with the phone menu), so the bar matches the
+  signed-out one (Nov 2026: Billy found it too busy).
+- **Business offers stay out of the main nav.** Advertise and Become a
+  dealer are in the footer's "For business" column (and the AdSlot house
+  card links to `/advertise`), like Auto Trader keeping its trade side
+  separate. The header is for riders buying and selling.
 - **Toasts:** `toast("Saved")` from any client component
   (`components/Toaster.tsx`, mounted once in the root layout). For
   successes only; errors stay next to what failed.
@@ -417,9 +424,10 @@ is 8, checked in the server actions.
   a top bar (Adam's 25 Aug call), not a sidebar.
 - **Nav (Oct 2026, "put everything in for now"):** Home, Buy (`/bikes`),
   Parts & Gear, Dealers, Service Centres,
-  Events, Advertise — with a ☰ menu below `xl` (`MobileMenu`). Signed-in
-  users also get "Feature a bike" (→ My Garage, where each live listing
-  has the button). The Forum (client's site map, Phase 3 in the quote)
+  Events — with a ☰ menu below `xl` (`MobileMenu`). Signed-in
+  users get "Feature a bike" in the account menu, which goes to
+  `/feature`: one live bike goes straight to its package picker, several
+  get a choice, none gets an explanation. The Forum (client's site map, Phase 3 in the quote)
   only appears as a Coming soon card on the hub.
 - **`/parts-gear`** — the finished page shell (14 Oct 2026), honest that
   nothing can be listed yet: categories and sub-category tiles from

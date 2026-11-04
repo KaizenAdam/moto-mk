@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getOwnProfile } from "@/lib/data/profiles";
-import { signOut } from "@/app/actions/auth";
 import NavLinks from "./NavLinks";
 import MobileMenu from "./MobileMenu";
-import { button } from "./ui";
+import AccountMenu from "./AccountMenu";
 
 export default async function SiteHeader() {
   const supabase = await createClient();
@@ -35,20 +34,7 @@ export default async function SiteHeader() {
         <div className="flex items-center gap-2.5 xl:gap-3">
           <div className="hidden items-center gap-3 xl:flex">
             {profile ? (
-              <>
-                <Link href="/garage" className="text-sm font-semibold whitespace-nowrap text-ink hover:text-highlight">
-                  My Garage
-                </Link>
-                {/* Featuring is per listing: My Garage has the button on each live bike. */}
-                <Link href="/garage" className="text-sm font-semibold whitespace-nowrap text-highlight hover:underline">
-                  Feature a bike
-                </Link>
-                <form action={signOut}>
-                  <button type="submit" className={button("outline", "sm")}>
-                    Sign out
-                  </button>
-                </form>
-              </>
+              <AccountMenu name={profile.name} />
             ) : (
               <Link
                 href="/login"

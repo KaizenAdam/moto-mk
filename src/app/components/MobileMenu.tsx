@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { signOut } from "@/app/actions/auth";
 import NavLinks from "./NavLinks";
+import { ACCOUNT_LINKS } from "./AccountMenu";
 import { button } from "./ui";
 import { CloseIcon, MenuIcon } from "./icons";
 
@@ -48,15 +49,14 @@ export default function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
             <div className="flex flex-col gap-2.5 border-t border-line px-4 pt-4">
               {isLoggedIn ? (
                 <>
-                  <Link href="/garage" onClick={close} className={button("outline", "lg")}>
-                    My Garage
-                  </Link>
-                  {/* Featuring is per listing: My Garage has the button on each live bike. */}
-                  <Link href="/garage" onClick={close} className={button("outline", "lg")}>
-                    Feature a bike
-                  </Link>
+                  <p className="font-display text-xs tracking-wider text-grey">My account</p>
+                  {ACCOUNT_LINKS.map((l) => (
+                    <Link key={l.href} href={l.href} onClick={close} className={button(l.href === "/sell" ? "primary" : "outline", "lg")}>
+                      {l.label}
+                    </Link>
+                  ))}
                   <form action={signOut} onSubmit={close}>
-                    <button type="submit" className={`${button("outline", "lg")} w-full`}>
+                    <button type="submit" className={`${button("danger", "lg")} w-full`}>
                       Sign out
                     </button>
                   </form>

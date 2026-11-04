@@ -10,7 +10,6 @@ export const NAV_ITEMS = [
   { href: "/dealers", label: "Dealers" },
   { href: "/service-centres", label: "Service Centres" },
   { href: "/events", label: "Events" },
-  { href: "/advertise", label: "Advertise" },
 ] as const;
 
 function isActive(pathname: string, href: string) {
