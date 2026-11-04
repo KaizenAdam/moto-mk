@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
-import PageHero from "@/app/components/PageHero";
-import SectionHeading from "@/app/components/SectionHeading";
+import { BlockHero, Eyebrow, GoldBanner, HighlightWord, RedBand, blackButton } from "@/app/components/Bands";
 import { AD_SLOTS, type AdSlotId } from "@/lib/constants/monetisation";
-import { CheckIcon, StoreIcon, WrenchIcon } from "@/app/components/icons";
-import { button, card } from "@/app/components/ui";
+import { StoreIcon, TickIcon, WrenchIcon } from "@/app/components/icons";
+import { button } from "@/app/components/ui";
 
 export const metadata: Metadata = {
   title: "Just5Up! for business",
@@ -39,104 +38,114 @@ const AD_STEPS = [
 export default function ForBusinessPage() {
   return (
     <main className="pb-16">
-      <PageHero
-        width="narrow"
-        title="Just5Up! for business"
+      <BlockHero
+        gradient
+        shard={{ shape: "bent", className: "top-[-30%] right-[-110px] h-[150%] w-[380px] rotate-[22deg] bg-red/[.22] sm:right-[10%] sm:w-[460px]" }}
+        title={
+          <>
+            Grow your
+            <br />
+            <HighlightWord>business</HighlightWord>
+          </>
+        }
         intro="Dealers, workshops, gear shops, insurers and importers: reach the people buying, riding and fixing motorcycles in North Macedonia."
-      />
-
-      <div className="mx-auto max-w-[1100px] space-y-16 px-5 pt-10">
-        <nav aria-label="Ways to work with us" className="grid gap-4 md:grid-cols-3">
+        ticks={["Dealer storefronts", "Banner ads", "Free workshop listings"]}
+      >
+        <nav aria-label="Ways to work with us" className="grid max-w-[900px] gap-3 sm:grid-cols-3">
           <Route href="#dealers" icon={<StoreIcon className="h-6 w-6" />} title="Sell bikes as a dealer">
             A storefront and a verified badge for your stock.
           </Route>
-          <Route href="#advertise" icon={<span className="font-display text-xl leading-none">AD</span>} title="Advertise your business">
+          <Route href="#advertise" icon={<span className="font-display text-xl leading-none">AD</span>} title="Advertise">
             Banner spaces on the pages riders use most.
           </Route>
-          <Route href="#service" icon={<WrenchIcon className="h-6 w-6" />} title="Get your workshop found">
-            Service centres are listed on our map, free.
+          <Route href="#service" icon={<WrenchIcon className="h-6 w-6" />} title="List your workshop">
+            On our service centres map, free.
           </Route>
         </nav>
+      </BlockHero>
 
-        <section id="dealers" className="scroll-mt-24">
-          <SectionHeading>Sell bikes as a dealer</SectionHeading>
-          <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_340px] md:items-start">
-            <ul className="space-y-3">
-              {DEALER_PERKS.map((perk) => (
-                <li key={perk} className="flex gap-2.5 text-[15px] text-ink-dim">
-                  <CheckIcon className="mt-0.5 h-5 w-5 shrink-0 text-highlight" />
-                  {perk}
-                </li>
-              ))}
-            </ul>
-            <div className="border border-line border-t-4 border-t-highlight bg-panel p-6">
-              <p className="font-display text-2xl">How to apply</p>
-              <p className="mt-2 text-sm text-ink-dim">
-                Create an account, then request a dealer account from My Garage with your business name. We
-                check every request before the storefront goes live.
-              </p>
-              <Link href="/garage#storefront" className={`${button("primary", "lg")} mt-5 w-full`}>
-                Apply now &gt;&gt;&gt;
-              </Link>
-              <Link href="/dealers" className="mt-3 block text-center text-sm text-highlight hover:underline">
-                See dealers already on Just5Up!
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        <section id="advertise" className="scroll-mt-24 space-y-10">
-          <div>
-            <SectionHeading>Advertise your business</SectionHeading>
-            <div className="grid gap-4 md:grid-cols-3">
-              {(Object.keys(AD_SLOTS) as AdSlotId[]).map((id) => (
-                <div key={id} className={`${card} p-5`}>
-                  <SlotDiagram slot={id} />
-                  <h3 className="font-display mt-4 text-xl">{AD_SLOTS[id].name}</h3>
-                  <p className="mt-1 text-sm text-ink-dim">{AD_SLOTS[id].where}</p>
-                  <p className="mt-2 text-xs text-grey">Artwork: {AD_SLOTS[id].size}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="font-display mb-4 text-xl">How booking works</h3>
-            <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {AD_STEPS.map(([title, body], i) => (
-                <li key={title} className={`${card} p-5`}>
-                  <span className="font-display text-3xl text-highlight">{i + 1}</span>
-                  <p className="font-display mt-1 text-lg">{title}</p>
-                  <p className="mt-1 text-sm text-ink-dim">{body}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-
-          <div className="flex flex-col items-start gap-4 border border-line border-t-4 border-t-highlight bg-panel p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-            <div>
-              <p className="font-display text-3xl">Ad booking opens soon</p>
-              <p className="mt-1 text-sm text-ink-dim">Online booking and payment for ad spaces are on the way.</p>
-            </div>
-            <button type="button" disabled className={button("primary", "lg")}>
-              Enquire
-            </button>
-          </div>
-        </section>
-
-        <section id="service" className="scroll-mt-24">
-          <SectionHeading>Get your workshop found</SectionHeading>
-          <div className={`${card} flex flex-col items-start gap-4 p-6 sm:flex-row sm:items-center sm:justify-between`}>
-            <p className="max-w-2xl text-[15px] text-ink-dim">
-              Workshops, brand service centres and importers are listed on our service centres map for free,
-              with Call, WhatsApp and directions. Online submissions are on the way; until then the Just5Up!
-              team adds and checks each one.
+      <section id="dealers" className="mx-auto max-w-[1280px] scroll-mt-24 px-5 pt-14">
+        <h2 className="font-display mb-6 text-[28px] font-semibold sm:text-[34px]">Sell bikes as a dealer</h2>
+        <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_380px] md:items-start">
+          <ul className="space-y-3">
+            {DEALER_PERKS.map((perk) => (
+              <li key={perk} className="flex items-center gap-4 border border-line border-l-4 border-l-red bg-panel px-5 py-4">
+                <TickIcon className="h-5 w-5 shrink-0 text-highlight" />
+                <span className="text-[15px] text-ink">{perk}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="border border-line border-t-4 border-t-highlight bg-panel p-6">
+            <p className="font-display text-2xl">How to apply</p>
+            <p className="mt-2 text-sm text-ink-dim">
+              Create an account, then request a dealer account from My Garage with your business name. We
+              check every request before the storefront goes live.
             </p>
-            <Link href="/service-centres" className={`${button("outline", "lg")} shrink-0`}>
-              See the map
+            <Link href="/garage#storefront" className={`${button("primary", "lg")} mt-5 w-full`}>
+              Apply now &gt;&gt;&gt;
+            </Link>
+            <Link href="/dealers" className="mt-3 block text-center text-sm text-highlight hover:underline">
+              See dealers already on Just5Up!
             </Link>
           </div>
-        </section>
+        </div>
+      </section>
+
+      <RedBand
+        id="advertise"
+        className="mt-16"
+        shard={{ shape: "double", className: "bottom-[-120px] left-[-200px] h-[560px] w-[600px] rotate-[8deg] bg-black/[.16]" }}
+      >
+        <Eyebrow>Advertise</Eyebrow>
+        <h2 className="font-display mb-6 text-4xl leading-none sm:text-[44px]">Where your ad appears</h2>
+        <div className="grid gap-3 md:grid-cols-3">
+          {(Object.keys(AD_SLOTS) as AdSlotId[]).map((id) => (
+            <div key={id} className="bg-[#0a0a0a] p-5">
+              <SlotDiagram slot={id} />
+              <h3 className="font-display mt-4 text-[22px] font-normal">{AD_SLOTS[id].name}</h3>
+              <p className="mt-1 text-sm text-[#d6d3cb]">{AD_SLOTS[id].where}</p>
+              <p className="mt-2 text-xs text-[#bdbab2]">Artwork: {AD_SLOTS[id].size}</p>
+            </div>
+          ))}
+        </div>
+
+        <h3 className="font-display mt-10 mb-4 text-2xl font-normal">How booking works</h3>
+        <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {AD_STEPS.map(([title, body], i) => (
+            <li key={title} className="border-t-2 border-white/35 pt-4">
+              <span className="font-display text-4xl leading-none text-highlight">{i + 1}</span>
+              <p className="font-display mt-2 text-xl font-normal">{title}</p>
+              <p className="mt-1 text-sm">{body}</p>
+            </li>
+          ))}
+        </ol>
+      </RedBand>
+
+      <section id="service" className="mx-auto max-w-[1280px] scroll-mt-24 px-5 pt-14">
+        <h2 className="font-display mb-6 text-[28px] font-semibold sm:text-[34px]">List your workshop</h2>
+        <div className="flex flex-col items-start gap-5 border border-line border-l-4 border-l-red bg-panel p-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="max-w-2xl text-[15px] text-ink-dim">
+            Workshops, brand service centres and importers are listed on our service centres map for free,
+            with Call, WhatsApp and directions. Online submissions are on the way; until then the Just5Up!
+            team adds and checks each one.
+          </p>
+          <Link href="/service-centres" className={`${button("outline", "lg")} shrink-0`}>
+            See the map
+          </Link>
+        </div>
+      </section>
+
+      <div className="mt-16">
+        <GoldBanner
+          title="Ad booking opens soon"
+          body="Online booking and payment for ad spaces are on the way. Dealer storefronts and workshop listings are open now."
+          shard={{ shape: "double", className: "inset-y-0 right-[-6%] hidden w-[42%] rotate-180 bg-[#111] opacity-90 md:block" }}
+          action={
+            <button type="button" disabled className={`${blackButton} cursor-not-allowed opacity-60`}>
+              Enquire
+            </button>
+          }
+        />
       </div>
     </main>
   );
@@ -145,10 +154,12 @@ export default function ForBusinessPage() {
 /** One of the three ways in, at the top of the page. */
 function Route({ href, icon, title, children }: { href: string; icon: ReactNode; title: string; children: ReactNode }) {
   return (
-    <a href={href} className={`${card} group block p-5 transition hover:border-highlight`}>
-      <span className="flex h-11 w-11 items-center justify-center bg-highlight text-[#111]">{icon}</span>
-      <p className="font-display mt-4 text-xl group-hover:text-highlight">{title}</p>
-      <p className="mt-1 text-sm text-ink-dim">{children}</p>
+    <a href={href} className="group flex items-start gap-3.5 bg-[#0a0a0a]/85 p-4 transition hover:bg-black">
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center bg-highlight text-[#111]">{icon}</span>
+      <span>
+        <span className="font-display block text-lg leading-tight group-hover:text-highlight">{title} &gt;</span>
+        <span className="mt-0.5 block text-[13px] text-[#bdbab2]">{children}</span>
+      </span>
     </a>
   );
 }

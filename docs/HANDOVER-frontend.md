@@ -123,6 +123,10 @@ release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
   counts in the ticks, gold town filters, centre cards with a red left
   edge, and a red "Run a workshop?" band linking to
   `/for-business#service`.
+- **For business** too, also keeping the gradient: "Grow your business"
+  with the three routes as dark tiles in the hero, red-edged dealer perks,
+  advertising in a red band, and "Ad booking opens soon" as a gold banner
+  with the disabled Enquire button.
 - The home page itself is unchanged.
 - **No two heroes share a shard placement.** `BlockHero` requires a
   `shard` prop. Each page varies the home page's `double` chevrons and
