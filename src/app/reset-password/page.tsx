@@ -3,6 +3,9 @@ import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/data/auth";
 import ResetPasswordForm from "./ResetPasswordForm";
 import { AuthShell, HighlightWord } from "@/app/components/Bands";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Choose a new password", robots: { index: false } };
 
 /**
  * Reached from the reset email via /auth/confirm, which has already

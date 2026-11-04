@@ -310,6 +310,15 @@ demo state — not test residue to clean up.
   needs a real Reject choice and they must not load before consent.
   Only English exists, so choosing Македонски or Shqip is remembered and
   says "coming soon" (no fake switch). `j5_lang` is there for real i18n.
+- **Search engines and headers (pre-launch check, 4 Nov 2026):**
+  `app/robots.ts` (account, admin and edit pages disallowed) and
+  `app/sitemap.ts` (section pages, live listings, live storefronts), both
+  built from `SITE_URL`. Every page needs its own `title`; client-component
+  pages set it in a small `layout.tsx` beside them (`signup`,
+  `forgot-password`). `next.config.ts` sends basic security headers on
+  every response (nosniff, no framing, referrer and permissions policy).
+  A full script CSP would need nonces and isn't done. `app/favicon.ico` is
+  the gold icon; it was Next's default triangle until this check.
 - **Toasts:** `toast("Saved")` from any client component
   (`components/Toaster.tsx`, mounted once in the root layout). For
   successes only; errors stay next to what failed.

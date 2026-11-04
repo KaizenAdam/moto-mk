@@ -163,6 +163,21 @@ release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
 - Dealers: a shop-front photo slot on cards and storefronts, showing a
   "coming soon" placeholder until uploads exist (backend handover).
 
+**Pre-launch check (4 Nov 2026)**
+- Fixed: the default Next.js favicon; missing robots.txt and sitemap;
+  generic titles on log in, sign up, password and 404 pages; missing
+  security headers; unlabelled filter dropdowns on /bikes; invalid spec
+  list markup on listing pages; unnamed map pins on /service-centres.
+- Still to do before launch:
+  - privacy policy, terms and a contact email in the footer (waiting on
+    the client)
+  - a key-based map tile provider (`NEXT_PUBLIC_MAP_TILE_URL`)
+  - the real domain: set `NEXT_PUBLIC_SITE_URL` and add
+    `<domain>/auth/confirm` to Supabase's Redirect URLs
+  - Preview env vars on Vercel (`docs/HANDOVER-backend.md`)
+  - Skopje Moto Garage's "about" text has an en dash ("Mon–Sat"); it's
+    dealer-written data, editable from that dealer's My Garage
+
 **Waiting on the client:** a contact email or phone for business
 enquiries, so the For business page's "Enquire" button can work. It's
 listed in `docs/HANDOVER-backend.md`.

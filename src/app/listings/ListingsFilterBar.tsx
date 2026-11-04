@@ -36,7 +36,12 @@ export default function ListingsFilterBar({
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <select className={pill("make")} value={toStringParam(current.make)} onChange={(e) => setParam("make", e.target.value)}>
+      <select
+        aria-label="Make"
+        className={pill("make")}
+        value={toStringParam(current.make)}
+        onChange={(e) => setParam("make", e.target.value)}
+      >
         <option value="">All makes</option>
         {makes.map((m) => (
           <option key={m} value={m}>
@@ -45,7 +50,12 @@ export default function ListingsFilterBar({
         ))}
       </select>
 
-      <select className={pill("style")} value={toStringParam(current.style)} onChange={(e) => setParam("style", e.target.value)}>
+      <select
+        aria-label="Riding style"
+        className={pill("style")}
+        value={toStringParam(current.style)}
+        onChange={(e) => setParam("style", e.target.value)}
+      >
         <option value="">All riding styles</option>
         {RIDING_STYLES.map((s) => (
           <option key={s} value={s}>
@@ -55,6 +65,7 @@ export default function ListingsFilterBar({
       </select>
 
       <select
+        aria-label="Engine type"
         className={pill("engineType")}
         value={toStringParam(current.engineType)}
         onChange={(e) => setParam("engineType", e.target.value)}
@@ -67,7 +78,12 @@ export default function ListingsFilterBar({
         ))}
       </select>
 
-      <select className={pill("ccMax")} value={toStringParam(current.ccMax)} onChange={(e) => setParam("ccMax", e.target.value)}>
+      <select
+        aria-label="Engine size"
+        className={pill("ccMax")}
+        value={toStringParam(current.ccMax)}
+        onChange={(e) => setParam("ccMax", e.target.value)}
+      >
         <option value="">Any engine size</option>
         {CC_THRESHOLDS.map((cc) => (
           <option key={cc} value={cc}>
@@ -77,6 +93,7 @@ export default function ListingsFilterBar({
       </select>
 
       <select
+        aria-label="Price"
         className={pill("priceMax")}
         value={toStringParam(current.priceMax)}
         onChange={(e) => setParam("priceMax", e.target.value)}
@@ -89,7 +106,12 @@ export default function ListingsFilterBar({
         ))}
       </select>
 
-      <select className={pill("town")} value={toStringParam(current.town)} onChange={(e) => setParam("town", e.target.value)}>
+      <select
+        aria-label="Town"
+        className={pill("town")}
+        value={toStringParam(current.town)}
+        onChange={(e) => setParam("town", e.target.value)}
+      >
         <option value="">All of North Macedonia</option>
         {towns.map((t) => (
           <option key={t} value={t}>
@@ -99,7 +121,11 @@ export default function ListingsFilterBar({
       </select>
 
       {anySet && (
-        <button type="button" onClick={clearAll} className="flex items-center gap-1 px-2 py-2 text-xs text-ink-dim hover:text-white">
+        <button
+          type="button"
+          onClick={clearAll}
+          className="flex items-center gap-1 px-2 py-2 text-xs text-ink-dim hover:text-white"
+        >
           <CloseIcon className="h-3.5 w-3.5" />
           Clear filters
         </button>

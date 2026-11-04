@@ -4,6 +4,8 @@ import { button } from "@/app/components/ui";
 export default function NotFound() {
   return (
     <main className="mx-auto max-w-xl px-5 py-20 text-center">
+      {/* not-found.tsx can't export metadata; React hoists this into <head>. */}
+      <title>Page not found - Just5Up!</title>
       <p className="font-display mb-2 text-7xl text-highlight">404</p>
       <h1 className="font-display mb-3 text-3xl">Wrong turn</h1>
       <p className="mb-8 text-[15px] text-ink-dim">

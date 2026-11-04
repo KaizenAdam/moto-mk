@@ -83,6 +83,7 @@ export default function LeafletMap({
           key={p.id}
           position={[p.lat, p.lng]}
           icon={icon(p.id === selectedId)}
+          title={p.label}
           draggable={!!onPick || !!onPinDrag}
           eventHandlers={{
             click: () => onSelect?.(p.id),

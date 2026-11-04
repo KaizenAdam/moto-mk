@@ -140,7 +140,9 @@ export default function ListingView({
             <h1 className="font-display text-4xl leading-none sm:text-5xl">{bikeName}</h1>
             {subtitle && <p className="mt-2 text-ink-dim">{subtitle}</p>}
             <div className="mt-5 flex flex-wrap items-baseline gap-3">
-              <span className="font-display bg-highlight px-3 py-1 text-4xl font-semibold text-[#111]">{price.main}</span>
+              <span className="font-display bg-highlight px-3 py-1 text-4xl font-semibold text-[#111]">
+                {price.main}
+              </span>
               <span className="text-sm text-grey">{price.alt}</span>
             </div>
           </section>
@@ -159,12 +161,12 @@ export default function ListingView({
               {overview
                 .filter((o) => o.value)
                 .map((o) => (
-                  <div key={o.label} className="flex items-center gap-3 bg-panel px-4 py-4">
-                    <span className="shrink-0 text-highlight">{o.icon}</span>
-                    <div className="min-w-0">
-                      <dt className="text-[11px] tracking-wider text-grey uppercase">{o.label}</dt>
-                      <dd className="font-display truncate text-lg font-medium">{o.value}</dd>
-                    </div>
+                  <div key={o.label} className="relative min-w-0 bg-panel py-4 pr-4 pl-12">
+                    <dt className="text-[11px] tracking-wider text-grey uppercase">
+                      <span className="absolute top-1/2 left-4 -translate-y-1/2 text-highlight">{o.icon}</span>
+                      {o.label}
+                    </dt>
+                    <dd className="font-display truncate text-lg font-medium">{o.value}</dd>
                   </div>
                 ))}
             </dl>
