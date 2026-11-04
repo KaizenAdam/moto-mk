@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/data/auth";
 import ResetPasswordForm from "./ResetPasswordForm";
+import { AuthShell, HighlightWord } from "@/app/components/Bands";
 
 /**
  * Reached from the reset email via /auth/confirm, which has already
@@ -13,8 +14,17 @@ export default async function ResetPasswordPage() {
   if (!user) redirect("/forgot-password");
 
   return (
-    <main className="flex min-h-[70vh] items-center justify-center px-4 py-10">
+    <AuthShell
+      line={
+        <>
+          New
+          <br />
+          <HighlightWord>password</HighlightWord>
+        </>
+      }
+      shard={{ shape: "double", className: "top-[-10%] left-[-180px] h-[120%] w-[480px] -scale-x-100 bg-red/[.18]" }}
+    >
       <ResetPasswordForm />
-    </main>
+    </AuthShell>
   );
 }

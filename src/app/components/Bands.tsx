@@ -25,8 +25,14 @@ export function BlockHero({
   ticks,
   shard,
   gradient = false,
+  compact = false,
+  above,
   children,
 }: {
+  /** A line above the headline: a back link or a badge. */
+  above?: ReactNode;
+  /** Smaller headline and padding, for working pages (edit, feature, account). */
+  compact?: boolean;
   /** Use the red/gold glow (the search page's) instead of flat black. The client likes it; keep it where it already was. */
   gradient?: boolean;
   /** This page's own shard. Pick one no other hero uses. */
@@ -42,8 +48,15 @@ export function BlockHero({
       style={gradient ? { background: heroBackground } : undefined}
     >
       <Shard shape={shard.shape} className={shard.className} />
-      <div className="relative mx-auto max-w-[1280px] px-5 pt-12 pb-10 sm:pt-16 sm:pb-12">
-        <h1 className="font-display max-w-[760px] text-[44px] leading-none sm:text-6xl lg:text-7xl">{title}</h1>
+      <div className={`relative mx-auto max-w-[1280px] px-5 ${compact ? "pt-9 pb-8 sm:pt-11 sm:pb-10" : "pt-12 pb-10 sm:pt-16 sm:pb-12"}`}>
+        {above && <div className="mb-4">{above}</div>}
+        <h1
+          className={`font-display max-w-[760px] leading-none ${
+            compact ? "text-[38px] sm:text-5xl" : "text-[44px] sm:text-6xl lg:text-7xl"
+          }`}
+        >
+          {title}
+        </h1>
         {intro && <p className="mt-5 max-w-[620px] text-[15px] text-[#d6d3cb] sm:text-base">{intro}</p>}
         {ticks && (
           <ul className="mt-5 grid max-w-[620px] gap-x-7 gap-y-2 text-sm text-[#d6d3cb] sm:grid-cols-2 sm:text-[15px]">
@@ -123,5 +136,44 @@ export function GoldBanner({
         </div>
       </div>
     </section>
+  );
+}
+
+/**
+ * The auth pages (log in, sign up, password reset): a black band with a
+ * big gold-block line on the left and the form card on the right. Each page
+ * passes its own shard. On phones the line sits above the form.
+ */
+export function AuthShell({
+  line,
+  ticks,
+  shard,
+  children,
+}: {
+  line: ReactNode;
+  ticks?: string[];
+  shard: ShardSpec;
+  children: ReactNode;
+}) {
+  return (
+    <main className="relative overflow-hidden bg-[#141416]">
+      <Shard shape={shard.shape} className={shard.className} />
+      <div className="relative mx-auto grid max-w-[1280px] items-center gap-10 px-5 py-12 lg:min-h-[640px] lg:grid-cols-2 lg:py-20">
+        <div>
+          <p className="font-display text-[44px] leading-none sm:text-6xl lg:text-7xl">{line}</p>
+          {ticks && (
+            <ul className="mt-6 space-y-2 text-[15px] text-[#d6d3cb]">
+              {ticks.map((t) => (
+                <li key={t} className="flex items-center gap-2.5">
+                  <TickIcon className="h-4 w-4 shrink-0 text-[#ff6b70]" />
+                  {t}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="flex lg:justify-end">{children}</div>
+      </div>
+    </main>
   );
 }

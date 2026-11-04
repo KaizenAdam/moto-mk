@@ -127,6 +127,17 @@ release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
   with the three routes as dark tiles in the hero, red-edged dealer perks,
   advertising in a red band, and "Ad booking opens soon" as a gold banner
   with the disabled Enquire button.
+- **Then every remaining page (4 Nov):**
+  - My Garage: "Billy's garage" hero with live/review/saved counts, gold
+    or red edged listing rows, and the dealer request or storefront form
+    in a red band
+  - Sell, Edit, Feature and the `/feature` picker: `BlockHero compact`
+    (Sell keeps the gradient)
+  - dealer storefronts: the business name in a gold block, gradient kept
+  - Admin: the counts as tiles in a gradient hero, gold when something's
+    waiting
+  - log in, sign up, forgot and reset password: `AuthShell`, a big line
+    on the left and the form on the right
 - The home page itself is unchanged.
 - **No two heroes share a shard placement.** `BlockHero` requires a
   `shard` prop. Each page varies the home page's `double` chevrons and

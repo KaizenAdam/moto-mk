@@ -9,6 +9,7 @@ import { cachedPhotoSigner } from "@/lib/photos/signer";
 import { formatPrice } from "@/lib/constants/listings";
 import { ArrowLeftIcon } from "@/app/components/icons";
 import EmptyState from "@/app/components/EmptyState";
+import { BlockHero, HighlightWord } from "@/app/components/Bands";
 import { button } from "@/app/components/ui";
 
 export const metadata: Metadata = { title: "Feature a bike", robots: { index: false } };
@@ -27,66 +28,86 @@ export default async function FeatureABikePage() {
   const live = mine.filter((l) => l.status === "active");
   if (live.length === 1) redirect(`/listings/${live[0].id}/feature`);
 
-  const covers = await getCoverPhotos(supabase, live.map((l) => l.id), cachedPhotoSigner(supabase));
+  const covers = await getCoverPhotos(
+    supabase,
+    live.map((l) => l.id),
+    cachedPhotoSigner(supabase),
+  );
   const waiting = mine.filter((l) => l.status === "pending").length;
 
   return (
-    <main className="mx-auto max-w-[1100px] px-5 py-8 pb-16">
-      <Link href="/garage" className="mb-4 inline-flex items-center gap-1.5 text-sm text-grey hover:text-highlight">
-        <ArrowLeftIcon />
-        My Garage
-      </Link>
-      <h1 className="font-display mb-1.5 text-3xl sm:text-4xl">Feature a bike</h1>
-      <p className="mb-8 max-w-2xl text-sm text-ink-dim">
-        Featured bikes sit above ordinary listings in search and appear on the home page. Pick the bike you
-        want more buyers for.
-      </p>
+    <main className="pb-16">
+      <BlockHero
+        compact
+        above={
+          <Link href="/garage" className="inline-flex items-center gap-1.5 text-sm text-[#bdbab2] hover:text-highlight">
+            <ArrowLeftIcon />
+            My Garage
+          </Link>
+        }
+        shard={{
+          shape: "double",
+          className: "top-0 right-[-80px] h-full w-[380px] bg-highlight/[.10] sm:right-[-20px]",
+        }}
+        title={
+          <>
+            Feature a
+            <br />
+            <HighlightWord>bike</HighlightWord>
+          </>
+        }
+        intro="Featured bikes sit above ordinary listings in search and appear on the home page. Pick the bike you want more buyers for."
+      />
 
-      {live.length === 0 ? (
-        <EmptyState>
-          <p className="mb-4">
-            Only live bikes can be featured.{" "}
-            {waiting > 0
-              ? `You have ${waiting} waiting for review — once one is approved you can feature it.`
-              : "You don't have a bike on sale right now."}
-          </p>
-          <div className="flex flex-wrap justify-center gap-2.5">
-            <Link href="/sell" className={button("primary", "md")}>
-              Sell your bike &gt;&gt;&gt;
-            </Link>
-            <Link href="/garage" className={button("outline", "md")}>
-              My Garage
-            </Link>
-          </div>
-        </EmptyState>
-      ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {live.map((l) => {
-            const cover = covers.get(l.id)?.url;
-            return (
-              <div key={l.id} className="flex flex-col border border-line bg-panel">
-                {cover ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- signed URL
-                  <img src={cover} alt="" className="aspect-[4/3] w-full object-cover" />
-                ) : (
-                  <div className="flex aspect-[4/3] items-center justify-center bg-panel2 text-xs text-grey">No photo</div>
-                )}
-                <div className="flex flex-1 flex-col px-4 pt-3.5 pb-4">
-                  <p className="font-display text-[19px] leading-tight">{l.title}</p>
-                  <p className="mt-2">
-                    <span className="font-display bg-highlight px-2.5 py-0.5 text-lg text-[#111]">
-                      {formatPrice(Number(l.price_eur), "EUR").main}
-                    </span>
-                  </p>
-                  <Link href={`/listings/${l.id}/feature`} className={`${button("primary", "md")} mt-4`}>
-                    Feature this bike &gt;&gt;&gt;
-                  </Link>
+      <div className="mx-auto max-w-[1100px] px-5 pt-10">
+        {live.length === 0 ? (
+          <EmptyState>
+            <p className="mb-4">
+              Only live bikes can be featured.{" "}
+              {waiting > 0
+                ? `You have ${waiting} waiting for review — once one is approved you can feature it.`
+                : "You don't have a bike on sale right now."}
+            </p>
+            <div className="flex flex-wrap justify-center gap-2.5">
+              <Link href="/sell" className={button("primary", "md")}>
+                Sell your bike &gt;&gt;&gt;
+              </Link>
+              <Link href="/garage" className={button("outline", "md")}>
+                My Garage
+              </Link>
+            </div>
+          </EmptyState>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {live.map((l) => {
+              const cover = covers.get(l.id)?.url;
+              return (
+                <div key={l.id} className="flex flex-col border border-line bg-panel">
+                  {cover ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- signed URL
+                    <img src={cover} alt="" className="aspect-[4/3] w-full object-cover" />
+                  ) : (
+                    <div className="flex aspect-[4/3] items-center justify-center bg-panel2 text-xs text-grey">
+                      No photo
+                    </div>
+                  )}
+                  <div className="flex flex-1 flex-col px-4 pt-3.5 pb-4">
+                    <p className="font-display text-[19px] leading-tight">{l.title}</p>
+                    <p className="mt-2">
+                      <span className="font-display bg-highlight px-2.5 py-0.5 text-lg text-[#111]">
+                        {formatPrice(Number(l.price_eur), "EUR").main}
+                      </span>
+                    </p>
+                    <Link href={`/listings/${l.id}/feature`} className={`${button("primary", "md")} mt-4`}>
+                      Feature this bike &gt;&gt;&gt;
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+              );
+            })}
+          </div>
+        )}
+      </div>
     </main>
   );
 }

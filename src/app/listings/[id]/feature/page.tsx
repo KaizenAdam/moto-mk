@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BlockHero, HighlightWord } from "@/app/components/Bands";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/data/auth";
@@ -32,27 +33,41 @@ export default async function FeatureListingPage({ params }: { params: Promise<{
   const cover = covers.get(listing.id);
 
   return (
-    <main className="mx-auto max-w-[1100px] px-5 py-8 pb-16">
-      <Link href="/garage" className="mb-4 inline-flex items-center gap-1.5 text-sm text-grey hover:text-highlight">
-        <ArrowLeftIcon />
-        My Garage
-      </Link>
-      <h1 className="font-display mb-1.5 text-3xl sm:text-4xl">Get more buyers for your {listing.make}</h1>
-      <p className="mb-8 max-w-2xl text-sm text-ink-dim">
-        Featured bikes sit above ordinary listings in search, wear a gold frame and appear on the
-        home page. A bump sends your bike back to the top of the newest listings.
-      </p>
+    <main className="pb-16">
+      <BlockHero
+        compact
+        above={
+          <Link href="/garage" className="inline-flex items-center gap-1.5 text-sm text-[#bdbab2] hover:text-highlight">
+            <ArrowLeftIcon />
+            My Garage
+          </Link>
+        }
+        shard={{
+          shape: "bent",
+          className: "top-[-35%] right-[-60px] h-[160%] w-[360px] -rotate-[20deg] bg-highlight/[.14] sm:right-[8%]",
+        }}
+        title={
+          <>
+            Get more
+            <br />
+            <HighlightWord>buyers</HighlightWord>
+          </>
+        }
+        intro={`Featured bikes sit above ordinary listings in search, wear a gold frame and appear on the home page. A bump sends your ${listing.make} back to the top of the newest listings.`}
+      />
 
-      {listing.status === "active" ? (
-        <FeatureForm
-          listing={listing}
-          photoUrl={cover?.url ?? undefined}
-          photoCount={cover?.count ?? 0}
-          dealerName={dealer?.business_name}
-        />
-      ) : (
-        <NotLiveNotice status={listing.status} />
-      )}
+      <div className="mx-auto max-w-[1100px] px-5 pt-10">
+        {listing.status === "active" ? (
+          <FeatureForm
+            listing={listing}
+            photoUrl={cover?.url ?? undefined}
+            photoCount={cover?.count ?? 0}
+            dealerName={dealer?.business_name}
+          />
+        ) : (
+          <NotLiveNotice status={listing.status} />
+        )}
+      </div>
     </main>
   );
 }

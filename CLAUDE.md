@@ -252,11 +252,14 @@ demo state — not test residue to clean up.
   icon or use a text glyph (♡ × ‹) — add the Tabler one to that file.
 - **Home-page look on other pages: `components/Bands.tsx`** —
   `BlockHero` (black hero, `HighlightWord` gold block, red ticks),
-  `RedBand`, `GoldBanner`, `blackButton`. Events, Dealers, Parts &
-  Gear, Service Centres and For business use them (Nov 2026). **The client likes the
+  `RedBand`, `GoldBanner`, `blackButton`, and `AuthShell` for the
+  log-in/sign-up/password pages. `BlockHero` takes `compact` (working
+  pages) and `above` (a back link or badge). Every section page uses them
+  now (Nov 2026), except the home, search and listing pages, which have
+  their own layouts. **The client likes the
   red/gold glow gradient** (`heroBackground`): `BlockHero gradient` keeps
-  it, and Service Centres and For business use that. Never drop it from
-  a page that had it (the search page, Service Centres, For business); Billy wants the red bands / gold blocks /
+  it. Never drop it from a page that had it: the search page, Service
+  Centres, For business, Sell, dealer storefronts and Admin; Billy wants the red bands / gold blocks /
   shards that break up the black on more pages, not just the home page.
   **Every hero and band gets its own shard** (`shard` prop), but **in the
   home page's style**: Billy's favourites are the home page's `double`

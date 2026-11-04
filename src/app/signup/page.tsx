@@ -1,30 +1,59 @@
 "use client";
 
 import { useActionState } from "react";
+import { AuthShell, HighlightWord } from "@/app/components/Bands";
 import Link from "next/link";
 import { signUp, type AuthState } from "@/app/actions/auth";
 import { input as inputClass, label as labelClass, button } from "@/app/components/ui";
 
 const initialState: AuthState = { error: null };
 
-
 export default function SignupPage() {
   const [state, formAction, pending] = useActionState(signUp, initialState);
 
   if (state.message) {
     return (
-      <main className="flex min-h-[70vh] items-center justify-center px-4 py-10">
+      <AuthShell
+        line={
+          <>
+            Join the
+            <br />
+            <HighlightWord>ride</HighlightWord>
+          </>
+        }
+        ticks={["Free to list your bike", "Save the bikes you like", "Call or WhatsApp sellers"]}
+        shard={{
+          shape: "double",
+          className: "bottom-[-30%] right-[-140px] h-[140%] w-[560px] rotate-[10deg] bg-highlight/[.10]",
+        }}
+      >
         <div className="w-full max-w-sm border border-line border-t-4 border-t-highlight bg-panel p-8 text-center">
           <h1 className="font-display mb-3 text-4xl">Check your email</h1>
           <p className="text-sm text-ink-dim">{state.message}</p>
         </div>
-      </main>
+      </AuthShell>
     );
   }
 
   return (
-    <main className="flex min-h-[70vh] items-center justify-center px-4 py-10">
-      <form action={formAction} className="w-full max-w-sm border border-line border-t-4 border-t-highlight bg-panel p-8">
+    <AuthShell
+      line={
+        <>
+          Join the
+          <br />
+          <HighlightWord>ride</HighlightWord>
+        </>
+      }
+      ticks={["Free to list your bike", "Save the bikes you like", "Call or WhatsApp sellers"]}
+      shard={{
+        shape: "double",
+        className: "bottom-[-30%] right-[-140px] h-[140%] w-[560px] rotate-[10deg] bg-highlight/[.10]",
+      }}
+    >
+      <form
+        action={formAction}
+        className="w-full max-w-sm border border-line border-t-4 border-t-highlight bg-panel p-8"
+      >
         <h1 className="font-display mb-6 text-4xl">Sign up</h1>
 
         {state.error && (
@@ -46,11 +75,7 @@ export default function SignupPage() {
           <input type="password" name="password" required minLength={8} className={inputClass} />
         </label>
 
-        <button
-          type="submit"
-          disabled={pending}
-          className={`${button("primary", "lg")} w-full`}
-        >
+        <button type="submit" disabled={pending} className={`${button("primary", "lg")} w-full`}>
           {pending ? "Creating account…" : "Sign up"}
         </button>
 
@@ -61,6 +86,6 @@ export default function SignupPage() {
           </Link>
         </p>
       </form>
-    </main>
+    </AuthShell>
   );
 }

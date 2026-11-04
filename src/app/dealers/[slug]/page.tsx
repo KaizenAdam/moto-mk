@@ -12,7 +12,8 @@ import { formatPhone, telHref, whatsAppHref } from "@/lib/contact/phone";
 import { PinIcon, ArrowLeftIcon } from "@/app/components/icons";
 import ListingsGrid from "@/app/components/ListingsGrid";
 import Badge from "@/app/components/Badge";
-import { heroBackground, button } from "@/app/components/ui";
+import { button } from "@/app/components/ui";
+import { BlockHero, HighlightWord } from "@/app/components/Bands";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -61,68 +62,56 @@ export default async function DealerStorefrontPage({ params }: Props) {
 
   return (
     <main>
-      <section
-        className="border-b border-line py-9"
-        style={{
-          background: heroBackground,
-        }}
-      >
-        <div className="mx-auto flex max-w-[1280px] flex-wrap px-5 items-end justify-between gap-6">
-          <div className="max-w-2xl">
-            <Link href="/dealers" className="mb-3 inline-flex items-center gap-1.5 text-sm text-grey hover:text-highlight">
+      <BlockHero
+        gradient
+        compact
+        shard={{ shape: "double", className: "top-[-20%] right-[-120px] h-[140%] w-[320px] -rotate-[16deg] bg-red/[.20] sm:right-[16%]" }}
+        above={
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/dealers" className="inline-flex items-center gap-1.5 text-sm text-[#bdbab2] hover:text-highlight">
               <ArrowLeftIcon />
               All dealers
             </Link>
-            <div className="mb-2 flex flex-wrap items-center gap-3">
-              <h1 className="font-display text-3xl sm:text-4xl">{dealer.business_name}</h1>
-              <Badge size="md">Verified dealer</Badge>
-            </div>
-            {(dealer.address || dealer.town) && (
-              <div className="mb-3 flex items-center gap-1.5 text-sm text-grey">
-                <PinIcon />
-                {mapUrl ? (
-                  <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="hover:text-highlight">
-                    {dealer.address ?? dealer.town}
-                  </a>
-                ) : (
-                  dealer.town
-                )}
-              </div>
-            )}
-            {dealer.about && (
-              <p className="text-sm leading-relaxed whitespace-pre-line text-ink-dim">{dealer.about}</p>
-            )}
-            {isOwner && (
-              <Link href="/garage#storefront" className="mt-3 inline-block text-sm text-highlight hover:underline">
-                Edit your storefront
-              </Link>
-            )}
+            <Badge size="md">Verified dealer</Badge>
           </div>
-
+        }
+        title={<HighlightWord>{dealer.business_name}</HighlightWord>}
+        intro={dealer.about ? <span className="whitespace-pre-line">{dealer.about}</span> : undefined}
+      >
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+          {(dealer.address || dealer.town) && (
+            <span className="flex items-center gap-1.5 text-[15px] text-[#d6d3cb]">
+              <PinIcon className="h-4 w-4 text-highlight" />
+              {mapUrl ? (
+                <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="hover:text-highlight hover:underline">
+                  {dealer.address ?? dealer.town}
+                </a>
+              ) : (
+                dealer.town
+              )}
+            </span>
+          )}
           {(wa || tel) && (
             <div className="flex flex-wrap gap-2.5">
               {wa && (
-                <a
-                  href={wa}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={button("whatsapp", "lg")}
-                >
+                <a href={wa} target="_blank" rel="noopener noreferrer" className={button("whatsapp", "lg")}>
                   WhatsApp
                 </a>
               )}
               {tel && dealer.phone && (
-                <a
-                  href={tel}
-                  className={button("outline", "lg")}
-                >
+                <a href={tel} className={button("outline", "lg")}>
                   Call {formatPhone(dealer.phone)}
                 </a>
               )}
             </div>
           )}
+          {isOwner && (
+            <Link href="/garage#storefront" className="text-sm text-highlight hover:underline">
+              Edit your storefront
+            </Link>
+          )}
         </div>
-      </section>
+      </BlockHero>
 
       {listings.length === 0 ? (
         <div className="mx-auto max-w-[1280px] px-5 py-10">

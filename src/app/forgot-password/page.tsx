@@ -1,19 +1,35 @@
 "use client";
 
 import { useActionState } from "react";
+import { AuthShell, HighlightWord } from "@/app/components/Bands";
 import Link from "next/link";
 import { requestPasswordReset, type AuthState } from "@/app/actions/auth";
 import { input as inputClass, label as labelClass, button } from "@/app/components/ui";
 
 const initialState: AuthState = { error: null };
 
-
 export default function ForgotPasswordPage() {
   const [state, formAction, pending] = useActionState(requestPasswordReset, initialState);
 
   return (
-    <main className="flex min-h-[70vh] items-center justify-center px-4 py-10">
-      <form action={formAction} className="w-full max-w-sm border border-line border-t-4 border-t-highlight bg-panel p-8">
+    <AuthShell
+      line={
+        <>
+          Lost your
+          <br />
+          <HighlightWord>keys?</HighlightWord>
+        </>
+      }
+      ticks={["It happens. We'll email you a link to choose a new password."]}
+      shard={{
+        shape: "bent",
+        className: "top-[-30%] left-[40%] h-[160%] w-[320px] -scale-x-100 rotate-[24deg] bg-highlight/[.12]",
+      }}
+    >
+      <form
+        action={formAction}
+        className="w-full max-w-sm border border-line border-t-4 border-t-highlight bg-panel p-8"
+      >
         <h1 className="font-display mb-2 text-4xl">Reset your password</h1>
 
         {state.message ? (
@@ -33,11 +49,7 @@ export default function ForgotPasswordPage() {
               <input type="email" name="email" required className={inputClass} />
             </label>
 
-            <button
-              type="submit"
-              disabled={pending}
-              className={`${button("primary", "lg")} w-full`}
-            >
+            <button type="submit" disabled={pending} className={`${button("primary", "lg")} w-full`}>
               {pending ? "Sending…" : "Send reset link"}
             </button>
           </>
@@ -49,6 +61,6 @@ export default function ForgotPasswordPage() {
           </Link>
         </p>
       </form>
-    </main>
+    </AuthShell>
   );
 }

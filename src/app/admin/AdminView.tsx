@@ -13,7 +13,8 @@ import Badge from "@/app/components/Badge";
 import Chip from "@/app/components/Chip";
 import EventDate from "@/app/components/EventDate";
 import { PinIcon } from "@/app/components/icons";
-import { card, heroBackground } from "@/app/components/ui";
+import { card } from "@/app/components/ui";
+import { BlockHero, HighlightWord } from "@/app/components/Bands";
 import AddEventForm from "./AddEventForm";
 import AdminAction from "./AdminAction";
 import AddServiceCentreForm from "./AddServiceCentreForm";
@@ -61,27 +62,34 @@ export default function AdminView({
 
   return (
     <main className="pb-16">
-      <section className="border-b border-line px-5 py-8" style={{ background: heroBackground }}>
-        <div className="mx-auto max-w-[1280px]">
-          <h1 className="font-display text-3xl sm:text-4xl">Admin</h1>
-          <p className="mt-1 text-sm text-ink-dim">Review what&rsquo;s waiting, and manage events, service centres and users.</p>
-        </div>
-      </section>
-
-      <div className="mx-auto max-w-[1280px] px-4 pt-8 sm:px-5">
-        <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <BlockHero
+        gradient
+        compact
+        shard={{ shape: "bent", className: "top-[-40%] right-[-60px] h-[180%] w-[300px] -rotate-[30deg] bg-red/[.16] sm:right-[22%]" }}
+        title={
+          <>
+            Admin <HighlightWord>portal</HighlightWord>
+          </>
+        }
+        intro="Review what's waiting, and manage events, service centres and users."
+      >
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
           {sections.map((s) => (
             <a
               key={s.id}
               href={`#${s.id}`}
-              className={`${card} p-4 transition hover:border-highlight ${s.attention ? "border-highlight/60" : ""}`}
+              className={`p-4 transition ${
+                s.attention ? "bg-highlight text-[#111] hover:brightness-110" : "bg-[#0a0a0a]/85 text-ink hover:bg-black"
+              }`}
             >
-              <p className={`font-display text-3xl ${s.attention ? "text-highlight" : "text-ink"}`}>{s.count}</p>
-              <p className="mt-1 text-xs tracking-wide text-ink-dim uppercase">{s.label}</p>
+              <p className="font-display text-4xl leading-none">{s.count}</p>
+              <p className={`mt-1.5 text-xs tracking-wide uppercase ${s.attention ? "" : "text-ink-dim"}`}>{s.label}</p>
             </a>
           ))}
         </div>
+      </BlockHero>
 
+      <div className="mx-auto max-w-[1280px] px-4 pt-10 sm:px-5">
         <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[200px_minmax(0,1fr)]">
           <nav className="hidden lg:block" aria-label="Admin sections">
             <ul className="sticky top-24 space-y-1 text-sm">
