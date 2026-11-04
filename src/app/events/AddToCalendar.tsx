@@ -12,6 +12,7 @@ export default function AddToCalendar({
   date,
   location,
   description,
+  className,
 }: {
   id: string;
   title: string;
@@ -19,6 +20,8 @@ export default function AddToCalendar({
   date: string;
   location: string | null;
   description: string | null;
+  /** Override the button style (e.g. on the red band). */
+  className?: string;
 }) {
   function download() {
     const day = date.replaceAll("-", "");
@@ -55,7 +58,7 @@ export default function AddToCalendar({
   }
 
   return (
-    <button type="button" onClick={download} className={button("outline", "sm")}>
+    <button type="button" onClick={download} className={className ?? button("outline", "sm")}>
       + Add to calendar
     </button>
   );

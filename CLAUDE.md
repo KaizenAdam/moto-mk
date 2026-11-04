@@ -250,6 +250,11 @@ demo state — not test residue to clean up.
   `src/app/components/icons.tsx` under site names (`PinIcon`,
   `EngineIcon`, `HeartIcon`…). Import from there; never hand-draw an SVG
   icon or use a text glyph (♡ × ‹) — add the Tabler one to that file.
+- **Home-page look on other pages: `components/Bands.tsx`** —
+  `BlockHero` (black hero, `HighlightWord` gold block, red ticks),
+  `RedBand`, `GoldBanner`, `blackButton`. Events, Dealers and Parts &
+  Gear use them (Nov 2026); Billy wants the red bands / gold blocks /
+  shards that break up the black on more pages, not just the home page.
 - **`Shard`** — the brand's one decorative shape: an irregular torn
   shard (`double`, `torn`, `bent`, `sliver`), absolutely positioned and
   `aria-hidden`. One per section at most; Billy found several busy.
@@ -442,8 +447,9 @@ is 8, checked in the server actions.
   `src/lib/constants/parts.ts` each show an empty state, never sample
   items; brand search and "Sell parts & gear" are disabled. `PartCard`
   is built for when the parts backend exists (`docs/HANDOVER-backend.md`).
-- **`/events`** — `EventsView.tsx`: the soonest dated event as a "Next
-  up" feature, the rest grouped by month, undated last; "Add to
+- **`/events`** — `EventsView.tsx` (client): search, place and When
+  filters in the browser (no refetch), the soonest matching event in a red
+  "Next up" band, the rest grouped by month, undated last; "Add to
   calendar" downloads an all-day `.ics` built in the browser
   (`AddToCalendar.tsx`). The date block is the shared `EventDate`
   component (home feed, /events, admin). Public read via `listUpcoming` in

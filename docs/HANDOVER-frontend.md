@@ -100,6 +100,30 @@ release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
 - **Skeletons:** the home and search pages have their own
   (`HomeSkeleton`, `SearchSkeleton`) matching the new layouts.
 
+**Home-page look carried into Events, Dealers and Parts & Gear (4 Nov 2026)**
+- Billy's favourite thing about the home page is how it breaks up the
+  black: red bands, gold blocks and the odd torn shard. The shared pieces
+  for that are in `src/app/components/Bands.tsx`:
+  - `BlockHero`: a black hero with a gold-block word (`HighlightWord`),
+    red ticks and room for a white search box
+  - `RedBand`: a full-width red band
+  - `GoldBanner`: the gold "Sell your bike today" banner
+  - `blackButton`: the black button with a red outline used on red and gold
+- **Events** has a search box, a place filter and When (any time, this
+  month, next 3 months, date TBC). The filters run in the browser, since
+  the page already has every upcoming event. The next event gets a red
+  band, and the rest are full-width rows grouped by month.
+- **Dealers** has dealer cards with a gold initial block, a town filter
+  (`?town=`), and a red "Run a dealership?" band linking to
+  `/for-business#dealers`.
+- **Parts & Gear** has angled category tiles like the home page's Browse
+  by type, a red "How it'll work" band and a gold banner.
+- The home page itself is unchanged.
+
+**Waiting on the client:** a contact email or phone for business
+enquiries, so the For business page's "Enquire" button can work. It's
+listed in `docs/HANDOVER-backend.md`.
+
 ## Not checked yet
 
 - **Real accounts on the live site.** The signed-in views were checked

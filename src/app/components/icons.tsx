@@ -12,6 +12,7 @@ import {
   IconBrandWhatsapp,
   IconBuildingStore,
   IconCalendar,
+  IconCheck,
   IconCamera,
   IconChevronDown,
   IconChevronLeft,
@@ -92,3 +93,5 @@ export const ChevronLeftIcon = make(IconChevronLeft, "h-6 w-6", 2);
 export const ChevronRightIcon = make(IconChevronRight, "h-6 w-6", 2);
 export const ChevronDownIcon = make(IconChevronDown, "h-4 w-4", 2);
 export const AccountIcon = make(IconUserCircle, "h-5 w-5");
+/** A plain tick for lists (the hero ticks, perks). */
+export const TickIcon = make(IconCheck, "h-4 w-4", 2.5);
