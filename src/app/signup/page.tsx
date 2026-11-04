@@ -79,6 +79,18 @@ export default function SignupPage() {
           {pending ? "Creating account…" : "Sign up"}
         </button>
 
+        <p className="mt-3 text-center text-xs text-grey">
+          By signing up you agree to our{" "}
+          <Link href="/terms" className="text-highlight hover:underline">
+            terms
+          </Link>{" "}
+          and{" "}
+          <Link href="/privacy" className="text-highlight hover:underline">
+            privacy policy
+          </Link>
+          .
+        </p>
+
         <p className="mt-6 text-center text-sm text-grey">
           Already have an account?{" "}
           <Link href="/login" className="text-highlight hover:underline">

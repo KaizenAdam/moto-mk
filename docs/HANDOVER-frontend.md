@@ -169,8 +169,11 @@ release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
   security headers; unlabelled filter dropdowns on /bikes; invalid spec
   list markup on listing pages; unnamed map pins on /service-centres.
 - Still to do before launch:
-  - privacy policy, terms and a contact email in the footer (waiting on
-    the client)
+  - **update the placeholders before launch:** the footer email
+    (`hello@just5up.mk`, `CONTACT_EMAIL` in `src/lib/site.ts`) and the
+    [bracketed] gaps in the draft `/privacy` and `/terms` templates
+    (company name, address, registration number, governing law, minimum
+    age, log retention), then a lawyer's review and `draft={false}`
   - a key-based map tile provider (`NEXT_PUBLIC_MAP_TILE_URL`)
   - the real domain: set `NEXT_PUBLIC_SITE_URL` and add
     `<domain>/auth/confirm` to Supabase's Redirect URLs

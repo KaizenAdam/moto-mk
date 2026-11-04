@@ -131,7 +131,8 @@ Suggested backend, following the listings pattern:
 ## Open questions for the client
 
 - Package prices (bump, 7 days, 30 days) and ad prices per slot.
-- **Contact email or phone for business enquiries.** The "Enquire" button on `/for-business#advertise` stays disabled until there is one (Billy, 4 Nov 2026: "sort that later"). The footer's legal links need the same details.
+- **Contact email or phone for business enquiries.** The "Enquire" button on `/for-business#advertise` stays disabled until there is one (Billy, 4 Nov 2026: "sort that later"). The footer shows a placeholder, `hello@just5up.mk` (`CONTACT_EMAIL` in `src/lib/site.ts`); replace it before launch.
+- **Legal details for the draft `/privacy` and `/terms` templates:** company name, registered address and number, which law governs (North Macedonia or England and Wales), minimum age, and how long logs and backups are kept. Then a lawyer's review.
 - Licence category filter: keep or drop? Their brief asks for it; it was removed on 25 Aug.
 - Forum: it's Phase 3 in the quote, but it's in their nav. The hub shows it as "Coming soon" for now.
 - Which entity contracts (UK or North Macedonian)? This decides the payment provider.

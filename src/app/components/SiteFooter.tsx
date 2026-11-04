@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CookieSettingsLink from "./CookieSettingsLink";
+import { CONTACT_EMAIL } from "@/lib/site";
 
 const columns = [
   {
@@ -68,8 +69,31 @@ export default function SiteFooter() {
           </div>
         ))}
       </div>
-      <div className="border-t border-line px-5 py-4 text-center text-xs text-grey">
-        © {new Date().getFullYear()} Just5Up! · Every listing is checked before it goes live · <CookieSettingsLink />
+      <div className="border-t border-line">
+        <div className="mx-auto flex max-w-[1280px] flex-col gap-3 px-5 py-4 text-xs text-grey md:flex-row md:items-center md:justify-between">
+          <p>© {new Date().getFullYear()} Just5Up! · Every listing is checked before it goes live</p>
+          {/* CONTACT_EMAIL is a placeholder until the client gives a real address (src/lib/site.ts). */}
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+            <li>
+              <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-highlight hover:underline">
+                {CONTACT_EMAIL}
+              </a>
+            </li>
+            <li>
+              <Link href="/privacy" className="hover:text-highlight hover:underline">
+                Privacy
+              </Link>
+            </li>
+            <li>
+              <Link href="/terms" className="hover:text-highlight hover:underline">
+                Terms
+              </Link>
+            </li>
+            <li>
+              <CookieSettingsLink />
+            </li>
+          </ul>
+        </div>
       </div>
     </footer>
   );

@@ -323,9 +323,17 @@ demo state — not test residue to clean up.
   (`components/Toaster.tsx`, mounted once in the root layout). For
   successes only; errors stay next to what failed.
   `ActionButton` takes `successMessage`.
-- **`not-found.tsx`** and **`SiteFooter`** are branded. Legal links
-  (privacy, terms) and a contact email go in the footer once the client
-  supplies the details.
+- **`not-found.tsx`** and **`SiteFooter`** are branded. The footer's
+  bottom row has the contact email, Privacy, Terms and "Cookies &
+  language". **Before launch (Billy, 4 Nov 2026):** `CONTACT_EMAIL` in
+  `src/lib/site.ts` is a placeholder (`hello@just5up.mk`, a domain nobody
+  has registered yet), and `/privacy` and `/terms` are **templates**
+  (`components/LegalPage.tsx`, red "Draft" badge, [square-bracket] gaps
+  for the company name, address, governing law and so on). Swap in the
+  client's details, have a lawyer review both, and pass `draft={false}`.
+  The privacy page describes what the site really collects and who sees
+  it, so a change to either (a new profile field, analytics, payments)
+  updates that page in the same change.
 - **Brand images:** `public/brand/*.svg` are huge raster-in-SVG originals
   (1 MB / 650 KB). The site uses pre-sized PNGs made from them with sharp:
   `wordmark-white.png` (621×168) and `icon-gold-{32,180,512}.png`. Don't
