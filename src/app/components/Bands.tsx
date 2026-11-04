@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Shard, { type ShardShape } from "./Shard";
 import { TickIcon } from "./icons";
+import { heroBackground } from "./ui";
 
 /**
  * The home page's building blocks, shared so section pages can carry the
@@ -23,8 +24,11 @@ export function BlockHero({
   intro,
   ticks,
   shard,
+  gradient = false,
   children,
 }: {
+  /** Use the red/gold glow (the search page's) instead of flat black. The client likes it; keep it where it already was. */
+  gradient?: boolean;
   /** This page's own shard. Pick one no other hero uses. */
   shard: ShardSpec;
   title: ReactNode;
@@ -33,7 +37,10 @@ export function BlockHero({
   children?: ReactNode;
 }) {
   return (
-    <section className="relative overflow-hidden border-b border-line bg-[#141416]">
+    <section
+      className={`relative overflow-hidden border-b border-line ${gradient ? "" : "bg-[#141416]"}`}
+      style={gradient ? { background: heroBackground } : undefined}
+    >
       <Shard shape={shard.shape} className={shard.className} />
       <div className="relative mx-auto max-w-[1280px] px-5 pt-12 pb-10 sm:pt-16 sm:pb-12">
         <h1 className="font-display max-w-[760px] text-[44px] leading-none sm:text-6xl lg:text-7xl">{title}</h1>

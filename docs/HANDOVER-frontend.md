@@ -118,6 +118,11 @@ release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
   `/for-business#dealers`.
 - **Parts & Gear** has angled category tiles like the home page's Browse
   by type, a red "How it'll work" band and a gold banner.
+- **Service Centres** got the same treatment, keeping the glow gradient
+  the client likes (`BlockHero gradient`): "Find a workshop" with real
+  counts in the ticks, gold town filters, centre cards with a red left
+  edge, and a red "Run a workshop?" band linking to
+  `/for-business#service`.
 - The home page itself is unchanged.
 - **No two heroes share a shard placement.** `BlockHero` requires a
   `shard` prop. Each page varies the home page's `double` chevrons and

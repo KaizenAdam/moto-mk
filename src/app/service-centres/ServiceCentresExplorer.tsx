@@ -71,12 +71,12 @@ function CentreCard({ centre: c, active, onClick }: { centre: Centre; active: bo
     <div
       id={`centre-${c.id}`}
       onClick={onClick}
-      className={` border bg-panel p-4 transition ${
-        active ? "border-highlight" : "border-line"
+      className={`border border-l-4 bg-panel p-4 transition ${
+        active ? "border-highlight border-l-highlight" : "border-line border-l-red"
       } ${onClick ? "cursor-pointer hover:border-highlight" : ""}`}
     >
       <div className="mb-1 flex items-start justify-between gap-3">
-        <h2 className="font-display text-lg text-ink">{c.name}</h2>
+        <h2 className="font-display text-xl leading-tight text-ink">{c.name}</h2>
         {c.verified && (
           <Badge>Verified</Badge>
         )}
