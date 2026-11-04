@@ -20,7 +20,7 @@ export default async function AdminPage() {
       <main className="flex min-h-[60vh] items-center justify-center">
         <p>
           You need to{" "}
-          <a href="/login" className="text-gold-bright hover:underline">
+          <a href="/login" className="text-highlight hover:underline">
             log in
           </a>{" "}
           to view this page.

@@ -31,7 +31,7 @@ export default function StorefrontForm({ dealer }: { dealer: Tables<"dealers"> }
         {dealer.active ? (
           <>
             Live at{" "}
-            <Link href={`/dealers/${dealer.slug}`} className="text-gold-bright hover:underline">
+            <Link href={`/dealers/${dealer.slug}`} className="text-highlight hover:underline">
               /dealers/{dealer.slug}
             </Link>
           </>

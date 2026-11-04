@@ -79,7 +79,7 @@ export default function LocateAll({ centres }: { centres: Centre[] }) {
     .map((c) => ({ id: c.id, ...items[c.id].point!, label: c.name }));
 
   return (
-    <div className="mb-4 rounded-[10px] border border-gold/40 bg-panel p-4 text-sm">
+    <div className="mb-4 border border-highlight/40 bg-panel p-4 text-sm">
       <div className="flex flex-wrap items-center gap-3">
         <button
           type="button"
@@ -122,7 +122,7 @@ export default function LocateAll({ centres }: { centres: Centre[] }) {
                 <li
                   key={c.id}
                   onClick={() => it?.point && setSelectedId(c.id)}
-                  className={`rounded-[10px] border p-2 ${selectedId === c.id ? "border-gold" : "border-line"} ${it?.point ? "cursor-pointer" : ""}`}
+                  className={` border p-2 ${selectedId === c.id ? "border-highlight" : "border-line"} ${it?.point ? "cursor-pointer" : ""}`}
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-medium text-ink">{c.name}</span>

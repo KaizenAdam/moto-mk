@@ -9,7 +9,7 @@ const initialState: FormState = { error: null };
 export default function DealerRequestForm() {
   const [state, formAction, pending] = useActionState(requestDealerAction, initialState);
 
-  if (state.message) return <p className="text-sm text-gold-bright">{state.message}</p>;
+  if (state.message) return <p className="text-sm text-highlight">{state.message}</p>;
 
   return (
     <form action={formAction} className="space-y-3.5">

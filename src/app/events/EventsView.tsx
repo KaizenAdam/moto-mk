@@ -32,16 +32,17 @@ export default function EventsView({ events }: { events: Event[] }) {
   return (
     <main className="pb-16">
       <PageHero
+        width="narrow"
         title="Events"
         intro="Rallies, Moto Sobori, track days and group rides — the calendar for North Macedonia's riding community."
       />
 
-      <div className="mx-auto grid max-w-[1100px] grid-cols-[minmax(0,1fr)] gap-8 px-4 pt-8 sm:px-5 lg:grid-cols-[minmax(0,1fr)_300px]">
+      <div className="mx-auto grid max-w-[1100px] grid-cols-[minmax(0,1fr)] gap-8 px-5 pt-8 lg:grid-cols-[minmax(0,1fr)_300px]">
         <div className="space-y-10">
           {events.length === 0 && <EmptyState>No upcoming events yet — check back soon.</EmptyState>}
 
           {next && (
-            <section id={`event-${next.id}`} className="scroll-mt-24 overflow-hidden rounded-[10px] border border-gold/50 bg-gradient-to-br from-gold/10 to-red/10">
+            <section id={`event-${next.id}`} className="scroll-mt-24 overflow-hidden border border-line border-t-4 border-t-red bg-panel">
               <div className="flex flex-col gap-5 p-6 sm:flex-row sm:p-8">
                 <EventDate date={next.event_date} size="lg" />
                 <div className="min-w-0 flex-1">
@@ -52,7 +53,7 @@ export default function EventsView({ events }: { events: Event[] }) {
                       href={mapsUrl(next.location)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-2 inline-flex items-center gap-1.5 text-sm text-grey hover:text-gold-bright"
+                      className="mt-2 inline-flex items-center gap-1.5 text-sm text-grey hover:text-highlight"
                     >
                       <PinIcon />
                       {next.location}
@@ -77,7 +78,7 @@ export default function EventsView({ events }: { events: Event[] }) {
 
           {[...byMonth].map(([month, list]) => (
             <section key={month}>
-              <h2 className="font-display mb-3 border-b border-line pb-2 text-lg font-semibold tracking-wide text-gold">
+              <h2 className="font-display mb-3 border-b border-line pb-2 text-xl font-semibold">
                 {month}
               </h2>
               <ol className="space-y-3">
@@ -91,7 +92,7 @@ export default function EventsView({ events }: { events: Event[] }) {
                           href={mapsUrl(e.location)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="mt-1 inline-flex items-center gap-1 text-xs text-grey hover:text-gold-bright"
+                          className="mt-1 inline-flex items-center gap-1 text-xs text-grey hover:text-highlight"
                         >
                           <PinIcon />
                           {e.location}

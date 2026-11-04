@@ -7,6 +7,7 @@ import { listForListing, MAX_PHOTOS } from "@/lib/data/listingPhotos";
 import EditListingForm from "./EditListingForm";
 import PhotoManager from "./PhotoManager";
 import { sectionTitle } from "@/app/components/ui";
+import { ArrowLeftIcon } from "@/app/components/icons";
 
 
 export default async function EditListingPage({ params }: { params: Promise<{ id: string }> }) {
@@ -22,8 +23,9 @@ export default async function EditListingPage({ params }: { params: Promise<{ id
 
   return (
     <main className="mx-auto max-w-3xl px-5 py-8 pb-16">
-      <Link href="/garage" className="mb-4 inline-block text-sm text-grey hover:text-gold-bright">
-        ← My Garage
+      <Link href="/garage" className="mb-4 inline-flex items-center gap-1.5 text-sm text-grey hover:text-highlight">
+        <ArrowLeftIcon />
+        My Garage
       </Link>
       <h1 className="font-display mb-1.5 text-3xl">Edit {listing.title}</h1>
       {listing.status === "active" && (
@@ -33,7 +35,7 @@ export default async function EditListingPage({ params }: { params: Promise<{ id
         </p>
       )}
       {listing.status === "rejected" && listing.rejection_reason && (
-        <p className="mb-6 rounded-md bg-red/20 px-3 py-2 text-sm text-gold-bright">
+        <p className="mb-6 border-l-4 border-red bg-red/15 px-3 py-2 text-sm text-ink">
           Rejected: {listing.rejection_reason}. Fix it below and save to resubmit.
         </p>
       )}

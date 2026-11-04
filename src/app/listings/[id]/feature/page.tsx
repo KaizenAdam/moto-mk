@@ -8,6 +8,7 @@ import { getCoverPhotos } from "@/lib/data/listingPhotos";
 import { getActiveBySeller } from "@/lib/data/dealers";
 import { NotLiveNotice } from "./NotLiveNotice";
 import FeatureForm from "./FeatureForm";
+import { ArrowLeftIcon } from "@/app/components/icons";
 
 export const metadata: Metadata = { title: "Feature your bike", robots: { index: false } };
 
@@ -32,8 +33,9 @@ export default async function FeatureListingPage({ params }: { params: Promise<{
 
   return (
     <main className="mx-auto max-w-[1100px] px-5 py-8 pb-16">
-      <Link href="/garage" className="mb-4 inline-block text-sm text-grey hover:text-gold-bright">
-        ← My Garage
+      <Link href="/garage" className="mb-4 inline-flex items-center gap-1.5 text-sm text-grey hover:text-highlight">
+        <ArrowLeftIcon />
+        My Garage
       </Link>
       <h1 className="font-display mb-1.5 text-3xl sm:text-4xl">Get more buyers for your {listing.make}</h1>
       <p className="mb-8 max-w-2xl text-sm text-ink-dim">

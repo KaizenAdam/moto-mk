@@ -73,7 +73,7 @@ export default function LeafletMap({
       center={MK_CENTER}
       zoom={MK_ZOOM}
       scrollWheelZoom={false}
-      className={`${className} w-full rounded-[10px] border border-line ${DARKEN_TILES ? "j5-dark-tiles" : ""}`}
+      className={`${className} w-full border border-line ${DARKEN_TILES ? "j5-dark-tiles" : ""}`}
     >
       <TileLayer url={TILE_URL} attribution={TILE_ATTRIBUTION} />
       <Viewport pins={pins} selectedId={selectedId} />

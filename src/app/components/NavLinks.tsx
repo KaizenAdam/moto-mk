@@ -43,7 +43,7 @@ export default function NavLinks({
                 active ? "text-white shadow-[inset_0_-3px_0_var(--highlight)]" : "text-[#9a988f]"
               }`
             : `font-display block border-l-2 px-4 py-3 text-lg font-medium tracking-wider ${
-                active ? "border-gold bg-panel2 text-gold-bright" : "border-transparent text-ink"
+                active ? "border-highlight bg-panel2 text-highlight" : "border-transparent text-ink"
               }`
         }
       >

@@ -103,7 +103,7 @@ export function ContactCard(p: ContactProps) {
       {c.mode === "own" && (
         <p className="text-sm text-grey">
           This is your listing.{" "}
-          <Link href={p.editHref} className="text-gold-bright hover:underline">
+          <Link href={p.editHref} className="text-highlight hover:underline">
             Edit it
           </Link>
         </p>

@@ -27,8 +27,8 @@ export default function PartCard({ part, currency = "EUR" }: { part: PartCardDat
   const price = formatPrice(part.priceEur, currency);
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-[10px] border border-line bg-panel transition hover:-translate-y-0.5 hover:border-gold">
-      <Link href={href} className="font-display line-clamp-2 px-3.5 pt-3 pb-2 text-[17px] font-semibold text-ink hover:text-gold-bright">
+    <div className="flex flex-col overflow-hidden border border-line bg-panel transition hover:-translate-y-0.5 hover:border-highlight">
+      <Link href={href} className="font-display line-clamp-2 px-3.5 pt-3 pb-2 text-[17px] font-semibold text-ink hover:text-highlight">
         {part.title}
       </Link>
       <Link href={href} className="relative block aspect-[4/3] bg-panel2">
@@ -39,7 +39,7 @@ export default function PartCard({ part, currency = "EUR" }: { part: PartCardDat
           <span className="flex h-full items-center justify-center text-xs text-grey">No photo yet</span>
         )}
         {(part.photoCount ?? 0) > 0 && (
-          <span className="absolute bottom-2.5 left-2.5 flex items-center gap-1 rounded bg-black/70 px-1.5 py-0.5 text-[11px] text-ink">
+          <span className="absolute bottom-2.5 left-2.5 flex items-center gap-1 bg-black/70 px-1.5 py-0.5 text-[11px] text-ink">
             <CameraIcon />
             {part.photoCount}
           </span>
@@ -47,7 +47,7 @@ export default function PartCard({ part, currency = "EUR" }: { part: PartCardDat
       </Link>
       <div className="flex flex-1 flex-col px-3.5 pt-2.5 pb-3.5">
         <div>
-          <span className="font-display text-2xl text-gold-bright">{price.main}</span>
+          <span className="font-display text-2xl text-highlight">{price.main}</span>
           <span className="ml-1.5 text-[11px] text-grey">{price.alt}</span>
         </div>
         <div className="mt-2 mb-3 flex flex-wrap items-center gap-1.5 text-xs text-ink-dim">

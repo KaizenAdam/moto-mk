@@ -42,7 +42,7 @@ export default function AdminAction({
           name="reason"
           placeholder="Reason (shown to the seller)"
           maxLength={300}
-          className="w-56 rounded-md border border-line bg-panel2 px-3 py-1.5 text-xs text-ink outline-none focus:border-gold"
+          className="w-56 border border-line bg-panel2 px-3 py-1.5 text-xs text-ink outline-none focus:border-highlight"
         />
       )}
       <button

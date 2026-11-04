@@ -74,9 +74,9 @@ export default function AdminView({
             <a
               key={s.id}
               href={`#${s.id}`}
-              className={`${card} p-4 transition hover:border-gold ${s.attention ? "border-gold/60" : ""}`}
+              className={`${card} p-4 transition hover:border-highlight ${s.attention ? "border-highlight/60" : ""}`}
             >
-              <p className={`font-display text-3xl ${s.attention ? "text-gold-bright" : "text-ink"}`}>{s.count}</p>
+              <p className={`font-display text-3xl ${s.attention ? "text-highlight" : "text-ink"}`}>{s.count}</p>
               <p className="mt-1 text-xs tracking-wide text-ink-dim uppercase">{s.label}</p>
             </a>
           ))}
@@ -87,7 +87,7 @@ export default function AdminView({
             <ul className="sticky top-24 space-y-1 text-sm">
               {sections.map((s) => (
                 <li key={s.id}>
-                  <a href={`#${s.id}`} className="flex items-center justify-between rounded-md px-3 py-2 text-ink-dim hover:bg-panel2 hover:text-gold-bright">
+                  <a href={`#${s.id}`} className="flex items-center justify-between px-3 py-2 text-ink-dim hover:bg-panel2 hover:text-highlight">
                     {s.label}
                     {s.attention && <Badge tone="gold">{s.count}</Badge>}
                   </a>
@@ -105,19 +105,19 @@ export default function AdminView({
                     <a href={`/listings/${listing.id}`} className="shrink-0" title="Open listing">
                       {coverUrl ? (
                         // eslint-disable-next-line @next/next/no-img-element -- signed URL rotates per request
-                        <img src={coverUrl} alt="" className="aspect-[4/3] w-full rounded-md object-cover sm:w-44" />
+                        <img src={coverUrl} alt="" className="aspect-[4/3] w-full object-cover sm:w-44" />
                       ) : (
-                        <div className="flex aspect-[4/3] w-full items-center justify-center rounded-md bg-panel2 text-xs text-grey sm:w-44">
+                        <div className="flex aspect-[4/3] w-full items-center justify-center bg-panel2 text-xs text-grey sm:w-44">
                           No photo
                         </div>
                       )}
                     </a>
                     <div className="min-w-0 flex-1 text-sm">
                       <div className="flex flex-wrap items-baseline justify-between gap-2">
-                        <a href={`/listings/${listing.id}`} className="font-display text-xl text-ink hover:text-gold-bright">
+                        <a href={`/listings/${listing.id}`} className="font-display text-xl text-ink hover:text-highlight">
                           {listing.title}
                         </a>
-                        <span className="font-display text-xl text-gold-bright">
+                        <span className="font-display text-xl text-highlight">
                           €{Number(listing.price_eur).toLocaleString("en-GB")}
                         </span>
                       </div>
@@ -166,7 +166,7 @@ export default function AdminView({
               <div className="grid gap-3 md:grid-cols-2">
                 {dealers.map(({ profile, businessName, slug }) => (
                   <div key={profile.id} className={`${card} flex items-center gap-3 p-4 text-sm`}>
-                    <span className="font-display flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-panel2 text-lg text-gold">
+                    <span className="font-display flex h-10 w-10 shrink-0 items-center justify-center bg-panel2 text-lg text-highlight">
                       {(businessName ?? profile.name ?? "?").charAt(0)}
                     </span>
                     <div className="min-w-0 flex-1">
@@ -176,7 +176,7 @@ export default function AdminView({
                       </p>
                     </div>
                     {slug && (
-                      <a href={`/dealers/${slug}`} className="shrink-0 text-xs text-gold-bright hover:underline">
+                      <a href={`/dealers/${slug}`} className="shrink-0 text-xs text-highlight hover:underline">
                         Storefront →
                       </a>
                     )}
@@ -234,7 +234,7 @@ export default function AdminView({
                       {c.source_url && (
                         <>
                           {" · "}
-                          <a href={c.source_url} target="_blank" rel="noopener noreferrer" className="text-gold-bright hover:underline">
+                          <a href={c.source_url} target="_blank" rel="noopener noreferrer" className="text-highlight hover:underline">
                             source
                           </a>
                         </>
@@ -274,12 +274,12 @@ export default function AdminView({
 function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
     <section id={id} className="scroll-mt-24">
-      <h2 className="font-display mb-4 border-b border-line pb-2.5 text-xl font-semibold tracking-wide text-gold">{title}</h2>
+      <h2 className="font-display mb-4 text-2xl font-semibold">{title}</h2>
       {children}
     </section>
   );
 }
 
 function Nothing({ children }: { children: ReactNode }) {
-  return <p className="rounded-[10px] border border-dashed border-line px-4 py-6 text-center text-sm text-ink-dim">{children}</p>;
+  return <p className=" border border-dashed border-line px-4 py-6 text-center text-sm text-ink-dim">{children}</p>;
 }

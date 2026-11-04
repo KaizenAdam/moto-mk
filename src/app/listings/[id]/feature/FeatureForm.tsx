@@ -32,7 +32,7 @@ export default function FeatureForm({
               <label
                 key={p.id}
                 className={`${card} relative flex cursor-pointer flex-col p-4 transition ${
-                  active ? "border-gold shadow-[0_0_0_1px_var(--gold)]" : "hover:border-gold/60"
+                  active ? "border-highlight shadow-[0_0_0_1px_var(--highlight)]" : "hover:border-highlight/60"
                 }`}
               >
                 <input
@@ -44,7 +44,7 @@ export default function FeatureForm({
                   className="sr-only"
                 />
                 <span className="font-display text-lg text-ink">{p.name}</span>
-                <span className="font-display mt-1 text-2xl text-gold-bright">{formatPackagePrice(p.priceEur)}</span>
+                <span className="font-display mt-1 text-2xl text-highlight">{formatPackagePrice(p.priceEur)}</span>
                 <span className="mt-2 text-sm text-ink-dim">{p.summary}</span>
                 <ul className="mt-3 space-y-1 text-xs text-ink-dim">
                   {p.perks.map((perk) => (
@@ -84,7 +84,7 @@ export default function FeatureForm({
           </div>
           <div className="flex justify-between gap-3 border-t border-line pt-2">
             <dt className="text-grey">Total</dt>
-            <dd className="font-display text-xl text-gold-bright">{formatPackagePrice(pkg.priceEur)}</dd>
+            <dd className="font-display text-xl text-highlight">{formatPackagePrice(pkg.priceEur)}</dd>
           </div>
         </dl>
         <button type="button" disabled className={`${button("primary", "lg")} mt-5 w-full`}>

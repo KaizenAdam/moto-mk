@@ -226,8 +226,9 @@ demo state — not test residue to clean up.
 
 ## UI building blocks (Oct 2026 polish pass)
 
-- **Shared styles: `src/app/components/ui.ts`.** `button(variant, size)`
-  (primary / outline / danger / success / whatsapp × sm / md / lg),
+- **Shared styles: `src/app/components/ui.ts`.** All square-cornered
+  (Nov 2026). `button(variant, size)` (primary = flat `highlight` gold,
+  outline = red outline, danger = red text, plus success / whatsapp × sm / md / lg),
   `input`, `label`, `sectionTitle`, `card`, `errorBox`, `heroBackground`.
   Use these instead of writing button or input classes inline; every page
   and the admin portal now do.

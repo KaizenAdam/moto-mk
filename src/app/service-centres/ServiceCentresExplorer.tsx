@@ -10,7 +10,7 @@ import Badge from "@/app/components/Badge";
 
 const LeafletMap = dynamic(() => import("@/app/components/map/LeafletMap"), {
   ssr: false,
-  loading: () => <div className="h-[420px] w-full animate-pulse rounded-[10px] border border-line bg-panel" />,
+  loading: () => <div className="h-[420px] w-full animate-pulse border border-line bg-panel" />,
 });
 
 type Centre = Tables<"service_centres">;
@@ -71,9 +71,9 @@ function CentreCard({ centre: c, active, onClick }: { centre: Centre; active: bo
     <div
       id={`centre-${c.id}`}
       onClick={onClick}
-      className={`rounded-[10px] border bg-panel p-4 transition ${
-        active ? "border-gold" : "border-line"
-      } ${onClick ? "cursor-pointer hover:border-gold" : ""}`}
+      className={` border bg-panel p-4 transition ${
+        active ? "border-highlight" : "border-line"
+      } ${onClick ? "cursor-pointer hover:border-highlight" : ""}`}
     >
       <div className="mb-1 flex items-start justify-between gap-3">
         <h2 className="font-display text-lg text-ink">{c.name}</h2>
@@ -86,7 +86,7 @@ function CentreCard({ centre: c, active, onClick }: { centre: Centre; active: bo
         target="_blank"
         rel="noopener noreferrer"
         onClick={(e) => e.stopPropagation()}
-        className="mb-1.5 flex items-center gap-1.5 text-sm text-grey hover:text-gold-bright"
+        className="mb-1.5 flex items-center gap-1.5 text-sm text-grey hover:text-highlight"
       >
         <PinIcon />
         {c.address ? `${c.address}, ${c.town}` : c.town}
@@ -116,7 +116,7 @@ function CentreCard({ centre: c, active, onClick }: { centre: Centre; active: bo
             href={c.website}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[11px] font-bold tracking-wide text-gold-bright uppercase hover:underline"
+            className="text-[11px] font-bold tracking-wide text-highlight uppercase hover:underline"
           >
             Website
           </a>

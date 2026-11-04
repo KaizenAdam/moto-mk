@@ -50,7 +50,7 @@ export default function PhotoManager({
       {photos.length > 0 && (
         <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {photos.map((p, i) => (
-            <div key={p.id} className="overflow-hidden rounded-md border border-line bg-panel2">
+            <div key={p.id} className="overflow-hidden border border-line bg-panel2">
               {p.url ? (
                 // eslint-disable-next-line @next/next/no-img-element -- signed URL rotates per request
                 <img src={p.url} alt="" className="aspect-[4/3] w-full object-cover" />

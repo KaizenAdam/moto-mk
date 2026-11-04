@@ -32,11 +32,11 @@ export default async function DealersPage() {
         intro="Motorcycle dealerships across North Macedonia — every one checked by us before it appears here."
       />
 
-      <div className="mx-auto max-w-[1280px] px-6 py-8 pb-14">
+      <div className="mx-auto max-w-[1280px] px-5 py-8 pb-14">
         {sorted.length === 0 ? (
           <EmptyState>
             No dealers yet.{" "}
-            <Link href="/garage" className="text-gold-bright hover:underline">
+            <Link href="/garage" className="text-highlight hover:underline">
               Run a dealership? Apply from My Garage.
             </Link>
           </EmptyState>
@@ -48,10 +48,10 @@ export default async function DealersPage() {
                 <Link
                   key={d.profile_id}
                   href={`/dealers/${d.slug}`}
-                  className="group rounded-[10px] border border-line bg-panel p-5 transition hover:-translate-y-0.5 hover:border-gold"
+                  className="group border border-line bg-panel p-5 transition hover:-translate-y-0.5 hover:border-highlight"
                 >
                   <div className="mb-2 flex items-start justify-between gap-3">
-                    <h2 className="font-display text-xl text-ink group-hover:text-gold-bright">
+                    <h2 className="font-display text-xl text-ink group-hover:text-highlight">
                       {d.business_name}
                     </h2>
                     <Badge>Dealer</Badge>
@@ -63,7 +63,7 @@ export default async function DealersPage() {
                     </div>
                   )}
                   {d.about && <p className="mb-3 line-clamp-2 text-sm text-ink-dim">{d.about}</p>}
-                  <p className="text-sm font-bold text-gold-bright">
+                  <p className="text-sm font-bold text-highlight">
                     {count === 0 ? "No bikes listed right now" : `${count} bike${count > 1 ? "s" : ""} for sale →`}
                   </p>
                 </Link>

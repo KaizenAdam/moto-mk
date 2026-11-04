@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { button } from "@/app/components/ui";
 import Badge from "@/app/components/Badge";
+import { ArrowLeftIcon } from "@/app/components/icons";
 
 export default function ComingSoon({ title, description }: { title: string; description: string }) {
   return (
@@ -18,7 +19,8 @@ export default function ComingSoon({ title, description }: { title: string; desc
         href="/bikes"
         className={button("primary", "lg")}
       >
-        ← Back to Buy
+        <ArrowLeftIcon />
+        Back to Buy
       </Link>
     </main>
   );

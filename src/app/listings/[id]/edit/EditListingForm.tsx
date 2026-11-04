@@ -28,10 +28,10 @@ export default function EditListingForm({ listing }: { listing: Tables<"listings
   return (
     <form onSubmit={submit} className="space-y-3.5">
       {state.error && (
-        <p className="rounded-md bg-red/20 px-3 py-2 text-sm text-gold-bright">{state.error}</p>
+        <p className="border-l-4 border-red bg-red/15 px-3 py-2 text-sm text-ink">{state.error}</p>
       )}
       {state.message && (
-        <p className="rounded-md bg-panel2 px-3 py-2 text-sm text-gold-bright">{state.message}</p>
+        <p className=" bg-panel2 px-3 py-2 text-sm text-highlight">{state.message}</p>
       )}
 
       <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">

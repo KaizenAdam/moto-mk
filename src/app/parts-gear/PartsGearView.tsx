@@ -25,7 +25,7 @@ export default function PartsGearView() {
         title="Parts & Gear"
         intro="Everything else motorcycle: spare parts, accessories and riding gear from riders and shops across North Macedonia."
       >
-        <div className="flex max-w-3xl gap-2.5 rounded-lg border border-line bg-panel p-2">
+        <div className="flex max-w-3xl gap-2.5 border border-line bg-panel p-2">
           <input
             type="text"
             disabled
@@ -38,15 +38,15 @@ export default function PartsGearView() {
         </div>
       </PageHero>
 
-      <div className="mx-auto max-w-[1280px] space-y-12 px-4 pt-8 sm:px-5">
-        <div className="flex flex-col gap-3 rounded-[10px] border border-gold/40 bg-gold/10 p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+      <div className="mx-auto max-w-[1280px] space-y-12 px-5 pt-8">
+        <div className="flex flex-col gap-3 border border-highlight/40 bg-highlight/10 p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
           <p className="text-ink">
             <Badge tone="red" className="mr-2">
               Coming soon
             </Badge>
             Buying and selling parts &amp; gear opens shortly. Here&rsquo;s what&rsquo;ll be on offer.
           </p>
-          <Link href="/bikes" className="shrink-0 text-gold-bright hover:underline">
+          <Link href="/bikes" className="shrink-0 text-highlight hover:underline">
             Browse bikes meanwhile →
           </Link>
         </div>
@@ -65,14 +65,14 @@ export default function PartsGearView() {
                     onClick={() => setSelected(active ? null : sub.id)}
                     aria-pressed={active}
                     className={`${card} group flex flex-col items-start gap-3 p-4 text-left transition ${
-                      active ? "border-gold shadow-[0_0_0_1px_var(--gold)]" : "hover:border-gold"
+                      active ? "border-highlight shadow-[0_0_0_1px_var(--highlight)]" : "hover:border-highlight"
                     }`}
                   >
-                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-panel2 text-gold">
+                    <span className="flex h-10 w-10 items-center justify-center bg-panel2 text-highlight">
                       {cat.id === "gear" ? <HelmetIcon /> : <WrenchIcon />}
                     </span>
                     <span>
-                      <span className="font-display block text-lg text-ink group-hover:text-gold-bright">{sub.name}</span>
+                      <span className="font-display block text-lg text-ink group-hover:text-highlight">{sub.name}</span>
                       <span className="text-xs text-grey">No listings yet</span>
                     </span>
                   </button>
@@ -83,7 +83,7 @@ export default function PartsGearView() {
               <div className="mt-4">
                 <EmptyState>
                   No {selectedName?.toLowerCase()} listed yet — selling opens soon.{" "}
-                  <button type="button" onClick={() => setSelected(null)} className="text-gold-bright hover:underline">
+                  <button type="button" onClick={() => setSelected(null)} className="text-highlight hover:underline">
                     Show all
                   </button>
                 </EmptyState>
@@ -101,7 +101,7 @@ export default function PartsGearView() {
               ["Contact like bikes", "Call or WhatsApp the seller straight from the listing, same as buying a bike."],
             ].map(([title, body], i) => (
               <li key={title} className={`${card} p-5`}>
-                <span className="font-display text-3xl text-gold">{i + 1}</span>
+                <span className="font-display text-3xl text-highlight">{i + 1}</span>
                 <p className="font-display mt-1 text-lg">{title}</p>
                 <p className="mt-1 text-sm text-ink-dim">{body}</p>
               </li>
@@ -109,7 +109,7 @@ export default function PartsGearView() {
           </ol>
         </section>
 
-        <section className="flex flex-col items-start gap-4 rounded-[10px] border border-gold/40 bg-gradient-to-br from-gold/15 to-red/10 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <section className="flex flex-col items-start gap-4 border border-line border-t-4 border-t-highlight bg-panel p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <div>
             <h2 className="font-display text-3xl">Clearing out the garage?</h2>
             <p className="mt-1 text-sm text-ink-dim">

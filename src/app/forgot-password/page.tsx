@@ -13,8 +13,8 @@ export default function ForgotPasswordPage() {
 
   return (
     <main className="flex min-h-[70vh] items-center justify-center px-4 py-10">
-      <form action={formAction} className="w-full max-w-sm rounded-[10px] border border-line bg-panel p-8">
-        <h1 className="font-display mb-2 text-3xl text-gold">Reset your password</h1>
+      <form action={formAction} className="w-full max-w-sm border border-line border-t-4 border-t-highlight bg-panel p-8">
+        <h1 className="font-display mb-2 text-4xl">Reset your password</h1>
 
         {state.message ? (
           <p className="mt-4 text-sm text-ink-dim">{state.message}</p>
@@ -25,7 +25,7 @@ export default function ForgotPasswordPage() {
             </p>
 
             {state.error && (
-              <p className="mb-4 rounded-md bg-red/20 px-3 py-2 text-sm text-gold-bright">{state.error}</p>
+              <p className="mb-4 border-l-4 border-red bg-red/15 px-3 py-2 text-sm text-ink">{state.error}</p>
             )}
 
             <label className={`${labelClass} mb-6`}>
@@ -44,7 +44,7 @@ export default function ForgotPasswordPage() {
         )}
 
         <p className="mt-6 text-center text-sm text-grey">
-          <Link href="/login" className="text-gold-bright hover:underline">
+          <Link href="/login" className="text-highlight hover:underline">
             Back to log in
           </Link>
         </p>

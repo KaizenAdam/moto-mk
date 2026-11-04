@@ -2,13 +2,13 @@ import type { ReactNode } from "react";
 
 const tones = {
   /** Solid gold: earned trust marks (Verified, Dealer). */
-  gold: "bg-gold text-[#141414]",
+  gold: "bg-highlight text-[#141414]",
   /** Solid red: attention (Coming soon, Pending review, Rejected). */
   red: "bg-red text-white",
   green: "bg-green-700 text-white",
   /** Gold tint: secondary labels that shouldn't shout (a card's dealer name). */
-  soft: "bg-gold/15 text-gold-bright",
-  outline: "border border-gold bg-panel2 text-gold-bright",
+  soft: "bg-highlight/15 text-highlight",
+  outline: "border border-highlight bg-panel2 text-highlight",
   muted: "border border-line bg-panel2 text-ink-dim",
 } as const;
 
@@ -33,7 +33,7 @@ export default function Badge({
 }) {
   return (
     <span
-      className={`font-display inline-block shrink-0 rounded-full font-semibold tracking-wider ${sizes[size]} ${tones[tone]} ${className}`}
+      className={`font-display inline-block shrink-0 font-semibold tracking-wider ${sizes[size]} ${tones[tone]} ${className}`}
     >
       {children}
     </span>

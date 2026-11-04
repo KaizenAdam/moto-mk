@@ -10,7 +10,7 @@ export default function AddEventForm() {
   const [state, formAction, pending] = useActionState(createEventAction, initialState);
 
   return (
-    <form action={formAction} className="mt-4 space-y-2 rounded-[10px] border border-line bg-panel p-4 text-sm">
+    <form action={formAction} className="mt-4 space-y-2 border border-line bg-panel p-4 text-sm">
       <p className="text-xs font-semibold text-ink-dim uppercase">Add an event</p>
       {state.error && <p className={errorBox}>{state.error}</p>}
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">

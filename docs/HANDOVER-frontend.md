@@ -6,8 +6,9 @@ no schema changes. Anything that needs the database is in
 backend work. `CLAUDE.md` holds the durable rules; this file is the
 snapshot of progress and what's next.
 
-Everything below is **live on `main`** (moto-mk.vercel.app). The last
-release was `42ee069`, on 4 Nov 2026.
+Everything below except the "First draft finished" section is **live on `main`** (moto-mk.vercel.app). The last
+release was `42ee069`, on 4 Nov 2026. The first-draft finish is on branch
+`claude/funny-wright-ydgrl8`, waiting for Billy to look at screenshots.
 
 ## Done
 
@@ -80,49 +81,35 @@ release was `42ee069`, on 4 Nov 2026.
   `package.json`). They're wrapped in `src/app/components/icons.tsx`
   under the old names. Add new icons there; don't hand-draw any.
 
-## Next: carry the new look through the remaining pages
-
-These pages already have the new header, footer and icons, but still use
-the older rounded-card style. Billy offered to do them; this hasn't been
-asked for yet:
-
-- `/dealers` and `/dealers/[slug]`
-- `/events`
-- `/service-centres`
-- `/parts-gear`
-- `/sell` and `/listings/[id]/edit`
-- `/garage`
-- `/advertise` and `/listings/[id]/feature`
-- `/admin`
-- the auth pages: login, signup, forgot and reset password
-
-**How to restyle them:**
-- Use square corners.
-- Use `highlight` for prices and calls to action, and a red outline for
-  secondary actions.
-- Headings are plain Oswald h2s (as on the home page) rather than the gold
-  underlined `SectionHeading`.
-- Use at most one `Shard` per section.
-- The listing page (`src/app/listings/[id]/ListingView.tsx`) is the
-  pattern to copy.
-- **`ui.ts` hasn't been updated:** `button()` and `card` are still
-  rounded, so restyled pages write their own square classes for now.
-  Once the remaining pages are done, fold those classes into `ui.ts`.
-- **Rounded leftovers on the restyled pages:** `Badge` is still a rounded
-  pill, and so is the AdSlot house card.
+**First draft finished (4 Nov 2026)**
+- **Every remaining page now has the new look:** dealers and storefronts,
+  events, service centres, parts & gear, sell and edit, My Garage,
+  advertise and feature, admin, and the auth pages.
+- **It was done at the source, in `ui.ts`:** `button()`, `input`, `card`,
+  `errorBox` and `sectionTitle` are square now. `primary` is flat
+  `highlight` gold, `outline` is the red outline and `danger` is red text
+  in a red outline. `SectionHeading` is a plain Oswald h2, and `Badge`, the
+  AdSlot house card, `EmptyState`, `Chip`, `EventDate` and the toast are
+  square. New pages should just use `ui.ts`.
+- **Accents:** leftover `gold` accents on those pages are now `highlight`
+  (including `PinIcon`). The gradient call-to-action panels (advertise,
+  parts & gear) have a gold top edge, and the events "Next up" card has a
+  red one.
+- **Alignment:** `PageHero` pads its inner column, so hero titles line up
+  with the header logo and the page content.
+- **Back links and photo-order buttons** use Tabler arrows, not ← → glyphs.
+- **Skeletons:** the home and search pages have their own
+  (`HomeSkeleton`, `SearchSkeleton`) matching the new layouts.
 
 ## Not checked yet
 
-- **Signed-in views** after the restyle:
-  - a private seller's Call and WhatsApp buttons
-  - your own listing ("Edit it")
-  - saved hearts
-  - the garage
-
-  The local preview can't sign in. Please click through these on a real
-  account.
-- **`loading.tsx` skeletons:** the home and search skeletons still have
-  the old shapes, so they flash briefly before the new layout appears.
+- **Real accounts on the live site.** The signed-in views were checked
+  against sample data, not real accounts. Those views are a private
+  seller's Call/WhatsApp, your own listing, saved hearts, the garage, sell,
+  edit, feature and admin. A quick click-through after the deploy is still
+  worth doing.
+- **Uploading photos and submitting forms** weren't exercised (the stand-in
+  only echoes writes).
 
 ## How the work was checked (for whoever picks this up)
 
@@ -130,7 +117,13 @@ asked for yet:
 variables and return a bare 500. So the team pushes to `main` once Billy
 has seen screenshots.
 
-**Local check:** run the dev server with placeholder Supabase values:
+**Local check (signed-in views too):** the 4 Nov pass used a small
+throwaway stand-in for Supabase (a Node HTTP server answering PostgREST,
+Auth and Storage requests with sample rows), with the dev server's
+`NEXT_PUBLIC_SUPABASE_URL` pointed at it. Playwright set an
+`sb-localhost-auth-token` cookie holding a fake session to sign in as a
+user, a dealer or an admin. It isn't in the repo; rebuild it if needed. The
+simpler option, which can't sign in, is placeholder values:
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=https://example.supabase.co NEXT_PUBLIC_SUPABASE_ANON_KEY=placeholder npx next dev -p 3200

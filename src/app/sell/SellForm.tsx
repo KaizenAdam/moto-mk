@@ -4,7 +4,7 @@ import { startTransition, useActionState, useEffect, useMemo, useRef, useState, 
 import Link from "next/link";
 import { createListingAction, type CreateListingState } from "@/app/actions/listings";
 import { RIDING_STYLES, ENGINE_TYPES, TOWNS, formatPrice } from "@/lib/constants/listings";
-import { PinIcon } from "@/app/components/icons";
+import { PinIcon, ArrowLeftIcon } from "@/app/components/icons";
 import PhotoPicker from "@/app/components/PhotoPicker";
 import Badge from "@/app/components/Badge";
 import Chip from "@/app/components/Chip";
@@ -35,7 +35,7 @@ type PreviewData = {
 function PreviewCard({ data, photoUrl }: { data: PreviewData; photoUrl?: string }) {
   const price = formatPrice(data.price || 0, "EUR");
   return (
-    <div className="overflow-hidden rounded-[10px] border border-line bg-panel">
+    <div className="overflow-hidden border border-line bg-panel">
       {photoUrl ? (
         // eslint-disable-next-line @next/next/no-img-element -- local object URL preview
         <img src={photoUrl} alt="" className="aspect-[4/3] w-full object-cover" />
@@ -48,7 +48,7 @@ function PreviewCard({ data, photoUrl }: { data: PreviewData; photoUrl?: string 
         <div className="truncate text-sm font-bold text-ink">
           {data.make || "Make"} {data.model || "Model"}
         </div>
-        <div className="mb-1.5 text-base font-extrabold text-gold-bright">
+        <div className="mb-1.5 text-base font-extrabold text-highlight">
           {data.price ? price.main : "€0"}{" "}
           <span className="ml-1 text-[11px] font-normal text-grey">{data.price ? price.alt : ""}</span>
         </div>
@@ -179,12 +179,12 @@ export default function SellForm({ profilePhone }: { profilePhone: string | null
           buyers until an admin approves it — we&rsquo;ll keep it out of search until then.
         </p>
         {upload.status === "failed" && (
-          <p className="mb-5 rounded-md bg-red/20 px-3 py-2 text-sm text-gold-bright">
+          <p className="mb-5 border-l-4 border-red bg-red/15 px-3 py-2 text-sm text-ink">
             Your listing was saved, but the photos didn&rsquo;t upload. Add them from My Garage.
           </p>
         )}
         {upload.status === "done" && upload.skipped > 0 && (
-          <p className="mb-5 rounded-md bg-red/20 px-3 py-2 text-sm text-gold-bright">
+          <p className="mb-5 border-l-4 border-red bg-red/15 px-3 py-2 text-sm text-ink">
             {upload.skipped} photo{upload.skipped > 1 ? "s" : ""} couldn&rsquo;t be read (try JPEG or PNG) — add
             {upload.skipped > 1 ? " them" : " it"} again from My Garage.
           </p>
@@ -227,11 +227,11 @@ export default function SellForm({ profilePhone }: { profilePhone: string | null
                   className="group w-full text-left disabled:cursor-not-allowed"
                 >
                   <span
-                    className={`block h-1.5 rounded-full ${current || done ? "bg-gold" : "bg-line"}`}
+                    className={`block h-1.5 ${current || done ? "bg-highlight" : "bg-line"}`}
                   />
                   <span
                     className={`font-display mt-2 block text-xs tracking-wider sm:text-sm ${
-                      current ? "text-gold-bright" : done ? "text-ink group-hover:text-gold-bright" : "text-grey"
+                      current ? "text-highlight" : done ? "text-ink group-hover:text-highlight" : "text-grey"
                     }`}
                   >
                     <span className="hidden sm:inline">{i + 1}. </span>
@@ -244,7 +244,7 @@ export default function SellForm({ profilePhone }: { profilePhone: string | null
         </ol>
 
         {state.error && (
-          <p className="mb-4 rounded-md bg-red/20 px-3 py-2 text-sm text-gold-bright">{state.error}</p>
+          <p className="mb-4 border-l-4 border-red bg-red/15 px-3 py-2 text-sm text-ink">{state.error}</p>
         )}
 
         {/* Every step stays mounted so one FormData carries all the fields to
@@ -417,11 +417,12 @@ export default function SellForm({ profilePhone }: { profilePhone: string | null
         <div className="mt-8 flex gap-3">
           {stepIndex > 0 && (
             <button type="button" onClick={() => goTo(stepIndex - 1)} className={button("outline", "lg")}>
-              ← Back
+              <ArrowLeftIcon />
+              Back
             </button>
           )}
           <button type="submit" disabled={pending} className={`${button("primary", "lg")} flex-1 py-3.5`}>
-            {isLast ? (pending ? "Submitting…" : "List my bike") : `Next: ${STEPS[stepIndex + 1].title} →`}
+            {isLast ? (pending ? "Submitting…" : "List my bike") : `Next: ${STEPS[stepIndex + 1].title} >>>`}
           </button>
         </div>
         <p className="mt-2 text-center text-xs text-grey">

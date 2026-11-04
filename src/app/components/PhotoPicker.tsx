@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { button } from "./ui";
+import { ArrowLeftIcon, ArrowRightIcon } from "@/app/components/icons";
 
 /**
  * Pick photos before they're uploaded: drop or browse, a big cover, ← → to
@@ -48,7 +49,7 @@ export default function PhotoPicker({
   }
 
   const tool =
-    "flex h-7 min-w-7 items-center justify-center rounded-full bg-black/75 px-2 text-xs text-white hover:bg-gold hover:text-[#141414] disabled:opacity-30 disabled:hover:bg-black/75 disabled:hover:text-white";
+    "flex h-7 min-w-7 items-center justify-center rounded-full bg-black/75 px-2 text-xs text-white hover:bg-highlight hover:text-[#141414] disabled:opacity-30 disabled:hover:bg-black/75 disabled:hover:text-white";
 
   return (
     <div>
@@ -57,23 +58,23 @@ export default function PhotoPicker({
           {previews.map((url, i) => (
             <div
               key={url}
-              className={`relative overflow-hidden rounded-md border ${
+              className={`relative overflow-hidden border ${
                 coverFirst && i === 0
-                  ? "col-span-3 aspect-[16/10] border-gold sm:col-span-2 sm:row-span-2"
+                  ? "col-span-3 aspect-[16/10] border-highlight sm:col-span-2 sm:row-span-2"
                   : "aspect-[4/3] border-line"
               }`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element -- local object URL preview */}
               <img src={url} alt="" className="h-full w-full object-cover" />
               {coverFirst && i === 0 && (
-                <span className="font-display absolute top-2 left-2 rounded bg-gold px-2 py-0.5 text-[11px] font-semibold tracking-wider text-[#141414]">
+                <span className="font-display absolute top-2 left-2 bg-highlight px-2 py-0.5 text-[11px] font-semibold tracking-wider text-[#141414]">
                   Cover
                 </span>
               )}
               <div className="absolute inset-x-1 bottom-1 flex items-center justify-between gap-1">
                 <div className="flex gap-1">
                   <button type="button" onClick={() => move(i, i - 1)} disabled={i === 0} aria-label="Move earlier" className={tool}>
-                    ←
+                    <ArrowLeftIcon className="h-3.5 w-3.5" />
                   </button>
                   <button
                     type="button"
@@ -82,7 +83,7 @@ export default function PhotoPicker({
                     aria-label="Move later"
                     className={tool}
                   >
-                    →
+                    <ArrowRightIcon className="h-3.5 w-3.5" />
                   </button>
                 </div>
                 <div className="flex gap-1">
@@ -118,8 +119,8 @@ export default function PhotoPicker({
             setDragging(false);
             add(e.dataTransfer.files);
           }}
-          className={`block cursor-pointer rounded-[10px] border-2 border-dashed px-5 py-8 text-center text-[13px] transition ${
-            dragging ? "border-gold bg-gold/10 text-ink" : "border-line text-ink-dim hover:border-gold"
+          className={`block cursor-pointer border-2 border-dashed px-5 py-8 text-center text-[13px] transition ${
+            dragging ? "border-highlight bg-highlight/10 text-ink" : "border-line text-ink-dim hover:border-highlight"
           }`}
         >
           <input ref={input} type="file" accept="image/*" multiple className="hidden" onChange={(e) => add(e.target.files)} />

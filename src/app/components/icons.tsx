@@ -46,8 +46,8 @@ function make(Tabler: Icon, defaultClass: string, stroke = 1.75) {
   return SiteIcon;
 }
 
-/** Solid map pin, gold by default (town labels). */
-export const PinIcon = make(IconMapPinFilled, "h-3.5 w-3.5 text-gold");
+/** Solid map pin, highlight gold by default (town labels). */
+export const PinIcon = make(IconMapPinFilled, "h-3.5 w-3.5 text-highlight");
 /** Outline map pin, for spec rows. */
 export const PlaceIcon = make(IconMapPin, "h-4 w-4");
 

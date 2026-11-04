@@ -36,11 +36,11 @@ export default async function SiteHeader() {
           <div className="hidden items-center gap-3 xl:flex">
             {profile ? (
               <>
-                <Link href="/garage" className="text-sm font-semibold whitespace-nowrap text-ink hover:text-gold-bright">
+                <Link href="/garage" className="text-sm font-semibold whitespace-nowrap text-ink hover:text-highlight">
                   My Garage
                 </Link>
                 {/* Featuring is per listing: My Garage has the button on each live bike. */}
-                <Link href="/garage" className="text-sm font-semibold whitespace-nowrap text-gold-bright hover:underline">
+                <Link href="/garage" className="text-sm font-semibold whitespace-nowrap text-highlight hover:underline">
                   Feature a bike
                 </Link>
                 <form action={signOut}>

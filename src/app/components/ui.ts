@@ -1,10 +1,13 @@
 /**
  * The site's shared look, as class strings. Use these rather than writing
  * button/input classes inline, so every page matches. (Admin uses them too.)
+ *
+ * Square corners throughout. Flat `highlight` gold is for prices and the
+ * main call to action; a red outline is for secondary actions.
  */
 
 const buttonBase =
-  "font-display inline-flex items-center justify-center gap-1.5 rounded-md font-semibold tracking-wider transition disabled:cursor-not-allowed disabled:opacity-60";
+  "font-display inline-flex items-center justify-center gap-1.5 font-semibold tracking-[.06em] transition disabled:cursor-not-allowed disabled:opacity-60";
 
 const buttonSizes = {
   sm: "px-3 py-1.5 text-xs",
@@ -13,10 +16,12 @@ const buttonSizes = {
 } as const;
 
 const buttonVariants = {
-  primary:
-    "bg-gradient-to-br from-gold-bright to-gold text-[#141414] shadow-[0_2px_10px_rgba(212,175,55,0.25)] hover:brightness-110",
-  outline: "border border-line text-ink hover:border-gold hover:text-gold-bright",
-  danger: "border border-red/60 text-red hover:bg-red hover:text-white",
+  /** Solid highlight gold: the one main action. */
+  primary: "bg-highlight text-[#111] hover:brightness-110",
+  /** Red outline: secondary actions (Contact, Log in, Cancel…). */
+  outline: "border-2 border-red text-white hover:bg-red",
+  /** Red text and outline: destructive actions (Delete, Reject). */
+  danger: "border-2 border-red/70 text-red hover:bg-red hover:text-white",
   success: "bg-green-700 text-white hover:bg-green-600",
   whatsapp: "bg-[#25D366] text-[#0b0b0d] hover:brightness-110",
 } as const;
@@ -29,16 +34,16 @@ export function button(
 }
 
 export const input =
-  "mt-1 w-full rounded-md border border-line bg-panel2 px-3 py-2.5 text-sm text-ink outline-none transition placeholder:text-[#6f6f76] focus:border-gold";
+  "mt-1 w-full border border-line bg-panel2 px-3 py-2.5 text-sm text-ink outline-none transition placeholder:text-[#6f6f76] focus:border-highlight";
 
 export const label = "block text-xs font-bold tracking-wide text-ink-dim uppercase";
 
-export const sectionTitle =
-  "font-display mb-4 border-b border-line pb-2.5 text-lg font-semibold tracking-wide text-gold";
+/** A plain Oswald section heading, as on the home and listing pages. */
+export const sectionTitle = "font-display mb-4 text-2xl font-semibold";
 
-export const card = "rounded-[10px] border border-line bg-panel";
+export const card = "border border-line bg-panel";
 
-export const errorBox = "rounded-md bg-red/20 px-3 py-2 text-sm text-gold-bright";
+export const errorBox = "border-l-4 border-red bg-red/15 px-3 py-2 text-sm text-ink";
 
 /** The red/gold glow behind page heroes. */
 export const heroBackground =

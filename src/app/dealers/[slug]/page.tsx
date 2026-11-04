@@ -9,7 +9,7 @@ import { cachedPhotoSigner } from "@/lib/photos/signer";
 import { getOwnProfile } from "@/lib/data/profiles";
 import { listSaved } from "@/lib/data/savedListings";
 import { formatPhone, telHref, whatsAppHref } from "@/lib/contact/phone";
-import { PinIcon } from "@/app/components/icons";
+import { PinIcon, ArrowLeftIcon } from "@/app/components/icons";
 import ListingsGrid from "@/app/components/ListingsGrid";
 import Badge from "@/app/components/Badge";
 import { heroBackground, button } from "@/app/components/ui";
@@ -62,15 +62,16 @@ export default async function DealerStorefrontPage({ params }: Props) {
   return (
     <main>
       <section
-        className="border-b border-line px-5 py-9"
+        className="border-b border-line py-9"
         style={{
           background: heroBackground,
         }}
       >
-        <div className="mx-auto flex max-w-[1280px] flex-wrap items-end justify-between gap-6">
+        <div className="mx-auto flex max-w-[1280px] flex-wrap px-5 items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <Link href="/dealers" className="mb-3 inline-block text-sm text-grey hover:text-gold-bright">
-              ← All dealers
+            <Link href="/dealers" className="mb-3 inline-flex items-center gap-1.5 text-sm text-grey hover:text-highlight">
+              <ArrowLeftIcon />
+              All dealers
             </Link>
             <div className="mb-2 flex flex-wrap items-center gap-3">
               <h1 className="font-display text-3xl sm:text-4xl">{dealer.business_name}</h1>
@@ -80,7 +81,7 @@ export default async function DealerStorefrontPage({ params }: Props) {
               <div className="mb-3 flex items-center gap-1.5 text-sm text-grey">
                 <PinIcon />
                 {mapUrl ? (
-                  <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="hover:text-gold-bright">
+                  <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="hover:text-highlight">
                     {dealer.address ?? dealer.town}
                   </a>
                 ) : (
@@ -92,7 +93,7 @@ export default async function DealerStorefrontPage({ params }: Props) {
               <p className="text-sm leading-relaxed whitespace-pre-line text-ink-dim">{dealer.about}</p>
             )}
             {isOwner && (
-              <Link href="/garage#storefront" className="mt-3 inline-block text-sm text-gold-bright hover:underline">
+              <Link href="/garage#storefront" className="mt-3 inline-block text-sm text-highlight hover:underline">
                 Edit your storefront
               </Link>
             )}
@@ -124,8 +125,8 @@ export default async function DealerStorefrontPage({ params }: Props) {
       </section>
 
       {listings.length === 0 ? (
-        <div className="mx-auto max-w-[1280px] px-6 py-10">
-          <div className="rounded-[10px] border border-dashed border-line px-5 py-10 text-center text-sm text-ink-dim">
+        <div className="mx-auto max-w-[1280px] px-5 py-10">
+          <div className="border border-dashed border-line px-5 py-10 text-center text-sm text-ink-dim">
             {dealer.business_name} has no bikes listed right now — get in touch to ask what&rsquo;s
             coming in.
           </div>

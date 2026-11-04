@@ -14,7 +14,7 @@ export default function Chip({
   children: ReactNode;
 }) {
   return (
-    <span className={`rounded border border-line bg-panel2 text-ink-dim ${sizes[size]}`}>
+    <span className={` border border-line bg-panel2 text-ink-dim ${sizes[size]}`}>
       {children}
     </span>
   );

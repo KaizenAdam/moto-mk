@@ -101,7 +101,7 @@ export default function LocationPicker({
             Remove pin
           </button>
         )}
-        <button type="button" onClick={() => setOpen(false)} className="text-xs text-ink-dim hover:text-gold-bright">
+        <button type="button" onClick={() => setOpen(false)} className="text-xs text-ink-dim hover:text-highlight">
           Close
         </button>
         {point && (

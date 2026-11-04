@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { sectionTitle } from "./ui";
 
-/** A section's gold underlined heading, with an optional link or button on the right. */
+/** A section heading (plain Oswald h2), with an optional link or button on the right. */
 export default function SectionHeading({
   children,
   action,

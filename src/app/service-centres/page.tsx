@@ -23,8 +23,8 @@ export default async function ServiceCentresPage({ searchParams }: { searchParam
   const shown = selectedTown ? centres.filter((c) => c.town === selectedTown) : centres;
 
   const chip = (active: boolean) =>
-    `rounded-full border px-3.5 py-1.5 text-[13px] transition ${
-      active ? "border-gold bg-gold text-[#141414] font-bold" : "border-line bg-panel2 text-ink hover:border-gold"
+    `font-display border px-3.5 py-1.5 text-[13px] tracking-[.04em] transition ${
+      active ? "border-highlight bg-highlight text-[#141414] font-bold" : "border-line bg-panel2 text-ink hover:border-highlight"
     }`;
 
   return (
@@ -34,7 +34,7 @@ export default async function ServiceCentresPage({ searchParams }: { searchParam
         intro="Workshops, official brand service centres and importers across North Macedonia."
       />
 
-      <div className="mx-auto max-w-[1280px] px-6 py-8 pb-14">
+      <div className="mx-auto max-w-[1280px] px-5 py-8 pb-14">
         {towns.length > 1 && (
           <div className="mb-6 flex flex-wrap gap-2">
             <Link href="/service-centres" className={chip(!selectedTown)}>

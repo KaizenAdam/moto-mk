@@ -27,7 +27,7 @@ export default function UsersTable({ profiles }: { profiles: Tables<"profiles">[
         placeholder="Filter by name, town or phone…"
         className={`${input} mb-3 max-w-sm`}
       />
-      <div className="overflow-x-auto rounded-[10px] border border-line">
+      <div className="overflow-x-auto border border-line">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-line bg-panel2 text-xs tracking-wide text-grey uppercase">

@@ -58,7 +58,7 @@ export default async function GaragePage() {
       <section className="mb-12">
         <SectionHeading
           action={
-            <Link href="/sell" className="text-sm text-gold-bright hover:underline">
+            <Link href="/sell" className="text-sm text-highlight hover:underline">
               + List a bike
             </Link>
           }
@@ -73,25 +73,25 @@ export default async function GaragePage() {
               const status = STATUS[l.status] ?? STATUS.draft;
               const cover = covers.get(l.id)?.url;
               return (
-                <div key={l.id} className="flex flex-wrap gap-4 rounded-[10px] border border-line bg-panel p-3">
+                <div key={l.id} className="flex flex-wrap gap-4 border border-line bg-panel p-3">
                   <Link href={`/listings/${l.id}`} className="shrink-0">
                     {cover ? (
                       // eslint-disable-next-line @next/next/no-img-element -- signed URL rotates per request
-                      <img src={cover} alt="" className="h-20 w-28 rounded-md object-cover" />
+                      <img src={cover} alt="" className="h-20 w-28 object-cover" />
                     ) : (
-                      <div className="flex h-20 w-28 items-center justify-center rounded-md bg-panel2 text-xs text-grey">
+                      <div className="flex h-20 w-28 items-center justify-center bg-panel2 text-xs text-grey">
                         No photo
                       </div>
                     )}
                   </Link>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <Link href={`/listings/${l.id}`} className="truncate font-bold text-ink hover:text-gold-bright">
+                      <Link href={`/listings/${l.id}`} className="truncate font-bold text-ink hover:text-highlight">
                         {l.title}
                       </Link>
                       <Badge tone={status.tone}>{status.label}</Badge>
                     </div>
-                    <p className="text-sm text-gold-bright">{formatPrice(Number(l.price_eur), "EUR").main}</p>
+                    <p className="text-sm text-highlight">{formatPrice(Number(l.price_eur), "EUR").main}</p>
                     {l.status === "rejected" && l.rejection_reason && (
                       <p className="mt-1 text-xs text-red">Reason: {l.rejection_reason} — edit it to resubmit.</p>
                     )}

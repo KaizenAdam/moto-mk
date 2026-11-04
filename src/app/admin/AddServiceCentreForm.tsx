@@ -6,7 +6,7 @@ import { button, errorBox } from "@/app/components/ui";
 
 const initialState: CreateEventState = { error: null };
 const input =
-  "rounded-md border border-line bg-panel2 px-3 py-2 text-sm text-ink outline-none placeholder:text-[#6f6f76] focus:border-gold";
+  " border border-line bg-panel2 px-3 py-2 text-sm text-ink outline-none placeholder:text-[#6f6f76] focus:border-highlight";
 
 export default function AddServiceCentreForm() {
   const form = useRef<HTMLFormElement>(null);
@@ -25,7 +25,7 @@ export default function AddServiceCentreForm() {
   }
 
   return (
-    <form ref={form} onSubmit={submit} className="mt-4 space-y-2 rounded-[10px] border border-line bg-panel p-4 text-sm">
+    <form ref={form} onSubmit={submit} className="mt-4 space-y-2 border border-line bg-panel p-4 text-sm">
       <p className="text-xs font-semibold text-ink-dim uppercase">Add a service centre</p>
       {state.error && <p className={errorBox}>{state.error}</p>}
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">

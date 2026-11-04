@@ -14,8 +14,8 @@ export default function SignupPage() {
   if (state.message) {
     return (
       <main className="flex min-h-[70vh] items-center justify-center px-4 py-10">
-        <div className="w-full max-w-sm rounded-[10px] border border-line bg-panel p-8 text-center">
-          <h1 className="font-display mb-3 text-3xl text-gold">Check your email</h1>
+        <div className="w-full max-w-sm border border-line border-t-4 border-t-highlight bg-panel p-8 text-center">
+          <h1 className="font-display mb-3 text-4xl">Check your email</h1>
           <p className="text-sm text-ink-dim">{state.message}</p>
         </div>
       </main>
@@ -24,11 +24,11 @@ export default function SignupPage() {
 
   return (
     <main className="flex min-h-[70vh] items-center justify-center px-4 py-10">
-      <form action={formAction} className="w-full max-w-sm rounded-[10px] border border-line bg-panel p-8">
-        <h1 className="font-display mb-6 text-3xl text-gold">Sign up</h1>
+      <form action={formAction} className="w-full max-w-sm border border-line border-t-4 border-t-highlight bg-panel p-8">
+        <h1 className="font-display mb-6 text-4xl">Sign up</h1>
 
         {state.error && (
-          <p className="mb-4 rounded-md bg-red/20 px-3 py-2 text-sm text-gold-bright">{state.error}</p>
+          <p className="mb-4 border-l-4 border-red bg-red/15 px-3 py-2 text-sm text-ink">{state.error}</p>
         )}
 
         <label className={`${labelClass} mb-4`}>
@@ -56,7 +56,7 @@ export default function SignupPage() {
 
         <p className="mt-6 text-center text-sm text-grey">
           Already have an account?{" "}
-          <Link href="/login" className="text-gold-bright hover:underline">
+          <Link href="/login" className="text-highlight hover:underline">
             Log in
           </Link>
         </p>

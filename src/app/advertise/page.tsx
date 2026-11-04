@@ -21,6 +21,7 @@ export default function AdvertisePage() {
   return (
     <main className="pb-16">
       <PageHero
+        width="narrow"
         title="Advertise to riders"
         intro="Workshops, gear shops, insurers and importers: put your business in front of people who are buying, riding and fixing motorcycles in North Macedonia."
       />
@@ -50,7 +51,7 @@ export default function AdvertisePage() {
               ["You're live", "Your ad runs for the dates you booked."],
             ].map(([title, body], i) => (
               <li key={title} className={`${card} p-5`}>
-                <span className="font-display text-3xl text-gold">{i + 1}</span>
+                <span className="font-display text-3xl text-highlight">{i + 1}</span>
                 <p className="font-display mt-1 text-lg">{title}</p>
                 <p className="mt-1 text-sm text-ink-dim">{body}</p>
               </li>
@@ -58,12 +59,12 @@ export default function AdvertisePage() {
           </ol>
         </section>
 
-        <section className="flex flex-col items-start gap-4 rounded-[10px] border border-gold/40 bg-gradient-to-br from-gold/15 to-red/10 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <section className="flex flex-col items-start gap-4 border border-line border-t-4 border-t-highlight bg-panel p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <div>
             <h2 className="font-display text-3xl">Booking opens soon</h2>
             <p className="mt-1 text-sm text-ink-dim">
               Online booking and payment are on the way. Selling bikes as a business?{" "}
-              <Link href="/garage#storefront" className="text-gold-bright hover:underline">
+              <Link href="/garage#storefront" className="text-highlight hover:underline">
                 Open a dealer storefront
               </Link>{" "}
               in the meantime.
@@ -80,10 +81,10 @@ export default function AdvertisePage() {
 
 /** A tiny wireframe of the page with the ad's position in gold. */
 function SlotDiagram({ slot }: { slot: AdSlotId }) {
-  const bar = "rounded-sm bg-line";
-  const ad = "rounded-sm bg-gold/80";
+  const bar = " bg-line";
+  const ad = " bg-highlight/80";
   return (
-    <div aria-hidden className="space-y-1.5 rounded-md border border-line bg-black p-3">
+    <div aria-hidden className="space-y-1.5 border border-line bg-black p-3">
       <div className={`${bar} h-2 w-1/3`} />
       {slot === "listing-sidebar" ? (
         <div className="grid grid-cols-[2fr_1fr] gap-1.5">

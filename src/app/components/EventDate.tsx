@@ -8,13 +8,13 @@ export default function EventDate({ date, size = "sm" }: { date: string | null; 
   const big = size === "lg";
   return (
     <span
-      className={`flex shrink-0 flex-col items-center justify-center self-start rounded-md border border-line bg-panel2 ${
+      className={`flex shrink-0 flex-col items-center justify-center self-start border border-line bg-panel2 ${
         big ? "w-20 py-3" : "w-12 py-1.5"
       }`}
     >
       {d ? (
         <>
-          <span className={`font-display leading-none text-gold-bright ${big ? "text-4xl" : "text-2xl"}`}>
+          <span className={`font-display leading-none text-highlight ${big ? "text-4xl" : "text-2xl"}`}>
             {d.getDate()}
           </span>
           <span className={`mt-0.5 tracking-wider text-ink-dim uppercase ${big ? "text-xs" : "text-[10px]"}`}>
