@@ -6,9 +6,8 @@ no schema changes. Anything that needs the database is in
 backend work. `CLAUDE.md` holds the durable rules; this file is the
 snapshot of progress and what's next.
 
-Everything below except the "First draft finished" section is **live on `main`** (moto-mk.vercel.app). The last
-release was `42ee069`, on 4 Nov 2026. The first-draft finish is on branch
-`claude/funny-wright-ydgrl8`, waiting for Billy to look at screenshots.
+Everything below is **live on `main`** (moto-mk.vercel.app). The last
+release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
 
 ## Done
 
