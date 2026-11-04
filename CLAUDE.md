@@ -7,6 +7,11 @@
 > **Front-end / design work?** `docs/HANDOVER-frontend.md` says where the
 > Oct–Nov 2026 redesign is up to and which pages still need the new look.
 
+> **Shipping:** Billy's standing instruction (Nov 2026) is to always merge
+> finished changes to `main` (fast-forward, after `tsc`, `eslint` and a
+> production build pass), so they go live and can be checked on the real
+> site. Don't leave work waiting on a branch.
+
 ## Purpose
 
 A motorcycle classifieds marketplace for North Macedonia — think
