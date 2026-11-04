@@ -25,9 +25,7 @@ export default function PartsGearView() {
         }}
         title={
           <>
-            Parts &amp;
-            <br />
-            <HighlightWord>gear</HighlightWord>
+            Parts &amp; <HighlightWord>gear</HighlightWord>
           </>
         }
         intro="Everything else motorcycle: spare parts, accessories and riding gear from riders and shops across North Macedonia."

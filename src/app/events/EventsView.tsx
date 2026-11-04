@@ -92,9 +92,7 @@ export default function EventsView({ events }: { events: Event[] }) {
       <BlockHero
         title={
           <>
-            Rides &amp;
-            <br />
-            <HighlightWord>rallies</HighlightWord>
+            Rides &amp; <HighlightWord>rallies</HighlightWord>
           </>
         }
         intro="Moto Sobori, track days and group rides: the calendar for North Macedonia's riding community."
