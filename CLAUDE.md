@@ -5,7 +5,8 @@
 > pass left for the backend, the UI contracts to fill, and known issues.
 >
 > **Front-end / design work?** `docs/HANDOVER-frontend.md` says where the
-> Oct–Nov 2026 redesign is up to and which pages still need the new look.
+> Oct–Nov 2026 redesign is up to, how the translations are built, and
+> ("Adam: start here") what's waiting on Supabase access or a decision.
 
 > **Shipping:** Billy's standing instruction (Nov 2026) is to always merge
 > finished changes to `main` (fast-forward, after `tsc`, `eslint` and a

@@ -1,7 +1,9 @@
 # Backend handover: featured listings, ads and payments
 
 **For Adam (and Adam's Claude). Read this before starting backend work.**
-Written 13 Oct 2026, after a front-end pass by Billy. That pass made no
+Written 13 Oct 2026, after a front-end pass by Billy; updated 5 Nov 2026.
+`docs/HANDOVER-frontend.md` ("Adam: start here") lists what's waiting for
+you across both. That pass made no
 database changes and had no Supabase access, so everything below the UI is
 still to do. `CLAUDE.md` has the rest of the project's rules; nothing here
 overrides them.
@@ -10,11 +12,11 @@ overrides them.
 
 | Area | Where | Notes |
 |---|---|---|
-| Landing hub | `/` (`src/app/page.tsx` fetches, `src/app/_home/HomeView.tsx` renders) | Hero search, browse by type, latest bikes, ad slot, parts/events/service centres/forum, dealers, sell banner |
+| Landing hub | `/` (`src/app/page.tsx` fetches, `src/app/_home/HomeView.tsx` renders) | Hero search, browse by type, latest bikes, home ad slot, events and "Keep it rolling" band, sell banner (the old dealers rail was dropped) |
 | Bike search | **moved to `/bikes`** (`src/app/bikes/page.tsx`) | `/listings?…` redirects here with its filters. Top filter bar kept (your 25 Aug call). |
 | Result cards | `src/app/components/ListingCard.tsx` | Bikesales-style: photo count, spec icons, dealer/private line, Contact / View details |
 | Listing page | `src/app/listings/[id]/` (`page.tsx` fetches, `ListingView.tsx` renders) | Auto Trader-style: photo mosaic + full-screen gallery, sticky contact card, sticky Call/WhatsApp bar on phones, similar bikes. Contact rules unchanged (now in `resolveContact()` in `ContactSeller.tsx`). |
-| Feature your bike | `/listings/[id]/feature` | Owner-only package picker. **"Continue to payment" is disabled.** Linked from My Garage. |
+| Feature your bike | `/listings/[id]/feature` | Owner-only package picker. **"Continue to payment" is disabled.** Linked from My Garage and the account menu's "Feature a bike" (`/feature`). |
 | For business | `/for-business#advertise` | Ad slots, how booking works. **"Enquire" is disabled**, because there's no contact address yet. |
 | Ad slots | `src/app/components/AdSlot.tsx` | Home banner, results banner (after 12 bikes), listing sidebar. They all show a house "Your ad here" card for now. |
 
@@ -25,8 +27,8 @@ New read-only data functions are in `src/lib/data/listings.ts`: `listLatest`, `l
 1. **`ListingCard`'s `featured` prop.** It draws a gold frame and a "Featured" badge.
    - Nothing passes `true` yet.
    - **Only pass it for a listing that is really featured right now.** The live site is client-facing, and a fake badge would mislead buyers.
-2. **Home page row.** `page.tsx` passes `latestAreFeatured={false}` and the newest 8 bikes.
-   - Once featured listings exist, fetch the live featured ones (and top up with the newest if there are fewer than 8).
+2. **Home page row.** `page.tsx` passes `latestAreFeatured={false}` and the newest 4 bikes (`listLatest(supabase, 4)`).
+   - Once featured listings exist, fetch the live featured ones (and top up with the newest if there are fewer than 4).
    - Then set `latestAreFeatured` and per-card `featured`.
 3. **Search order** (`listActiveFiltered`). For "Newest first", put featured listings first (`featured_until > now()`), then the most recently bumped, then the newest.
    - Keep the `id` tie-breaker so paging stays stable.
@@ -39,7 +41,7 @@ New read-only data functions are in `src/lib/data/listings.ts`: `listLatest`, `l
    - Charge from these ids; don't redefine them.
 6. **The two disabled buttons.**
    - Feature page: `FeatureForm.tsx`, "Continue to payment".
-   - Advertise page: `advertise/page.tsx`, "Enquire".
+   - For business page: `for-business/page.tsx`, "Enquire" (`/advertise` now redirects there).
    - Wire them to the checkout below, or to an enquiry address once the client gives one.
 
 ## Suggested schema (follow the CLAUDE.md RLS rules)

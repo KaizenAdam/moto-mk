@@ -6,8 +6,56 @@ no schema changes. Anything that needs the database is in
 backend work. `CLAUDE.md` holds the durable rules; this file is the
 snapshot of progress and what's next.
 
-Everything below is **live on `main`** (moto-mk.vercel.app). The last
-release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
+Everything below is **live on `main`** (moto-mk.vercel.app). The latest
+change is `f8431c7` (the flag language picker), on 4 Nov 2026.
+
+## Adam: start here (updated 5 Nov 2026)
+
+Billy's front-end pass is finished and live. Every page has the new look,
+and the site is in English, Macedonian and Albanian. It also has a
+cookies & language bar, draft privacy and terms pages, and the pre-launch
+tidy-up (favicon, robots, sitemap, page titles, security headers). **No
+database changes were made**, because Billy's sessions had no Supabase
+access. Everything that needs the database is waiting for you.
+
+**Needs you (Supabase or Vercel access):**
+1. **An admin login for Billy.** He can't give himself admin from the site,
+   by design. Once he has signed up on the live site with his own email,
+   run this in the Supabase SQL editor (project `moto-mk`) with his
+   address, then he signs out and back in. Skip it if it's already done.
+   ```sql
+   update public.profiles set account_type = 'admin'
+   where id = (select id from auth.users where email = '<Billy''s sign-up email>');
+   ```
+2. **Supabase's auth emails are still English only** (confirm sign-up,
+   reset password). They're set in Dashboard → Auth → Email templates,
+   one template per project, so either write bilingual or trilingual text
+   or send them yourself.
+3. **The real domain.** Add `<domain>/auth/confirm` to Auth → URL
+   Configuration → Redirect URLs, and set `NEXT_PUBLIC_SITE_URL` on
+   Vercel.
+4. **Vercel Preview env vars,** so previews stop returning a bare 500
+   (see `docs/HANDOVER-backend.md`, Known issues).
+5. **The backend work itself:** featured listings, ads, payments, parts,
+   dealer shop photos. It's all in `docs/HANDOVER-backend.md`.
+
+**Decisions waiting (Billy and the client):**
+- **Language in the address?** Today the language is a cookie, so a page
+  has the same URL in every language and Google only ever sees English.
+  If Macedonian or Albanian search traffic matters, move the language into
+  the path (`/mk/bikes`, `/sq/bikes`) with a `[lang]` route segment, and
+  add `hreflang` alternates to the metadata and sitemap. This is a moderate
+  change, because every route moves under the segment. Recommended before
+  launch.
+- **First-visit language.** Everyone starts in English. `getLocale()`
+  could pick from the browser's `Accept-Language` header when there's no
+  `j5_lang` cookie. This is a small change.
+- **Client details:** the contact email, the legal details, the package and
+  ad prices, and an enquiry address (`docs/HANDOVER-backend.md`, Open
+  questions).
+
+**Before launch:** the checklist under "Pre-launch check" below, plus a
+native speaker's review of the translations ("Three languages").
 
 ## Done
 
@@ -157,11 +205,32 @@ release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
 - Buy: a new red chevron shard in the hero (`PageHero` now takes a
   shard spec like `BlockHero`).
 - A cookies & preferred-language bar on first visit (`CookieBar`), which
-  the footer can reopen.
+  the footer's "Cookies" link reopens. It says the site uses only
+  essential cookies, which is true: the Supabase sign-in plus the bar's
+  own two (`j5_consent`, `j5_lang`). If analytics or ad cookies are ever
+  added, the bar needs a real Reject choice first.
 - Parts & Gear: greyed photos on every tile instead of spanner/helmet
   icons (`public/parts/`).
 - Dealers: a shop-front photo slot on cards and storefronts, showing a
   "coming soon" placeholder until uploads exist (backend handover).
+- "Rides & rallies" and "Parts & gear" headlines fit on one line.
+  `HighlightWord` (the gold block) is now inline with a band sized to the
+  capitals, so a phrase that wraps, which happens more in Macedonian and
+  Albanian, gets a block per line without covering the line above.
+
+**Legal pages and contact email (4 Nov 2026)**
+- `/privacy` and `/terms` are **templates** (`components/LegalPage.tsx`),
+  written from what the site really collects and who sees it. They have a
+  red "Draft" badge and [square-bracket] gaps for the client's details.
+  The text lives in the dictionaries (`legal.privacy`, `legal.terms`), so
+  it's in all three languages. Pass `draft={false}` once a lawyer has
+  reviewed them.
+- The footer shows a contact email, `hello@just5up.mk` (`CONTACT_EMAIL` in
+  `src/lib/site.ts`). It's a **placeholder**: nobody has registered that
+  domain yet. Changing it there updates the footer and the legal pages in
+  every language.
+- A change to what the site collects (a new profile field, analytics,
+  payments) has to update the privacy page in the same change.
 
 **Pre-launch check (4 Nov 2026)**
 - Fixed: the default Next.js favicon; missing robots.txt and sitemap;
@@ -182,17 +251,78 @@ release was `e6ba360` (the first-draft finish), on 4 Nov 2026.
     dealer-written data, editable from that dealer's My Garage
 
 **Three languages (4 Nov 2026)**
-- English, Macedonian and Albanian, switched with the flags in the
-  cookies bar (first visit) or the footer. Every public and account page,
-  form, message, page title and the legal drafts are translated; the
-  admin portal stays English. How it works is in `CLAUDE.md` ("Three
-  languages").
-- **Before launch:** a native Macedonian speaker and a native Albanian
-  speaker should read `src/lib/i18n/dictionaries/mk.ts` and `sq.ts`
-  (Claude wrote them). The legal drafts need the lawyer's review in all
-  three languages.
-- Supabase's own emails (confirm sign-up, reset password) are still
-  English: their templates are set in the Supabase dashboard.
+
+The translations are fixed text written in advance, not machine
+translation at view time. The rules for adding text are in `CLAUDE.md`
+("Three languages"); this is how it's put together.
+
+- **What visitors see:**
+  - Flags appear in two places only: the first-visit cookies bar (flag
+    plus language name) and the footer (flags only). Billy took them out
+    of the header.
+  - The flags are the UK for English, North Macedonia for Macedonian and
+    Albania for Albanian. They're SVGs from flag-icons (MIT), in
+    `public/flags/` with the licence beside them, all through
+    `components/LanguageFlags.tsx`.
+  - Tapping a flag switches the site at once (cookie, then
+    `router.refresh()`), and the bar's OK just closes it. The first
+    version waited for OK, which Billy reasonably read as broken.
+- **What's translated:** every public and account page, every form and
+  error message (Server Actions too), page titles and share text, and the
+  legal drafts. Dates, prices and counts are formatted in each language's
+  style.
+- **What isn't:**
+  - what people type (bike titles and descriptions, dealer "about" text,
+    events, service centres)
+  - the admin portal, which is internal
+  - Supabase's emails (see "Needs you" above)
+- **The dictionaries:** `src/lib/i18n/dictionaries/{en,mk,sq}.ts`.
+  - Each is about 1,000 lines, grouped by section (`home`, `bikes`,
+    `listing`, `garage`, `cookies`, `footer`…).
+  - `en.ts` is the master copy. `mk.ts` and `sq.ts` are typed as its
+    `Dictionary`, so a missing, misspelled or extra key fails `tsc` and
+    the build. Nothing can go live half-translated.
+- **How a page gets its language:**
+  - The choice is the `j5_lang` cookie (`en` | `mk` | `sq`, kept for a
+    year). `getLocale()` in `src/lib/i18n/server.ts` reads it (wrapped in
+    React `cache`) and falls back to English. `<html lang>` follows it.
+  - Server components, `generateMetadata` and Server Actions call
+    `const { locale, t } = await getI18n()`, then use `t.home.latestBikes`
+    and so on instead of writing the words.
+  - Client components can't read the cookie during render. The root
+    layout wraps the page in `I18nProvider`
+    (`components/I18nProvider.tsx`), and they call `useI18n()`.
+  - The provider gets `clientDictionary(t)`: everything except `legal`
+    and `meta`. Those are long and server-only, so they stay out of the
+    browser bundle.
+- **Formatting** (`src/lib/i18n/format.ts`):
+  - `fill()` fills `{name}` gaps. Each language puts the gap where its
+    word order needs it ("Billy's garage", "Гаражата на Billy").
+  - `plural()` takes `{ one, other }` and uses each language's own rule
+    (Macedonian's "one" is 1, 21, 31… but not 11).
+  - `formatNumber()` and `formatDate()` spell out the digit grouping
+    (11.500 in Macedonian) and the month and day names rather than using
+    `Intl`. Browsers without Macedonian or Albanian locale data format
+    differently from the server, which broke hydration on the events page
+    during testing. Never use `toLocaleString` or `Intl` in a component.
+    Prices go through `formatPrice(eur, currency, locale)`.
+- **Stored values stay English** in the database (riding styles, engine
+  types, statuses) and are translated for display (`t.styles[...]`,
+  `t.engineTypes[...]`, `t.statuses[...]`). Don't store translated values.
+- **Legal text markup:** a legal section's blocks are strings, or arrays
+  of strings for bullet lists. They use three bits of markup: `**bold**`,
+  `[text](/path)` for a link and `{email}`. `rich()` in `LegalPage.tsx`
+  turns those into elements, so each language keeps its links in the
+  right place in its own sentences.
+- **Adding text:** add the English to `en.ts`, the same key to `mk.ts` and
+  `sq.ts`, then use it. Keep every `{placeholder}` in all three.
+- **Before launch:**
+  - A native Macedonian speaker and a native Albanian speaker should read
+    `mk.ts` and `sq.ts`. Claude wrote both, in the informal "ти" / "ti"
+    for the brand's tone.
+  - The lawyer reviews the legal drafts in all three languages.
+- **Open decisions:** the language in the address (for Google) and
+  first-visit detection. See "Adam: start here".
 
 **Waiting on the client:** a contact email or phone for business
 enquiries, so the For business page's "Enquire" button can work. It's
@@ -207,6 +337,11 @@ listed in `docs/HANDOVER-backend.md`.
   worth doing.
 - **Uploading photos and submitting forms** weren't exercised (the stand-in
   only echoes writes).
+- **The translations with real accounts.** Every page was checked in
+  Macedonian and Albanian at 390px (no sideways scroll, no console errors)
+  against the stand-in, and the header fits at 1280px in all three. The
+  flag switching was tested on the live site. Signed-in pages in
+  Macedonian or Albanian haven't been clicked through with real accounts.
 
 ## How the work was checked (for whoever picks this up)
 
