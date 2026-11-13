@@ -71,7 +71,7 @@ export function PageSkeleton() {
 export function HomeSkeleton() {
   return (
     <main className="pb-16">
-      <section className="bg-[#3c332d] px-4 py-12 sm:px-8 lg:h-[580px] lg:py-24">
+      <section className="bg-[#322a25] px-4 py-12 sm:px-8 lg:h-[580px] lg:py-24">
         <div className="mx-auto max-w-[1280px] space-y-4">
           <div className={`${block} h-14 w-full max-w-[520px]`} />
           <div className={`${block} h-14 w-4/5 max-w-[420px]`} />

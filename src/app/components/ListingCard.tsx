@@ -57,7 +57,7 @@ export default function ListingCard({
 
   return (
     <div
-      className={`group/card flex flex-col bg-panel transition hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(39,32,28,0.5)] ${
+      className={`group/card flex flex-col bg-panel transition hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(0,0,0,0.5)] ${
         featured
           ? "outline-2 outline-highlight outline-solid"
           : "outline-1 outline-line outline-solid hover:outline-[#4a4a50]"
@@ -76,14 +76,14 @@ export default function ListingCard({
               draggable={false}
             />
           ) : (
-            <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 bg-gradient-to-br from-[#4f433c] to-[#403630] text-xs text-grey">
+            <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 bg-gradient-to-br from-[#453a33] to-[#362d28] text-xs text-grey">
               <CameraIcon className="h-6 w-6" />
               {t.common.noPhotoYet}
             </div>
           )}
         </Link>
         {featured && (
-          <span className="font-display absolute top-0 left-0 z-10 bg-highlight px-2.5 py-1 text-xs tracking-wider text-[#382f2a]">
+          <span className="font-display absolute top-0 left-0 z-10 bg-highlight px-2.5 py-1 text-xs tracking-wider text-[#28221e]">
             {t.card.featured}
           </span>
         )}
@@ -117,7 +117,7 @@ export default function ListingCard({
         </div>
 
         <div className="mt-3 flex items-baseline gap-2">
-          <span className="font-display bg-highlight px-2.5 py-0.5 text-[22px] font-medium text-[#382f2a]">
+          <span className="font-display bg-highlight px-2.5 py-0.5 text-[22px] font-medium text-[#28221e]">
             {price.main}
           </span>
           <span className="text-[11px] text-grey">{price.alt}</span>
@@ -154,7 +154,7 @@ export default function ListingCard({
           </Link>
           <Link
             href={href}
-            className="font-display flex items-center justify-center bg-highlight py-1.5 text-[13px] font-medium tracking-[.06em] text-[#382f2a] transition hover:brightness-110"
+            className="font-display flex items-center justify-center bg-highlight py-1.5 text-[13px] font-medium tracking-[.06em] text-[#28221e] transition hover:brightness-110"
           >
             {t.card.viewBike}
           </Link>

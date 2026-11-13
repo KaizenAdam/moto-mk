@@ -40,7 +40,7 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
 
   const chip = (active: boolean) =>
     `font-display border px-3.5 py-2 text-sm tracking-[.04em] transition ${
-      active ? "border-highlight bg-highlight text-[#382f2a]" : "border-line bg-panel text-ink hover:border-highlight"
+      active ? "border-highlight bg-highlight text-[#28221e]" : "border-line bg-panel text-ink hover:border-highlight"
     }`;
 
   return (
@@ -103,7 +103,7 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
                   <div className="flex items-start gap-4 p-5">
                     <span
                       aria-hidden
-                      className="font-display relative -mt-12 flex h-14 w-14 shrink-0 items-center justify-center bg-highlight text-3xl text-[#382f2a] outline-4 outline-panel outline-solid"
+                      className="font-display relative -mt-12 flex h-14 w-14 shrink-0 items-center justify-center bg-highlight text-3xl text-[#28221e] outline-4 outline-panel outline-solid"
                     >
                       {d.business_name.charAt(0)}
                     </span>
@@ -124,7 +124,7 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
                     {count === 0 ? (
                       <span className="text-sm text-grey">{D.noBikes}</span>
                     ) : (
-                      <span className="font-display bg-highlight px-2.5 py-0.5 text-lg text-[#382f2a]">
+                      <span className="font-display bg-highlight px-2.5 py-0.5 text-lg text-[#28221e]">
                         {plural(locale, count, t.common.bikes)}
                       </span>
                     )}
@@ -157,7 +157,7 @@ export default async function DealersPage({ searchParams }: { searchParams: Sear
           </div>
           <ul className="space-y-3">
             {D.perks.map((p) => (
-              <li key={p} className="flex items-center gap-4 bg-[#312924] px-5 py-4">
+              <li key={p} className="flex items-center gap-4 bg-[#191512] px-5 py-4">
                 <TickIcon className="h-5 w-5 shrink-0 text-highlight" />
                 <span className="font-display text-lg font-normal">{p}</span>
               </li>

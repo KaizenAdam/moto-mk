@@ -34,7 +34,7 @@ export default async function EditListingPage({ params }: { params: Promise<{ id
       <BlockHero
         compact
         above={
-          <Link href="/garage" className="inline-flex items-center gap-1.5 text-sm text-[#bdbab2] hover:text-highlight">
+          <Link href="/garage" className="inline-flex items-center gap-1.5 text-sm text-[#c3baa8] hover:text-highlight">
             <ArrowLeftIcon />
             {t.common.myGarage}
           </Link>

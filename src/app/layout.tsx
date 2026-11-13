@@ -34,7 +34,7 @@ const anton = Anton({ weight: "400", subsets: ["latin", "latin-ext"], display: "
 const oswald = Oswald({ subsets: ["cyrillic"], display: "swap", variable: "--font-oswald" });
 const dmSans = DM_Sans({ subsets: ["latin", "latin-ext"], display: "swap", variable: "--font-dm-sans" });
 
-export const viewport: Viewport = { themeColor: "#322a25" };
+export const viewport: Viewport = { themeColor: "#1a1512" };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const { locale, t } = await getI18n();

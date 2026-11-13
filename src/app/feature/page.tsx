@@ -46,7 +46,7 @@ export default async function FeatureABikePage() {
       <BlockHero
         compact
         above={
-          <Link href="/garage" className="inline-flex items-center gap-1.5 text-sm text-[#bdbab2] hover:text-highlight">
+          <Link href="/garage" className="inline-flex items-center gap-1.5 text-sm text-[#c3baa8] hover:text-highlight">
             <ArrowLeftIcon />
             {t.common.myGarage}
           </Link>
@@ -97,7 +97,7 @@ export default async function FeatureABikePage() {
                   <div className="flex flex-1 flex-col px-4 pt-3.5 pb-4">
                     <p className="font-display text-[19px] leading-tight">{l.title}</p>
                     <p className="mt-2">
-                      <span className="font-display bg-highlight px-2.5 py-0.5 text-lg text-[#382f2a]">
+                      <span className="font-display bg-highlight px-2.5 py-0.5 text-lg text-[#28221e]">
                         {formatPrice(Number(l.price_eur), "EUR", locale).main}
                       </span>
                     </p>

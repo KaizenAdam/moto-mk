@@ -71,7 +71,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
             {specs.length > 0 && (
               <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
                 {specs.map((s) => (
-                  <div key={s} style={{ fontSize: 22, padding: "6px 14px", borderRadius: 8, border: "2px solid #53473f", color: OG.dim }}>
+                  <div key={s} style={{ fontSize: 22, padding: "6px 14px", borderRadius: 8, border: "2px solid #4a3e36", color: OG.dim }}>
                     {s}
                   </div>
                 ))}

@@ -79,7 +79,7 @@ export default function AdminView({
               key={s.id}
               href={`#${s.id}`}
               className={`p-4 transition ${
-                s.attention ? "bg-highlight text-[#382f2a] hover:brightness-110" : "bg-[#312924]/85 text-ink hover:bg-black"
+                s.attention ? "bg-highlight text-[#28221e] hover:brightness-110" : "bg-[#191512]/85 text-ink hover:bg-black"
               }`}
             >
               <p className="font-display text-4xl leading-none">{s.count}</p>

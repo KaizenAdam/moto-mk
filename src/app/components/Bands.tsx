@@ -23,7 +23,7 @@ export type ShardSpec = { shape: ShardShape; className: string };
  */
 export function HighlightWord({ children }: { children: ReactNode }) {
   return (
-    <span className="px-3 text-[#382f2a] [-webkit-box-decoration-break:clone] [background-image:linear-gradient(var(--highlight),var(--highlight))] [background-position:0_53%] [background-repeat:no-repeat] [background-size:100%_1.16em] [box-decoration-break:clone]">
+    <span className="px-3 text-[#28221e] [-webkit-box-decoration-break:clone] [background-image:linear-gradient(var(--highlight),var(--highlight))] [background-position:0_53%] [background-repeat:no-repeat] [background-size:100%_1.16em] [box-decoration-break:clone]">
       {children}
     </span>
   );
@@ -58,7 +58,7 @@ export function BlockHero({
 }) {
   return (
     <section
-      className={`relative overflow-hidden border-b border-line ${gradient ? "" : "bg-[#3c332d]"}`}
+      className={`relative overflow-hidden border-b border-line ${gradient ? "" : "bg-[#322a25]"}`}
       style={gradient ? { background: heroBackground } : undefined}
     >
       <Shard shape={shard.shape} className={shard.className} />
@@ -75,9 +75,9 @@ export function BlockHero({
             >
               {title}
             </h1>
-            {intro && <p className="mt-5 max-w-[620px] text-[15px] text-[#d6d3cb] sm:text-base">{intro}</p>}
+            {intro && <p className="mt-5 max-w-[620px] text-[15px] text-[#dcd3c1] sm:text-base">{intro}</p>}
             {ticks && (
-              <ul className="mt-5 grid max-w-[620px] gap-x-7 gap-y-2 text-sm text-[#d6d3cb] sm:grid-cols-2 sm:text-[15px]">
+              <ul className="mt-5 grid max-w-[620px] gap-x-7 gap-y-2 text-sm text-[#dcd3c1] sm:grid-cols-2 sm:text-[15px]">
                 {ticks.map((t) => (
                   <li key={t} className="flex items-center gap-2.5">
                     <TickIcon className="h-4 w-4 shrink-0 text-[#ff6b70]" />
@@ -127,12 +127,12 @@ export function Eyebrow({ children }: { children: ReactNode }) {
 
 /** The black button used on red and gold backgrounds. */
 export const blackButton =
-  "font-display inline-block bg-[#382f2a] px-6 py-3.5 font-semibold tracking-[.08em] text-white outline-[3px] outline-offset-[3px] outline-red outline-solid transition hover:bg-black";
+  "font-display inline-block bg-[#28221e] px-6 py-3.5 font-semibold tracking-[.08em] text-white outline-[3px] outline-offset-[3px] outline-red outline-solid transition hover:bg-black";
 
 /** Gold banner with a black shard, as on the home page's "Sell your bike today". */
 const HOME_GOLD_SHARD: ShardSpec = {
   shape: "double",
-  className: "inset-y-0 right-0 hidden w-[46%] bg-[#382f2a] opacity-90 md:block",
+  className: "inset-y-0 right-0 hidden w-[46%] bg-[#28221e] opacity-90 md:block",
 };
 
 export function GoldBanner({
@@ -148,7 +148,7 @@ export function GoldBanner({
 }) {
   return (
     <section className="mx-auto max-w-[1280px] px-5">
-      <div className="relative overflow-hidden bg-highlight px-6 py-9 text-[#382f2a] sm:px-12 sm:py-11">
+      <div className="relative overflow-hidden bg-highlight px-6 py-9 text-[#28221e] sm:px-12 sm:py-11">
         <Shard shape={shard.shape} className={shard.className} />
         <div className="relative max-w-[620px]">
           <h2 className="font-display text-4xl leading-none sm:text-5xl">{title}</h2>
@@ -177,13 +177,13 @@ export function AuthShell({
   children: ReactNode;
 }) {
   return (
-    <main className="relative overflow-hidden bg-[#3c332d]">
+    <main className="relative overflow-hidden bg-[#322a25]">
       <Shard shape={shard.shape} className={shard.className} />
       <div className="relative mx-auto grid max-w-[1280px] items-center gap-10 px-5 py-12 lg:min-h-[640px] lg:grid-cols-2 lg:py-20">
         <div>
           <p className="font-display text-[44px] leading-[1.08] sm:text-6xl lg:text-7xl">{line}</p>
           {ticks && (
-            <ul className="mt-6 space-y-2 text-[15px] text-[#d6d3cb]">
+            <ul className="mt-6 space-y-2 text-[15px] text-[#dcd3c1]">
               {ticks.map((t) => (
                 <li key={t} className="flex items-center gap-2.5">
                   <TickIcon className="h-4 w-4 shrink-0 text-[#ff6b70]" />

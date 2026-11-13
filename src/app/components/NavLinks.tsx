@@ -36,7 +36,7 @@ export default function NavLinks({ variant, onNavigate }: { variant: "bar" | "me
         className={
           variant === "bar"
             ? `font-display whitespace-nowrap pb-1 text-[15px] font-normal tracking-[.06em] transition hover:text-white ${
-                active ? "text-white shadow-[inset_0_-3px_0_var(--highlight)]" : "text-[#9a988f]"
+                active ? "text-white shadow-[inset_0_-3px_0_var(--highlight)]" : "text-[#a09885]"
               }`
             : `font-display block border-l-2 px-4 py-3 text-lg font-medium tracking-wider ${
                 active ? "border-highlight bg-panel2 text-highlight" : "border-transparent text-ink"

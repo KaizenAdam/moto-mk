@@ -43,7 +43,7 @@ function PreviewCard({ data, photoUrl }: { data: PreviewData; photoUrl?: string 
         // eslint-disable-next-line @next/next/no-img-element -- local object URL preview
         <img src={photoUrl} alt="" className="aspect-[4/3] w-full object-cover" />
       ) : (
-        <div className="flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-[#4f433c] to-[#403630] text-[13px] text-grey">
+        <div className="flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-[#453a33] to-[#362d28] text-[13px] text-grey">
           {t.common.noPhotoYet}
         </div>
       )}

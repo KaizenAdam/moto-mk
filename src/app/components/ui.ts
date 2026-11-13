@@ -17,13 +17,13 @@ const buttonSizes = {
 
 const buttonVariants = {
   /** Solid highlight gold: the one main action. */
-  primary: "bg-highlight text-[#382f2a] hover:brightness-110",
+  primary: "bg-highlight text-[#28221e] hover:brightness-110",
   /** Red outline: secondary actions (Contact, Log in, Cancel…). */
   outline: "border-2 border-red text-white hover:bg-red",
   /** Red text and outline: destructive actions (Delete, Reject). */
   danger: "border-2 border-red/70 text-red hover:bg-red hover:text-white",
   success: "bg-green-700 text-white hover:bg-green-600",
-  whatsapp: "bg-[#25D366] text-[#332b26] hover:brightness-110",
+  whatsapp: "bg-[#25D366] text-[#1c1815] hover:brightness-110",
 } as const;
 
 export function button(
@@ -34,7 +34,7 @@ export function button(
 }
 
 export const input =
-  "mt-1 w-full border border-line bg-panel2 px-3 py-2.5 text-sm text-ink outline-none transition placeholder:text-[#6f6f76] focus:border-highlight";
+  "mt-1 w-full border border-line bg-panel2 px-3 py-2.5 text-sm text-ink outline-none transition placeholder:text-[#756f6c] focus:border-highlight";
 
 export const label = "block text-xs font-bold tracking-wide text-ink-dim uppercase";
 
@@ -47,4 +47,4 @@ export const errorBox = "border-l-4 border-red bg-red/15 px-3 py-2 text-sm text-
 
 /** The red/gold glow behind page heroes. */
 export const heroBackground =
-  "radial-gradient(circle at 80% 0%, rgba(193,39,45,.18), transparent 55%), radial-gradient(circle at 10% 100%, rgba(219,192,120,.12), transparent 50%), #362e28";
+  "radial-gradient(circle at 80% 0%, rgba(193,39,45,.18), transparent 55%), radial-gradient(circle at 10% 100%, rgba(219,192,120,.12), transparent 50%), #241e1a";

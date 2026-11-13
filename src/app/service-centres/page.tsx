@@ -32,7 +32,7 @@ export default async function ServiceCentresPage({ searchParams }: { searchParam
 
   const chip = (active: boolean) =>
     `font-display border px-3.5 py-2 text-sm tracking-[.04em] transition ${
-      active ? "border-highlight bg-highlight text-[#382f2a]" : "border-line bg-panel text-ink hover:border-highlight"
+      active ? "border-highlight bg-highlight text-[#28221e]" : "border-line bg-panel text-ink hover:border-highlight"
     }`;
 
   return (
@@ -107,7 +107,7 @@ export default async function ServiceCentresPage({ searchParams }: { searchParam
           </div>
           <ul className="space-y-3">
             {S.perks.map((p) => (
-              <li key={p} className="flex items-center gap-4 bg-[#312924] px-5 py-4">
+              <li key={p} className="flex items-center gap-4 bg-[#191512] px-5 py-4">
                 <TickIcon className="h-5 w-5 shrink-0 text-highlight" />
                 <span className="font-display text-lg font-normal">{p}</span>
               </li>

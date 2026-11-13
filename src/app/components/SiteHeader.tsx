@@ -14,7 +14,7 @@ export default async function SiteHeader() {
   const [profile, { t }] = await Promise.all([getOwnProfile(supabase).catch(() => null), getI18n()]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#443a33] bg-[#312924]">
+    <header className="sticky top-0 z-50 border-b border-[#3a312b] bg-[#191512]">
       <div className="relative mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-4 py-3 sm:px-5">
         <Link href="/" className="flex shrink-0 items-center" aria-label={t.common.homeLink}>
           {/* eslint-disable-next-line @next/next/no-img-element -- pre-sized PNG logo (public/brand), no next/image needed */}
@@ -41,7 +41,7 @@ export default async function SiteHeader() {
           </div>
           <Link
             href="/sell"
-            className="font-display bg-highlight px-3.5 py-2.5 text-sm font-semibold tracking-[.06em] whitespace-nowrap text-[#382f2a] transition hover:brightness-110 sm:px-[18px]"
+            className="font-display bg-highlight px-3.5 py-2.5 text-sm font-semibold tracking-[.06em] whitespace-nowrap text-[#28221e] transition hover:brightness-110 sm:px-[18px]"
           >
             <span className="sm:hidden">{t.common.sell} &gt;&gt;&gt;</span>
             <span className="hidden sm:inline">{t.common.sellYourBike} &gt;&gt;&gt;</span>

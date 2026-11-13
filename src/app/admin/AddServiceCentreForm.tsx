@@ -6,7 +6,7 @@ import { button, errorBox } from "@/app/components/ui";
 
 const initialState: CreateEventState = { error: null };
 const input =
-  " border border-line bg-panel2 px-3 py-2 text-sm text-ink outline-none placeholder:text-[#6f6f76] focus:border-highlight";
+  " border border-line bg-panel2 px-3 py-2 text-sm text-ink outline-none placeholder:text-[#756f6c] focus:border-highlight";
 
 export default function AddServiceCentreForm() {
   const form = useRef<HTMLFormElement>(null);

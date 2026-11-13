@@ -50,7 +50,7 @@ export default async function Pagination({
           <Link
             href={hrefFor(searchParams, p)}
             aria-current={p === page ? "page" : undefined}
-            className={`${cell} ${p === page ? "border-highlight bg-highlight text-[#382f2a]" : "border-line text-ink hover:border-highlight"}`}
+            className={`${cell} ${p === page ? "border-highlight bg-highlight text-[#28221e]" : "border-line text-ink hover:border-highlight"}`}
           >
             {p}
           </Link>

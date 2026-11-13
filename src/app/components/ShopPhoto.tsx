@@ -36,13 +36,13 @@ export default function ShopPhoto({
     <div
       role="img"
       aria-label={`${name}: ${t.dealers.shopPhotoSoon}`}
-      className={`relative flex flex-col items-center justify-center gap-2 overflow-hidden bg-[#443a34] text-grey ${className}`}
+      className={`relative flex flex-col items-center justify-center gap-2 overflow-hidden bg-[#3b312b] text-grey ${className}`}
       style={{
         backgroundImage: "repeating-linear-gradient(135deg, rgba(255,255,255,.035) 0 14px, transparent 14px 28px)",
       }}
     >
       <StoreIcon className="h-10 w-10 text-[#4a4a52]" />
-      <span className="font-display text-xs tracking-[.12em] text-[#77767c]">{t.dealers.shopPhotoSoon}</span>
+      <span className="font-display text-xs tracking-[.12em] text-[#7d7672]">{t.dealers.shopPhotoSoon}</span>
     </div>
   );
 }

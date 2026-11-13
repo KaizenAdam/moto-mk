@@ -45,7 +45,7 @@ export default async function SiteFooter() {
   const { t } = await getI18n();
   const f = t.footer;
   return (
-    <footer className="bg-[#423832]">
+    <footer className="bg-[#382f2a]">
       <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-8 px-5 py-10 md:grid-cols-[1.4fr_repeat(4,1fr)]">
         <div className="col-span-2 md:col-span-1">
           {/* eslint-disable-next-line @next/next/no-img-element -- pre-sized PNG logo */}
@@ -53,7 +53,7 @@ export default async function SiteFooter() {
           <p className="mb-4 max-w-xs text-sm text-ink-dim">{f.tagline}</p>
           <Link
             href="/sell"
-            className="font-display inline-block bg-highlight px-4 py-2 text-sm font-semibold tracking-[.06em] text-[#382f2a] transition hover:brightness-110"
+            className="font-display inline-block bg-highlight px-4 py-2 text-sm font-semibold tracking-[.06em] text-[#28221e] transition hover:brightness-110"
           >
             {f.listFree}
           </Link>

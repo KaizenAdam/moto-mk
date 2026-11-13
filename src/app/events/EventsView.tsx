@@ -107,13 +107,13 @@ export default function EventsView({ events }: { events: Event[] }) {
         <div className="flex max-w-[640px] flex-col gap-2 sm:flex-row">
           <label className="flex min-w-0 flex-1 items-center bg-white">
             <span className="sr-only">{E.searchLabel}</span>
-            <SearchIcon className="ml-4 h-5 w-5 shrink-0 text-[#77767c]" />
+            <SearchIcon className="ml-4 h-5 w-5 shrink-0 text-[#7d7672]" />
             <input
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={E.searchPlaceholder}
-              className="min-w-0 flex-1 border-0 bg-transparent px-3 py-4 text-base text-[#382f2a] outline-none placeholder:text-[#77767c]"
+              className="min-w-0 flex-1 border-0 bg-transparent px-3 py-4 text-base text-[#28221e] outline-none placeholder:text-[#7d7672]"
             />
           </label>
         </div>
@@ -146,7 +146,7 @@ export default function EventsView({ events }: { events: Event[] }) {
                 aria-pressed={when === w}
                 className={`font-display h-11 border px-3.5 text-sm tracking-[.04em] transition ${
                   when === w
-                    ? "border-highlight bg-highlight text-[#382f2a]"
+                    ? "border-highlight bg-highlight text-[#28221e]"
                     : "border-line bg-panel text-ink hover:border-highlight"
                 }`}
               >
@@ -218,7 +218,7 @@ export default function EventsView({ events }: { events: Event[] }) {
                   date={next.event_date!}
                   location={next.location}
                   description={next.description}
-                  className="font-display bg-[#382f2a] px-5 py-3 text-sm font-semibold tracking-[.08em] text-white transition hover:bg-black"
+                  className="font-display bg-[#28221e] px-5 py-3 text-sm font-semibold tracking-[.08em] text-white transition hover:bg-black"
                 />
               </div>
             </div>
@@ -276,7 +276,7 @@ export default function EventsView({ events }: { events: Event[] }) {
           title={E.gotEvent}
           shard={{
             shape: "bent",
-            className: "top-[-20%] right-[4%] hidden h-[140%] w-[34%] rotate-[-8deg] bg-[#382f2a] opacity-90 md:block",
+            className: "top-[-20%] right-[4%] hidden h-[140%] w-[34%] rotate-[-8deg] bg-[#28221e] opacity-90 md:block",
           }}
           body={E.gotEventBody}
         />
@@ -289,7 +289,7 @@ export default function EventsView({ events }: { events: Event[] }) {
 function BigDate({ date, locale }: { date: string; locale: Locale }) {
   const d = toDate(date);
   return (
-    <span className="w-28 shrink-0 bg-highlight py-3 text-center text-[#382f2a]">
+    <span className="w-28 shrink-0 bg-highlight py-3 text-center text-[#28221e]">
       <span className="font-display block text-6xl leading-none">{d.getDate()}</span>
       <span className="font-display mt-1 block text-sm tracking-[.12em] uppercase">
         {formatDate(locale, d, "monthShortYear")}

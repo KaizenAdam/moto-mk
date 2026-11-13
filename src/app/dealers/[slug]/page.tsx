@@ -75,7 +75,7 @@ export default async function DealerStorefrontPage({ params }: Props) {
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/dealers"
-              className="inline-flex items-center gap-1.5 text-sm text-[#bdbab2] hover:text-highlight"
+              className="inline-flex items-center gap-1.5 text-sm text-[#c3baa8] hover:text-highlight"
             >
               <ArrowLeftIcon />
               {t.storefront.allDealers}
@@ -89,7 +89,7 @@ export default async function DealerStorefrontPage({ params }: Props) {
       >
         <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
           {(dealer.address || dealer.town) && (
-            <span className="flex items-center gap-1.5 text-[15px] text-[#d6d3cb]">
+            <span className="flex items-center gap-1.5 text-[15px] text-[#dcd3c1]">
               <PinIcon className="h-4 w-4 text-highlight" />
               {mapUrl ? (
                 <a

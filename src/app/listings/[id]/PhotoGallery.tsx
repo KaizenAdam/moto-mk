@@ -19,7 +19,7 @@ export default function PhotoGallery({ urls, alt }: { urls: string[]; alt: strin
 
   if (urls.length === 0) {
     return (
-      <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-[#4f433c] to-[#403630] text-sm text-grey lg:aspect-auto lg:h-[460px]">
+      <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-[#453a33] to-[#362d28] text-sm text-grey lg:aspect-auto lg:h-[460px]">
         <CameraIcon className="h-8 w-8" />
         {t.gallery.noPhotos}
       </div>
@@ -31,7 +31,7 @@ export default function PhotoGallery({ urls, alt }: { urls: string[]; alt: strin
     <button
       type="button"
       onClick={() => setOpen(0)}
-      className="font-display absolute bottom-3 left-3 flex items-center gap-1.5 bg-black/80 px-3 py-2 text-sm font-medium tracking-wider text-white transition hover:bg-highlight hover:text-[#382f2a]"
+      className="font-display absolute bottom-3 left-3 flex items-center gap-1.5 bg-black/80 px-3 py-2 text-sm font-medium tracking-wider text-white transition hover:bg-highlight hover:text-[#28221e]"
     >
       <CameraIcon className="h-4 w-4" />
       {fill(t.gallery.gallery, { n: urls.length })}
@@ -177,7 +177,7 @@ function Lightbox({ urls, alt, start, onClose }: { urls: string[]; alt: string; 
   }, [go, onClose]);
 
   const arrow =
-    "absolute top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center bg-black/70 text-ink hover:bg-highlight hover:text-[#382f2a]";
+    "absolute top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center bg-black/70 text-ink hover:bg-highlight hover:text-[#28221e]";
 
   return (
     <div

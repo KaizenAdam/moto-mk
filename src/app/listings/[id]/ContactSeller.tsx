@@ -47,7 +47,7 @@ function SellerAvatar({ name, dealer, size = "md" }: { name: string | null; deal
     <span
       className={`font-display flex shrink-0 items-center justify-center ${
         size === "lg" ? "h-16 w-16 text-3xl" : "h-12 w-12 text-2xl"
-      } ${dealer ? "bg-highlight text-[#382f2a]" : "bg-panel2 text-ink"}`}
+      } ${dealer ? "bg-highlight text-[#28221e]" : "bg-panel2 text-ink"}`}
     >
       {(name ?? "?").charAt(0)}
     </span>
@@ -98,7 +98,7 @@ export async function ContactCard(p: ContactProps) {
       <div className="relative">
         {c.mode === "login" && (
           <>
-            <Link href="/login" className={`${cta} w-full bg-highlight text-[#382f2a]`}>
+            <Link href="/login" className={`${cta} w-full bg-highlight text-[#28221e]`}>
               {t.contact.logInToContact}
             </Link>
             <p className="mt-2 text-xs text-grey">{t.contact.whySignIn}</p>
@@ -116,7 +116,7 @@ export async function ContactCard(p: ContactProps) {
         {c.mode === "contact" && (
           <div className="grid gap-2.5">
             {c.tel ? (
-              <a href={c.tel} className={`${cta} w-full bg-highlight text-[#382f2a]`}>
+              <a href={c.tel} className={`${cta} w-full bg-highlight text-[#28221e]`}>
                 <PhoneIcon />
                 {fill(t.common.callNumber, { phone: formatPhone(c.phone) })}
               </a>
@@ -128,7 +128,7 @@ export async function ContactCard(p: ContactProps) {
                 href={c.wa}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${cta} w-full bg-[#25D366] text-[#332b26]`}
+                className={`${cta} w-full bg-[#25D366] text-[#1c1815]`}
               >
                 <WhatsAppIcon />
                 {t.common.whatsapp}
@@ -149,13 +149,13 @@ export async function MobileContactBar(p: ContactProps) {
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-black/95 px-4 py-3 backdrop-blur lg:hidden">
       {c.mode === "login" ? (
-        <Link href="/login" className={`${ctaSm} w-full bg-highlight text-[#382f2a]`}>
+        <Link href="/login" className={`${ctaSm} w-full bg-highlight text-[#28221e]`}>
           {t.contact.logInToContactSeller}
         </Link>
       ) : (
         <div className="grid grid-cols-2 gap-2.5">
           {c.tel && (
-            <a href={c.tel} className={`${ctaSm} w-full bg-highlight text-[#382f2a]`}>
+            <a href={c.tel} className={`${ctaSm} w-full bg-highlight text-[#28221e]`}>
               <PhoneIcon className="h-4 w-4" />
               {t.common.call}
             </a>
@@ -165,7 +165,7 @@ export async function MobileContactBar(p: ContactProps) {
               href={c.wa}
               target="_blank"
               rel="noopener noreferrer"
-              className={`${ctaSm} w-full bg-[#25D366] text-[#332b26] ${c.tel ? "" : "col-span-2"}`}
+              className={`${ctaSm} w-full bg-[#25D366] text-[#1c1815] ${c.tel ? "" : "col-span-2"}`}
             >
               <WhatsAppIcon className="h-4 w-4" />
               {t.common.whatsapp}

@@ -2,7 +2,8 @@
 
 > **Rebrand (13 Nov 2026, Billy):** the site is now **Moto Hut** - "Your
 > digital Pit Stop". Logo colours: gold `#dbc078` and brown `#322a25`
-> (the page ground). Fonts: **Impact** for display, **Cerebri Sans** for
+> (header, hero, footer, panels), on a deeper `#1a1512` page ground with
+> black photo overlays (Billy found an all-`#322a25` page dull). Fonts: **Impact** for display, **Cerebri Sans** for
 > body (free stand-ins: Anton + Oswald for Cyrillic, DM Sans). Logo is
 > `public/brand/logo-moto-hut.png` (gold bike icon, white lettering;
 > made from the client's colour logo - ask the designer for a proper
@@ -404,7 +405,7 @@ demo state — not test residue to clean up.
 
 ## Brand direction
 
-**Punk/rock, not premium-fintech.** Primary: brown `#322a25` + gold `#dbc078` (was black + gold until the Nov 2026 Moto Hut rebrand). Secondary:
+**Punk/rock, not premium-fintech.** Primary: deep brown `#1a1512` ground, logo brown `#322a25` surfaces + gold `#dbc078` (was black + gold until the Nov 2026 Moto Hut rebrand). Secondary:
 red + grey. Bold condensed display type, high contrast, deliberately
 rougher than a typical SaaS look. The static demo (`index.html`,
 `sell.html`; removed from the tree on 2 Oct 2026, still in git history

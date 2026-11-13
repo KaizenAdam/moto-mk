@@ -26,7 +26,7 @@ export default function GlobalError({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#332b26",
+          background: "#1c1815",
           color: "#f0eee8",
           fontFamily: "system-ui, sans-serif",
           textAlign: "center",
@@ -38,7 +38,7 @@ export default function GlobalError({
           <h1 style={{ fontFamily: "Georgia, serif", fontSize: 28, marginBottom: 12 }}>
             Moto Hut is taking a pit stop
           </h1>
-          <p style={{ color: "#b7b5b0", marginBottom: 24 }}>
+          <p style={{ color: "#bdb5a6", marginBottom: 24 }}>
             Something went wrong on our side. Please try again in a moment.
           </p>
           <button
@@ -46,7 +46,7 @@ export default function GlobalError({
             onClick={() => retry()}
             style={{
               background: "#dbc078",
-              color: "#3b322c",
+              color: "#2f2823",
               border: 0,
               borderRadius: 6,
               padding: "10px 20px",

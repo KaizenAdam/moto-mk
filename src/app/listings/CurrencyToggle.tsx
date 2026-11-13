@@ -24,7 +24,7 @@ export default function CurrencyToggle({
         type="button"
         onClick={() => onChange("EUR")}
         aria-pressed={value === "EUR"}
-        className={`${base} ${value === "EUR" ? "bg-white text-[#382f2a]" : "text-ink-dim hover:text-white"}`}
+        className={`${base} ${value === "EUR" ? "bg-white text-[#28221e]" : "text-ink-dim hover:text-white"}`}
       >
         EUR €
       </button>
@@ -32,7 +32,7 @@ export default function CurrencyToggle({
         type="button"
         onClick={() => onChange("MKD")}
         aria-pressed={value === "MKD"}
-        className={`${base} ${value === "MKD" ? "bg-white text-[#382f2a]" : "text-ink-dim hover:text-white"}`}
+        className={`${base} ${value === "MKD" ? "bg-white text-[#28221e]" : "text-ink-dim hover:text-white"}`}
       >
         MKD
       </button>

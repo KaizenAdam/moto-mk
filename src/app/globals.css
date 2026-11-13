@@ -1,20 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  /* Moto Hut logo colours (Nov 2026): brown #322a25 is the ground, gold
-     #dbc078 the one accent. Panels and lines are lighter browns from it. */
-  --black: #322a25;
-  --panel: #3c332d;
-  --panel2: #433933;
-  --line: #53473f;
+  /* Moto Hut logo colours (Nov 2026): gold #dbc078 is the one accent and
+     the logo brown #322a25 is the raised surfaces (header, hero, footer,
+     panels). The page ground is a deeper brown so they stand out against it
+     (Billy found an all-#322a25 page dull). Photo overlays stay black. */
+  --black: #1a1512;
+  --panel: #322a25;
+  --panel2: #39302a;
+  --line: #4a3e36;
   --gold: #dbc078;
   --gold-bright: #e8d49b;
   /* Flat gold for highlight blocks (prices, "next ride"): the logo gold. */
   --highlight: #dbc078;
   --red: #c1272d;
-  --grey: #8a8a92;
+  --grey: #908a88;
   --text: #f0eee8;
-  --text-dim: #b7b5b0;
+  --text-dim: #bdb5a6;
 }
 
 @theme inline {
@@ -77,8 +79,8 @@ body {
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
   background: var(--gold);
-  border: 2px solid #3b322c;
-  box-shadow: 0 2px 6px rgba(39,32,28,0.5);
+  border: 2px solid #2f2823;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 .j5-pin--active {
   background: var(--red);
@@ -105,7 +107,7 @@ body {
   color: var(--gold-bright);
 }
 .leaflet-container .leaflet-control-attribution.leaflet-control-attribution {
-  background: rgba(51,43,38,0.75);
+  background: rgba(28,24,21,0.75);
   color: var(--text-dim);
 }
 .leaflet-container .leaflet-control-attribution a {

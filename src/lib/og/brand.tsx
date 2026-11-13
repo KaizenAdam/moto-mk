@@ -9,12 +9,12 @@ import { join } from "node:path";
 export const OG_SIZE = { width: 1200, height: 630 };
 
 export const OG = {
-  black: "#332b26",
-  panel: "#3c332d",
+  black: "#1c1815",
+  panel: "#322a25",
   gold: "#dbc078",
   goldBright: "#dbc078",
   text: "#f0eee8",
-  dim: "#b7b5b0",
+  dim: "#bdb5a6",
   red: "#c1272d",
 };
 

@@ -60,7 +60,7 @@ export default async function HomeView({
                     className="h-full w-full object-cover brightness-[.55] grayscale transition duration-300 group-hover:scale-105 group-hover:brightness-75"
                   />
                 )}
-                <span className="font-display absolute bottom-3 left-[16%] bg-highlight px-1.5 py-0.5 text-xs sm:bottom-4 sm:left-[22%] sm:px-2.5 sm:text-[17px] text-[#382f2a]">
+                <span className="font-display absolute bottom-3 left-[16%] bg-highlight px-1.5 py-0.5 text-xs sm:bottom-4 sm:left-[22%] sm:px-2.5 sm:text-[17px] text-[#28221e]">
                   {t.styles[s.style] ?? s.style}
                 </span>
               </Link>
@@ -68,7 +68,7 @@ export default async function HomeView({
           </div>
         </section>
 
-        <div className="mt-14 border-t-2 border-dashed border-[#52463f] lg:mt-[72px]" />
+        <div className="mt-14 border-t-2 border-dashed border-[#493d36] lg:mt-[72px]" />
 
         {latest.length > 0 && (
           <section className="pt-14">
@@ -102,14 +102,14 @@ export default async function HomeView({
       <RedBand events={events} serviceCentreCount={serviceCentreCount} t={t} locale={locale} />
 
       <section className="mx-auto mt-16 max-w-[1280px] px-4 sm:px-8 lg:mt-20">
-        <div className="relative overflow-hidden bg-highlight px-6 py-9 text-[#382f2a] sm:px-12 sm:py-11">
-          <Shard className="inset-y-0 right-0 hidden w-[46%] bg-[#382f2a] opacity-90 md:block" />
+        <div className="relative overflow-hidden bg-highlight px-6 py-9 text-[#28221e] sm:px-12 sm:py-11">
+          <Shard className="inset-y-0 right-0 hidden w-[46%] bg-[#28221e] opacity-90 md:block" />
           <div className="relative max-w-[620px]">
             <h2 className="font-display text-4xl leading-none sm:text-5xl">{h.sellTitle}</h2>
             <p className="mt-3 text-[17px] leading-normal">{h.sellBody}</p>
             <Link
               href="/sell"
-              className="font-display mt-5 inline-block bg-[#382f2a] px-6 py-3.5 font-semibold tracking-[.08em] text-white outline-[3px] outline-offset-[3px] outline-red outline-solid transition hover:bg-black"
+              className="font-display mt-5 inline-block bg-[#28221e] px-6 py-3.5 font-semibold tracking-[.08em] text-white outline-[3px] outline-offset-[3px] outline-red outline-solid transition hover:bg-black"
             >
               {h.sellButton}
             </Link>
@@ -122,7 +122,7 @@ export default async function HomeView({
 
 function Hero({ h }: { h: Dictionary["home"] }) {
   return (
-    <section className="relative overflow-hidden bg-[#3c332d] lg:h-[580px]">
+    <section className="relative overflow-hidden bg-[#322a25] lg:h-[580px]">
       {/* Static brand photo. Phones: a faint full-bleed backdrop; desktop: the
           right-hand 62% with a torn left edge (.j5-hero-photo in globals.css). */}
       {/* eslint-disable-next-line @next/next/no-img-element -- one static, pre-sized brand image */}
@@ -140,7 +140,7 @@ function Hero({ h }: { h: Dictionary["home"] }) {
           <br />
           <HighlightWord>{h.heroTitle2}</HighlightWord>
         </h1>
-        <ul className="mt-7 grid max-w-[560px] grid-cols-2 gap-x-7 gap-y-2.5 text-sm text-[#d6d3cb] sm:text-base lg:max-w-[500px]">
+        <ul className="mt-7 grid max-w-[560px] grid-cols-2 gap-x-7 gap-y-2.5 text-sm text-[#dcd3c1] sm:text-base lg:max-w-[500px]">
           {h.ticks.map((tick) => (
             <li key={tick} className="flex gap-2.5">
               <span aria-hidden="true" className="font-bold text-[#ff6b70]">
@@ -159,11 +159,11 @@ function Hero({ h }: { h: Dictionary["home"] }) {
             type="text"
             name="search"
             placeholder={h.searchPlaceholder}
-            className="min-w-0 flex-1 border-0 px-4 py-4 text-base text-[#382f2a] outline-none placeholder:text-[#77767c] sm:px-5 sm:py-[18px]"
+            className="min-w-0 flex-1 border-0 px-4 py-4 text-base text-[#28221e] outline-none placeholder:text-[#7d7672] sm:px-5 sm:py-[18px]"
           />
           <button
             type="submit"
-            className="font-display bg-highlight px-4 text-base font-semibold tracking-[.08em] text-[#382f2a] transition hover:brightness-110 sm:px-6"
+            className="font-display bg-highlight px-4 text-base font-semibold tracking-[.08em] text-[#28221e] transition hover:brightness-110 sm:px-6"
           >
             {h.searchButton}
             <span className="hidden sm:inline"> &gt;&gt;&gt;</span>
@@ -209,7 +209,7 @@ function BikeCard({
       </p>
       <p className="truncate text-sm text-grey">{specs.join(" · ")}</p>
       <p className="mt-2.5">
-        <span className="font-display bg-highlight px-2.5 py-0.5 text-[22px] font-normal text-[#382f2a]">
+        <span className="font-display bg-highlight px-2.5 py-0.5 text-[22px] font-normal text-[#28221e]">
           €{formatNumber(locale, l.price_eur)}
         </span>
       </p>
@@ -247,13 +247,13 @@ function RedBand({
                 <li key={e.id}>
                   <Link
                     href={`/events#event-${e.id}`}
-                    className="flex items-center gap-5 bg-[#312924] px-5 py-[18px] transition hover:bg-black"
+                    className="flex items-center gap-5 bg-[#191512] px-5 py-[18px] transition hover:bg-black"
                   >
                     <BandDate date={e.event_date} locale={locale} tbc={t.eventDate.tbc} />
                     <span className="min-w-0">
                       <span className="font-display block truncate text-[22px] font-normal">{e.title}</span>
                       {(e.location || e.description) && (
-                        <span className="mt-0.5 line-clamp-1 text-sm text-[#bdbab2]">
+                        <span className="mt-0.5 line-clamp-1 text-sm text-[#c3baa8]">
                           {[e.location, e.description].filter(Boolean).join(" · ")}
                         </span>
                       )}
@@ -300,7 +300,7 @@ function BandDate({ date, locale, tbc }: { date: string | null; locale: Locale; 
       {d ? (
         <>
           <span className="font-display block text-4xl leading-none font-normal text-highlight">{d.getDate()}</span>
-          <span className="block text-xs tracking-[.1em] text-[#bdbab2] uppercase">
+          <span className="block text-xs tracking-[.1em] text-[#c3baa8] uppercase">
             {formatDate(locale, d, "monthShort")}
           </span>
         </>
