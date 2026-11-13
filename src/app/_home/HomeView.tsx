@@ -143,7 +143,7 @@ function Hero({ h }: { h: Dictionary["home"] }) {
         <ul className="mt-7 grid max-w-[560px] grid-cols-2 gap-x-7 gap-y-2.5 text-sm text-[#dcd3c1] sm:text-base lg:max-w-[500px]">
           {h.ticks.map((tick) => (
             <li key={tick} className="flex gap-2.5">
-              <span aria-hidden="true" className="font-bold text-[#ff6b70]">
+              <span aria-hidden="true" className="font-bold text-red">
                 ✓
               </span>
               {tick}

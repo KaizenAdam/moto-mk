@@ -23,7 +23,7 @@ export type ShardSpec = { shape: ShardShape; className: string };
  */
 export function HighlightWord({ children }: { children: ReactNode }) {
   return (
-    <span className="px-3 text-[#28221e] [-webkit-box-decoration-break:clone] [background-image:linear-gradient(var(--highlight),var(--highlight))] [background-position:0_53%] [background-repeat:no-repeat] [background-size:100%_1.16em] [box-decoration-break:clone]">
+    <span className="px-3 text-black [-webkit-box-decoration-break:clone] [background-image:linear-gradient(var(--highlight),var(--highlight))] [background-position:0_53%] [background-repeat:no-repeat] [background-size:100%_1.16em] [box-decoration-break:clone]">
       {children}
     </span>
   );
@@ -80,7 +80,7 @@ export function BlockHero({
               <ul className="mt-5 grid max-w-[620px] gap-x-7 gap-y-2 text-sm text-[#dcd3c1] sm:grid-cols-2 sm:text-[15px]">
                 {ticks.map((t) => (
                   <li key={t} className="flex items-center gap-2.5">
-                    <TickIcon className="h-4 w-4 shrink-0 text-[#ff6b70]" />
+                    <TickIcon className="h-4 w-4 shrink-0 text-red" />
                     {t}
                   </li>
                 ))}
@@ -186,7 +186,7 @@ export function AuthShell({
             <ul className="mt-6 space-y-2 text-[15px] text-[#dcd3c1]">
               {ticks.map((t) => (
                 <li key={t} className="flex items-center gap-2.5">
-                  <TickIcon className="h-4 w-4 shrink-0 text-[#ff6b70]" />
+                  <TickIcon className="h-4 w-4 shrink-0 text-red" />
                   {t}
                 </li>
               ))}
