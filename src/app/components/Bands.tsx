@@ -17,13 +17,13 @@ export type ShardSpec = { shape: ShardShape; className: string };
 /**
  * The gold block behind a headline word. Inline with cloned edges, so a
  * phrase that wraps (longer in Macedonian and Albanian) gets a block per
- * line instead of one wide box. The gold is a band sized to Oswald's
+ * line instead of one wide box. The gold is a band sized to the display font's
  * capitals (1.16em, centred on them), not the whole line box, which is
  * taller than the line spacing and would cover the line above.
  */
 export function HighlightWord({ children }: { children: ReactNode }) {
   return (
-    <span className="px-3 text-[#111] [-webkit-box-decoration-break:clone] [background-image:linear-gradient(var(--highlight),var(--highlight))] [background-position:0_53%] [background-repeat:no-repeat] [background-size:100%_1.16em] [box-decoration-break:clone]">
+    <span className="px-3 text-[#382f2a] [-webkit-box-decoration-break:clone] [background-image:linear-gradient(var(--highlight),var(--highlight))] [background-position:0_53%] [background-repeat:no-repeat] [background-size:100%_1.16em] [box-decoration-break:clone]">
       {children}
     </span>
   );
@@ -58,7 +58,7 @@ export function BlockHero({
 }) {
   return (
     <section
-      className={`relative overflow-hidden border-b border-line ${gradient ? "" : "bg-[#141416]"}`}
+      className={`relative overflow-hidden border-b border-line ${gradient ? "" : "bg-[#3c332d]"}`}
       style={gradient ? { background: heroBackground } : undefined}
     >
       <Shard shape={shard.shape} className={shard.className} />
@@ -127,12 +127,12 @@ export function Eyebrow({ children }: { children: ReactNode }) {
 
 /** The black button used on red and gold backgrounds. */
 export const blackButton =
-  "font-display inline-block bg-[#111] px-6 py-3.5 font-semibold tracking-[.08em] text-white outline-[3px] outline-offset-[3px] outline-red outline-solid transition hover:bg-black";
+  "font-display inline-block bg-[#382f2a] px-6 py-3.5 font-semibold tracking-[.08em] text-white outline-[3px] outline-offset-[3px] outline-red outline-solid transition hover:bg-black";
 
 /** Gold banner with a black shard, as on the home page's "Sell your bike today". */
 const HOME_GOLD_SHARD: ShardSpec = {
   shape: "double",
-  className: "inset-y-0 right-0 hidden w-[46%] bg-[#111] opacity-90 md:block",
+  className: "inset-y-0 right-0 hidden w-[46%] bg-[#382f2a] opacity-90 md:block",
 };
 
 export function GoldBanner({
@@ -148,7 +148,7 @@ export function GoldBanner({
 }) {
   return (
     <section className="mx-auto max-w-[1280px] px-5">
-      <div className="relative overflow-hidden bg-highlight px-6 py-9 text-[#111] sm:px-12 sm:py-11">
+      <div className="relative overflow-hidden bg-highlight px-6 py-9 text-[#382f2a] sm:px-12 sm:py-11">
         <Shard shape={shard.shape} className={shard.className} />
         <div className="relative max-w-[620px]">
           <h2 className="font-display text-4xl leading-none sm:text-5xl">{title}</h2>
@@ -177,7 +177,7 @@ export function AuthShell({
   children: ReactNode;
 }) {
   return (
-    <main className="relative overflow-hidden bg-[#141416]">
+    <main className="relative overflow-hidden bg-[#3c332d]">
       <Shard shape={shard.shape} className={shard.className} />
       <div className="relative mx-auto grid max-w-[1280px] items-center gap-10 px-5 py-12 lg:min-h-[640px] lg:grid-cols-2 lg:py-20">
         <div>

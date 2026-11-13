@@ -9,7 +9,7 @@ export type Ad = { imageUrl: string; href: string; advertiser: string };
 /**
  * A banner ad position. With an `ad` it shows that advertiser's image;
  * without one (all of them, until the ads backend exists — see
- * docs/HANDOVER-backend.md) it shows Just5Up!'s own "advertise here" card,
+ * docs/HANDOVER-backend.md) it shows Moto Hut's own "advertise here" card,
  * never a made-up advertiser.
  */
 export default function AdSlot({ slot, ad }: { slot: AdSlotId; ad?: Ad | null }) {

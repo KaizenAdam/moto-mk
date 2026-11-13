@@ -11,7 +11,7 @@ export const SITE_URL = (
     : "http://localhost:3000")
 ).replace(/\/$/, "");
 
-export const SITE_NAME = "Just5Up!";
+export const SITE_NAME = "Moto Hut";
 export const SITE_DESCRIPTION =
   "Motorcycles for sale across North Macedonia - from riders and verified dealers. Free to list.";
 

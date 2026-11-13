@@ -7,7 +7,7 @@ import { cachedPhotoSigner } from "@/lib/photos/signer";
 import { EUR_TO_MKD } from "@/lib/constants/listings";
 import { OG, OG_SIZE, OgBrand, brandIconDataUrl } from "@/lib/og/brand";
 
-export const alt = "Motorcycle for sale on Just5Up!";
+export const alt = "Motorcycle for sale on Moto Hut";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 
@@ -71,7 +71,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
             {specs.length > 0 && (
               <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
                 {specs.map((s) => (
-                  <div key={s} style={{ fontSize: 22, padding: "6px 14px", borderRadius: 8, border: "2px solid #2a2a2f", color: OG.dim }}>
+                  <div key={s} style={{ fontSize: 22, padding: "6px 14px", borderRadius: 8, border: "2px solid #53473f", color: OG.dim }}>
                     {s}
                   </div>
                 ))}

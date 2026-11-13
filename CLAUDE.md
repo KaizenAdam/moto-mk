@@ -1,4 +1,13 @@
-# Just5Up!
+# Moto Hut (formerly Just5Up!)
+
+> **Rebrand (13 Nov 2026, Billy):** the site is now **Moto Hut** - "Your
+> digital Pit Stop". Logo colours: gold `#dbc078` and brown `#322a25`
+> (the page ground). Fonts: **Impact** for display, **Cerebri Sans** for
+> body (free stand-ins: Anton + Oswald for Cyrillic, DM Sans). Logo is
+> `public/brand/logo-moto-hut.png` (gold bike icon, white lettering;
+> made from the client's colour logo - ask the designer for a proper
+> export). Red stays as the secondary/attention colour. Cookie names
+> (`j5_*`) and CSS class prefixes (`j5-`) are internal and unchanged.
 
 > **Backend work (featured listings, ads, payments)?** Read
 > `docs/HANDOVER-backend.md` first: it lists what the Oct 2026 front-end
@@ -282,8 +291,10 @@ demo state — not test residue to clean up.
   `featured` prop draws the paid-placement frame — **only pass it for a
   listing that is really featured**; the live site is client-facing.
 - **Type:** headings, buttons, badges, nav and prices use `.font-display`
-  — **Oswald** (`next/font/google` in `layout.tsx`, latin + cyrillic so
-  the Macedonian version works), bold, uppercase. It's in `@layer
+  — **Impact** (Nov 2026 rebrand; Anton from `next/font/google` where
+  Impact isn't installed, Oswald for Cyrillic since Anton has none),
+  one weight with `font-synthesis: none`, uppercase. Body is Cerebri Sans,
+  falling back to DM Sans. It's in `@layer
   components` in `globals.css`, so utilities like `font-semibold` or
   `normal-case` still override it. Body text stays on the system stack.
 - **Header:** `SiteHeader` + `NavLinks` (current section highlighted) +
@@ -375,10 +386,11 @@ demo state — not test residue to clean up.
   The privacy page describes what the site really collects and who sees
   it, so a change to either (a new profile field, analytics, payments)
   updates that page in the same change.
-- **Brand images:** `public/brand/*.svg` are huge raster-in-SVG originals
-  (1 MB / 650 KB). The site uses pre-sized PNGs made from them with sharp:
-  `wordmark-white.png` (621×168) and `icon-gold-{32,180,512}.png`. Don't
-  reference the SVGs from pages.
+- **Brand images:** `logo-moto-hut.png` (619×116, header, footer, share
+  images) and `icon-moto-hut-{32,180,512}.png` + `app/favicon.ico` (gold
+  bike on brown), made with sharp from the client's logo files (OneDrive:
+  Active Clients/Moto Hut/Moto Hut Logos; its Favicons folder exports are
+  blank). The old Just5Up! wordmark and icons were removed.
 - **Share previews:** `metadataBase` comes from `SITE_URL` in
   `src/lib/site.ts` (`NEXT_PUBLIC_SITE_URL`, else Vercel's production
   URL). Page titles use the layout template (`%s — Just5Up!`), so don't
@@ -392,7 +404,7 @@ demo state — not test residue to clean up.
 
 ## Brand direction
 
-**Punk/rock, not premium-fintech.** Primary: black + gold. Secondary:
+**Punk/rock, not premium-fintech.** Primary: brown `#322a25` + gold `#dbc078` (was black + gold until the Nov 2026 Moto Hut rebrand). Secondary:
 red + grey. Bold condensed display type, high contrast, deliberately
 rougher than a typical SaaS look. The static demo (`index.html`,
 `sell.html`; removed from the tree on 2 Oct 2026, still in git history

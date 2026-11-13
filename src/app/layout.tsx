@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Oswald } from "next/font/google";
+import { Anton, DM_Sans, Oswald } from "next/font/google";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 import SiteHeader from "@/app/components/SiteHeader";
@@ -21,26 +21,25 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: { siteName: SITE_NAME, type: "website", locale: LOCALE_TAGS[locale].replace("-", "_") },
     twitter: { card: "summary_large_image" },
     icons: {
-      icon: [{ url: "/brand/icon-gold-32.png", sizes: "32x32", type: "image/png" }],
-      apple: [{ url: "/brand/icon-gold-180.png", sizes: "180x180" }],
+      icon: [{ url: "/brand/icon-moto-hut-32.png", sizes: "32x32", type: "image/png" }],
+      apple: [{ url: "/brand/icon-moto-hut-180.png", sizes: "180x180" }],
     },
   };
 }
 
-// Display face for headings, buttons and badges (bold, condensed — the
-// brand's poster look). Cyrillic is included for the Macedonian version.
-const oswald = Oswald({
-  subsets: ["latin", "latin-ext", "cyrillic"],
-  display: "swap",
-  variable: "--font-oswald",
-});
+// Brand fonts are Impact (headings, buttons, badges) and Cerebri Sans (body).
+// These are their free stand-ins for visitors who don't have them: Anton for
+// Impact, Oswald for Cyrillic headings (Anton has none), DM Sans for body.
+const anton = Anton({ weight: "400", subsets: ["latin", "latin-ext"], display: "swap", variable: "--font-anton" });
+const oswald = Oswald({ subsets: ["cyrillic"], display: "swap", variable: "--font-oswald" });
+const dmSans = DM_Sans({ subsets: ["latin", "latin-ext"], display: "swap", variable: "--font-dm-sans" });
 
-export const viewport: Viewport = { themeColor: "#0b0b0d" };
+export const viewport: Viewport = { themeColor: "#322a25" };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const { locale, t } = await getI18n();
   return (
-    <html lang={LOCALE_TAGS[locale]} className={`${oswald.variable} h-full antialiased`}>
+    <html lang={LOCALE_TAGS[locale]} className={`${anton.variable} ${oswald.variable} ${dmSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-black">
         <I18nProvider locale={locale} t={clientDictionary(t)}>
           <SiteHeader />

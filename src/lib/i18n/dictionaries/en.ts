@@ -11,7 +11,7 @@
  */
 const en = {
   common: {
-    siteName: "Just5Up!",
+    siteName: "Moto Hut",
     home: "Home",
     logIn: "Log in",
     signUp: "Sign up",
@@ -24,7 +24,7 @@ const en = {
     signedInAs: "Signed in as",
     openMenu: "Open menu",
     closeMenu: "Close menu",
-    homeLink: "Just5Up! home",
+    homeLink: "Moto Hut home",
     search: "Search",
     clear: "Clear",
     save: "Save",
@@ -92,7 +92,7 @@ const en = {
     myGarage: "My Garage",
     listYourBike: "List your bike",
     forBusiness: "For business",
-    j5ForBusiness: "Just5Up! for business",
+    j5ForBusiness: "Moto Hut for business",
     becomeDealer: "Become a dealer",
     advertise: "Advertise with us",
     checked: "Every listing is checked before it goes live",
@@ -101,7 +101,7 @@ const en = {
   },
   // Server-only from here down (see ClientDictionary).
   meta: {
-    defaultTitle: "Just5Up! - North Macedonia's motorcycle marketplace",
+    defaultTitle: "Moto Hut - North Macedonia's motorcycle marketplace",
     description: "Motorcycles for sale across North Macedonia - from riders and verified dealers. Free to list.",
     homeDescription:
       "Motorcycles for sale across North Macedonia from riders and verified dealers - plus service centres, events and the riding community.",
@@ -123,7 +123,7 @@ const en = {
       "Motorcycle and scooter workshops, official brand service centres and importers across North Macedonia.",
     eventsTitle: "Motorcycle events in North Macedonia",
     eventsDescription: "Rallies, Moto Sobori, track days and group rides across North Macedonia.",
-    businessTitle: "Just5Up! for business",
+    businessTitle: "Moto Hut for business",
     businessDescription:
       "Dealers, workshops, gear shops and insurers: sell bikes from your own storefront or advertise to motorcyclists across North Macedonia.",
     loginTitle: "Log in",
@@ -131,9 +131,9 @@ const en = {
     forgotTitle: "Forgot your password",
     resetTitle: "Choose a new password",
     privacyTitle: "Privacy policy",
-    privacyDescription: "How Just5Up! collects, uses and protects your personal data.",
+    privacyDescription: "How Moto Hut collects, uses and protects your personal data.",
     termsTitle: "Terms of use",
-    termsDescription: "The rules for buying, selling and listing motorcycles on Just5Up!.",
+    termsDescription: "The rules for buying, selling and listing motorcycles on Moto Hut.",
     // @@META
   },
   legal: {
@@ -141,7 +141,7 @@ const en = {
     lastUpdated: "Last updated {date}",
     updated: "[date] (draft, 4 November 2026)",
     draftNote:
-      "This is a draft that will be finalised before Just5Up! launches. Parts in [square brackets] are still to be confirmed.",
+      "This is a draft that will be finalised before Moto Hut launches. Parts in [square brackets] are still to be confirmed.",
     /**
      * Each section is a heading and blocks: a string is a paragraph, an
      * array is a bullet list. Inline: **bold**, [text](/path), {email}.
@@ -154,7 +154,7 @@ const en = {
         {
           heading: "Who we are",
           blocks: [
-            'Just5Up! is a website for buying and selling motorcycles in North Macedonia. It is run by [company name], [registered address], [company registration number] ("we", "us"). We are responsible for the personal data described here.',
+            'Moto Hut is a website for buying and selling motorcycles in North Macedonia. It is run by [company name], [registered address], [company registration number] ("we", "us"). We are responsible for the personal data described here.',
             "Questions about your data: {email}.",
           ],
         },
@@ -237,7 +237,7 @@ const en = {
         },
         {
           heading: "Children",
-          blocks: ["Just5Up! is for people aged [18] and over. We don't knowingly collect data from children."],
+          blocks: ["Moto Hut is for people aged [18] and over. We don't knowingly collect data from children."],
         },
         {
           heading: "Changes",
@@ -250,12 +250,12 @@ const en = {
     terms: {
       first: "Terms of",
       highlight: "use",
-      intro: "The rules for listing, buying and selling on Just5Up!.",
+      intro: "The rules for listing, buying and selling on Moto Hut.",
       sections: [
         {
-          heading: "About Just5Up!",
+          heading: "About Moto Hut",
           blocks: [
-            "Just5Up! is a classifieds website, run by [company name], [registered address], where riders and dealers list motorcycles for sale in North Macedonia. By using the site you agree to these terms.",
+            "Moto Hut is a classifieds website, run by [company name], [registered address], where riders and dealers list motorcycles for sale in North Macedonia. By using the site you agree to these terms.",
             "**We don't sell bikes and we're not part of any sale.** Buyers and sellers deal with each other directly. We don't take payments or hold money for anyone.",
           ],
         },
@@ -308,7 +308,7 @@ const en = {
         {
           heading: "Your content",
           blocks: [
-            "You keep ownership of the photos and text you post. You let us show them on Just5Up! and use them to promote your listing on the site for as long as it's listed.",
+            "You keep ownership of the photos and text you post. You let us show them on Moto Hut and use them to promote your listing on the site for as long as it's listed.",
           ],
         },
         {
@@ -326,7 +326,7 @@ const en = {
         {
           heading: "Suspending accounts",
           blocks: [
-            "You can stop using Just5Up! at any time. We may suspend or close an account that breaks these terms, and remove its listings.",
+            "You can stop using Moto Hut at any time. We may suspend or close an account that breaks these terms, and remove its listings.",
           ],
         },
         {
@@ -530,7 +530,7 @@ const en = {
     seeAll: "See all >",
     forSale: "{name} for sale",
     forSaleIn: "{name} for sale in {town}",
-    metaTail: "On Just5Up!, North Macedonia's motorcycle marketplace.",
+    metaTail: "On Moto Hut, North Macedonia's motorcycle marketplace.",
     notFound: "Listing not found",
   },
   contact: {
@@ -541,9 +541,9 @@ const en = {
     yourListing: "This is your listing.",
     editIt: "Edit it",
     noPhone: "The seller hasn't added a phone number yet.",
-    whatsappMessage: "Hi, I'm interested in your {bike} on Just5Up! {url}",
+    whatsappMessage: "Hi, I'm interested in your {bike} on Moto Hut {url}",
     meetSeller: "Meet the seller",
-    dealerChecked: "Every dealer on Just5Up! is checked by us before their showroom goes live.",
+    dealerChecked: "Every dealer on Moto Hut is checked by us before their showroom goes live.",
     privateChecked: "Selling privately. Every listing is checked by us before it goes live.",
     seeAllTheirBikes: "See all their bikes >",
   },
@@ -808,9 +808,9 @@ const en = {
     allDealers: "All dealers",
     editStorefront: "Edit your storefront",
     noBikes: "{name} has no bikes listed right now - get in touch to ask what's coming in.",
-    whatsappMessage: "Hi {name}, I found you on Just5Up!",
+    whatsappMessage: "Hi {name}, I found you on Moto Hut",
     notFound: "Dealer not found",
-    metaDescription: "Motorcycles for sale from {name} on Just5Up!, North Macedonia's motorcycle marketplace.",
+    metaDescription: "Motorcycles for sale from {name} on Moto Hut, North Macedonia's motorcycle marketplace.",
   },
   parts: {
     title1: "Parts &",
@@ -874,12 +874,12 @@ const en = {
     runWorkshop: "Run a workshop?",
     runPitch: "Get your workshop in front of riders looking for a service, a repair or new tyres. Listing is free.",
     getListed: "Get listed >>>",
-    perks: ["Listed free, on the map", "Call, WhatsApp and directions on your card", "Added by the Just5Up! team"],
+    perks: ["Listed free, on the map", "Call, WhatsApp and directions on your card", "Added by the Moto Hut team"],
     pinsSoon: "Pins appear here as each centre's location is confirmed.",
     notOnMap: "Not on the map yet",
     verified: "Verified",
     callAhead: "From public directories - call ahead to confirm details.",
-    whatsappMessage: "Hi {name}, I found you on Just5Up!",
+    whatsappMessage: "Hi {name}, I found you on Moto Hut",
   },
   events: {
     title1: "Rides &",
@@ -900,7 +900,7 @@ const en = {
     dateTbc: "Date to be confirmed",
     gotEvent: "Got an event?",
     gotEventBody:
-      "Running a rally, track day or group ride? The Just5Up! team adds events to the calendar. Online submissions are on the way.",
+      "Running a rally, track day or group ride? The Moto Hut team adds events to the calendar. Online submissions are on the way.",
     addToCalendar: "+ Add to calendar",
   },
   business: {
@@ -928,7 +928,7 @@ const en = {
     howToApplyBody:
       "Create an account, then request a dealer account from My Garage with your business name. We check every request before the storefront goes live.",
     applyNow: "Apply now >>>",
-    seeDealers: "See dealers already on Just5Up!",
+    seeDealers: "See dealers already on Moto Hut",
     advertise: "Advertise",
     whereAdAppears: "Where your ad appears",
     artwork: "Artwork: {size}",
@@ -941,7 +941,7 @@ const en = {
     ],
     workshopTitle: "List your workshop",
     workshopBody:
-      "Workshops, brand service centres and importers are listed on our service centres map for free, with Call, WhatsApp and directions. Online submissions are on the way; until then the Just5Up! team adds and checks each one.",
+      "Workshops, brand service centres and importers are listed on our service centres map for free, with Call, WhatsApp and directions. Online submissions are on the way; until then the Moto Hut team adds and checks each one.",
     seeMap: "See the map",
     bookingSoon: "Ad booking opens soon",
     bookingSoonBody:

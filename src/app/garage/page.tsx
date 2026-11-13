@@ -154,7 +154,7 @@ export default async function GaragePage() {
                         <Badge tone={tone}>{statusLabel}</Badge>
                       </div>
                       <p className="mt-1.5">
-                        <span className="font-display bg-highlight px-2 py-0.5 text-lg text-[#111]">
+                        <span className="font-display bg-highlight px-2 py-0.5 text-lg text-[#382f2a]">
                           {formatPrice(Number(l.price_eur), "EUR", locale).main}
                         </span>
                       </p>
@@ -269,7 +269,7 @@ export default async function GaragePage() {
               </Link>
             )}
           </div>
-          <div className="bg-[#0a0a0a] p-5 sm:p-6">
+          <div className="bg-[#312924] p-5 sm:p-6">
             {dealer ? (
               <StorefrontForm dealer={dealer} />
             ) : profile.account_type === "dealer" || profile.account_type === "admin" ? (

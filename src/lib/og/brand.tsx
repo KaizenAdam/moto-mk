@@ -9,25 +9,25 @@ import { join } from "node:path";
 export const OG_SIZE = { width: 1200, height: 630 };
 
 export const OG = {
-  black: "#0b0b0d",
-  panel: "#141417",
-  gold: "#d4af37",
-  goldBright: "#f2cf5b",
+  black: "#332b26",
+  panel: "#3c332d",
+  gold: "#dbc078",
+  goldBright: "#dbc078",
   text: "#f0eee8",
   dim: "#b7b5b0",
   red: "#c1272d",
 };
 
 export async function brandIconDataUrl() {
-  const png = await readFile(join(process.cwd(), "public/brand/wordmark-white.png"));
+  const png = await readFile(join(process.cwd(), "public/brand/logo-moto-hut.png"));
   return `data:image/png;base64,${png.toString("base64")}`;
 }
 
-/** The Just5Up! wordmark (bike + lettering), `size` px tall. */
+/** The Moto Hut logo (gold bike, white lettering), `size` px tall. */
 export function OgBrand({ icon, size = 56 }: { icon: string; size?: number }) {
-  // wordmark-white.png is 621×168
+  // logo-moto-hut.png is 619×116
   return (
     // eslint-disable-next-line @next/next/no-img-element -- rendered by ImageResponse, not the browser
-    <img src={icon} width={Math.round((size * 621) / 168)} height={size} alt="" />
+    <img src={icon} width={Math.round((size * 619) / 116)} height={size} alt="" />
   );
 }

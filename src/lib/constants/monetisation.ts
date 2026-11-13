@@ -1,5 +1,5 @@
 /**
- * What can be bought on Just5Up!: featured placements for a listing, and
+ * What can be bought on Moto Hut: featured placements for a listing, and
  * banner ad slots. The front end (the /listings/[id]/feature and /for-business
  * pages, AdSlot) reads these; the payment backend should charge from the
  * same ids. See docs/HANDOVER-backend.md.

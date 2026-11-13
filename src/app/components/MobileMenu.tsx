@@ -43,7 +43,7 @@ export default function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
           <div className="fixed inset-0 top-[65px] z-40 bg-black/60 xl:hidden" onClick={close} aria-hidden />
           <div
             id="mobile-menu"
-            className="absolute inset-x-0 top-full z-50 border-b border-line bg-[#0e0e11] pb-4 shadow-[0_12px_30px_rgba(0,0,0,0.6)] xl:hidden"
+            className="absolute inset-x-0 top-full z-50 border-b border-line bg-[#362e28] pb-4 shadow-[0_12px_30px_rgba(39,32,28,0.6)] xl:hidden"
           >
             <nav className="py-2">
               <NavLinks variant="menu" onNavigate={close} />

@@ -39,7 +39,7 @@ export default function Toaster() {
       {items.map((i) => (
         <div
           key={i.id}
-          className="j5-toast flex items-center gap-2 border-l-4 border-highlight bg-[#141417]/95 px-4 py-2.5 text-sm font-semibold text-ink shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
+          className="j5-toast flex items-center gap-2 border-l-4 border-highlight bg-[#3c332d]/95 px-4 py-2.5 text-sm font-semibold text-ink shadow-[0_8px_24px_rgba(39,32,28,0.5)]"
         >
           <span className="text-highlight">✓</span>
           {i.message}

@@ -55,7 +55,7 @@ export default function CookieBar() {
   return (
     <section
       aria-label={t.cookies.region}
-      className="fixed inset-x-0 bottom-0 z-[90] border-t-4 border-red bg-[#0b0b0d] shadow-[0_-12px_40px_rgba(0,0,0,.6)]"
+      className="fixed inset-x-0 bottom-0 z-[90] border-t-4 border-red bg-[#332b26] shadow-[0_-12px_40px_rgba(39,32,28,.6)]"
     >
       <div className="mx-auto grid max-w-[1280px] gap-4 px-5 py-4 sm:py-5 lg:grid-cols-[1fr_auto_auto] lg:items-center lg:gap-8">
         <div>

@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { OG, OG_SIZE, OgBrand, brandIconDataUrl } from "@/lib/og/brand";
 
-export const alt = "Just5Up! - North Macedonia's motorcycle marketplace";
+export const alt = "Moto Hut - North Macedonia's motorcycle marketplace";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 
@@ -18,7 +18,7 @@ export default async function Image() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 72,
-          background: `radial-gradient(circle at 85% 0%, rgba(193,39,45,.35), transparent 55%), radial-gradient(circle at 0% 100%, rgba(212,175,55,.25), transparent 50%), ${OG.black}`,
+          background: `radial-gradient(circle at 85% 0%, rgba(193,39,45,.35), transparent 55%), radial-gradient(circle at 0% 100%, rgba(219,192,120,.25), transparent 50%), ${OG.black}`,
           color: OG.text,
         }}
       >

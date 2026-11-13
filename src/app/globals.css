@@ -1,14 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --black: #0b0b0d;
-  --panel: #141417;
-  --panel2: #1b1b1f;
-  --line: #2a2a2f;
-  --gold: #d4af37;
-  --gold-bright: #f2cf5b;
-  /* Flat, louder gold for highlight blocks (home page prices, "next ride"). */
-  --highlight: #f2c230;
+  /* Moto Hut logo colours (Nov 2026): brown #322a25 is the ground, gold
+     #dbc078 the one accent. Panels and lines are lighter browns from it. */
+  --black: #322a25;
+  --panel: #3c332d;
+  --panel2: #433933;
+  --line: #53473f;
+  --gold: #dbc078;
+  --gold-bright: #e8d49b;
+  /* Flat gold for highlight blocks (prices, "next ride"): the logo gold. */
+  --highlight: #dbc078;
   --red: #c1272d;
   --grey: #8a8a92;
   --text: #f0eee8;
@@ -32,18 +34,23 @@
 body {
   background: var(--black);
   color: var(--text);
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  /* Cerebri Sans (the brand font) where installed; DM Sans is the free
+     stand-in loaded in layout.tsx. Neither has Cyrillic, so Macedonian falls
+     through to the system stack. */
+  font-family: "Cerebri Sans", var(--font-dm-sans), "Segoe UI", system-ui, -apple-system, sans-serif;
   line-height: 1.4;
 }
 
-/* Headings, buttons, badges: Oswald (loaded in layout.tsx), uppercase.
-   Arial Narrow is the closest common fallback while it loads. In the
-   components layer so utilities (font-semibold, leading-*, normal-case)
-   still override it. */
+/* Headings, buttons, badges: Impact, uppercase (Moto Hut brand, Nov 2026).
+   Impact ships with Windows and macOS; Anton (layout.tsx) is the free
+   lookalike elsewhere, and Oswald covers Cyrillic, which Anton lacks.
+   Impact has one weight: font-synthesis stops font-semibold etc. faking a
+   heavier one. In the components layer so utilities still override it. */
 @layer components {
   .font-display {
-    font-family: var(--font-oswald), "Arial Narrow", "Helvetica Neue", sans-serif;
-    font-weight: 700;
+    font-family: Impact, var(--font-anton), var(--font-oswald), "Arial Narrow", sans-serif;
+    font-weight: 400;
+    font-synthesis: none;
     text-transform: uppercase;
     letter-spacing: 0.01em;
     line-height: 1.1;
@@ -70,8 +77,8 @@ body {
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
   background: var(--gold);
-  border: 2px solid #141414;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  border: 2px solid #3b322c;
+  box-shadow: 0 2px 6px rgba(39,32,28,0.5);
 }
 .j5-pin--active {
   background: var(--red);
@@ -98,7 +105,7 @@ body {
   color: var(--gold-bright);
 }
 .leaflet-container .leaflet-control-attribution.leaflet-control-attribution {
-  background: rgba(11, 11, 13, 0.75);
+  background: rgba(51,43,38,0.75);
   color: var(--text-dim);
 }
 .leaflet-container .leaflet-control-attribution a {

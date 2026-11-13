@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 const tones = {
   /** Solid gold: earned trust marks (Verified, Dealer). */
-  gold: "bg-highlight text-[#141414]",
+  gold: "bg-highlight text-[#3b322c]",
   /** Solid red: attention (Coming soon, Pending review, Rejected). */
   red: "bg-red text-white",
   green: "bg-green-700 text-white",

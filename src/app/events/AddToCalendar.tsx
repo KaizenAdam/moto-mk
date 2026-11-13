@@ -43,7 +43,7 @@ export default function AddToCalendar({
     const ics = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
-      "PRODID:-//Just5Up!//Events//EN",
+      "PRODID:-//Moto Hut//Events//EN",
       "BEGIN:VEVENT",
       `UID:${id}@just5up`,
       `DTSTAMP:${stamp}`,

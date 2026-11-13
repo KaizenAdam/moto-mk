@@ -45,15 +45,15 @@ export default async function SiteFooter() {
   const { t } = await getI18n();
   const f = t.footer;
   return (
-    <footer className="bg-[#1a1a1c]">
+    <footer className="bg-[#423832]">
       <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-8 px-5 py-10 md:grid-cols-[1.4fr_repeat(4,1fr)]">
         <div className="col-span-2 md:col-span-1">
-          {/* eslint-disable-next-line @next/next/no-img-element -- pre-sized PNG wordmark */}
-          <img src="/brand/wordmark-white.png" width={621} height={168} alt="Just5Up!" className="mb-3 h-10 w-auto" />
+          {/* eslint-disable-next-line @next/next/no-img-element -- pre-sized PNG logo */}
+          <img src="/brand/logo-moto-hut.png" width={619} height={116} alt="Moto Hut" className="mb-3 h-10 w-auto" />
           <p className="mb-4 max-w-xs text-sm text-ink-dim">{f.tagline}</p>
           <Link
             href="/sell"
-            className="font-display inline-block bg-highlight px-4 py-2 text-sm font-semibold tracking-[.06em] text-[#111] transition hover:brightness-110"
+            className="font-display inline-block bg-highlight px-4 py-2 text-sm font-semibold tracking-[.06em] text-[#382f2a] transition hover:brightness-110"
           >
             {f.listFree}
           </Link>
@@ -78,7 +78,7 @@ export default async function SiteFooter() {
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
             <LanguageFlags />
             <p>
-              © {new Date().getFullYear()} Just5Up! · {f.checked}
+              © {new Date().getFullYear()} Moto Hut · {f.checked}
             </p>
           </div>
           {/* CONTACT_EMAIL is a placeholder until the client gives a real address (src/lib/site.ts). */}

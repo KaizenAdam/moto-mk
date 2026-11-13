@@ -68,11 +68,11 @@ export default async function BikesView({
             name="search"
             defaultValue={filters.search ?? ""}
             placeholder={b.searchPlaceholder}
-            className="min-w-0 flex-1 border-0 px-3 py-4 text-base text-[#111] outline-none placeholder:text-[#77767c]"
+            className="min-w-0 flex-1 border-0 px-3 py-4 text-base text-[#382f2a] outline-none placeholder:text-[#77767c]"
           />
           <button
             type="submit"
-            className="font-display bg-highlight px-4 text-base font-semibold tracking-[.08em] text-[#111] transition hover:brightness-110 sm:px-6"
+            className="font-display bg-highlight px-4 text-base font-semibold tracking-[.08em] text-[#382f2a] transition hover:brightness-110 sm:px-6"
           >
             {b.searchButton}
             <span className="hidden sm:inline"> &gt;&gt;&gt;</span>

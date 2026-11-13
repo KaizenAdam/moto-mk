@@ -36,7 +36,7 @@ export default function ShopPhoto({
     <div
       role="img"
       aria-label={`${name}: ${t.dealers.shopPhotoSoon}`}
-      className={`relative flex flex-col items-center justify-center gap-2 overflow-hidden bg-[#1c1c20] text-grey ${className}`}
+      className={`relative flex flex-col items-center justify-center gap-2 overflow-hidden bg-[#443a34] text-grey ${className}`}
       style={{
         backgroundImage: "repeating-linear-gradient(135deg, rgba(255,255,255,.035) 0 14px, transparent 14px 28px)",
       }}

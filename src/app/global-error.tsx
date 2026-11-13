@@ -26,17 +26,17 @@ export default function GlobalError({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#0b0b0d",
+          background: "#332b26",
           color: "#f0eee8",
           fontFamily: "system-ui, sans-serif",
           textAlign: "center",
           padding: "0 20px",
         }}
       >
-        <title>Just5Up! - temporarily unavailable</title>
+        <title>Moto Hut - temporarily unavailable</title>
         <div>
           <h1 style={{ fontFamily: "Georgia, serif", fontSize: 28, marginBottom: 12 }}>
-            Just5Up! is taking a pit stop
+            Moto Hut is taking a pit stop
           </h1>
           <p style={{ color: "#b7b5b0", marginBottom: 24 }}>
             Something went wrong on our side. Please try again in a moment.
@@ -45,8 +45,8 @@ export default function GlobalError({
             type="button"
             onClick={() => retry()}
             style={{
-              background: "#d4af37",
-              color: "#141414",
+              background: "#dbc078",
+              color: "#3b322c",
               border: 0,
               borderRadius: 6,
               padding: "10px 20px",

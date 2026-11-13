@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /**
- * Everything Just5Up! offers businesses, in one place (it used to be
+ * Everything Moto Hut offers businesses, in one place (it used to be
  * /advertise, which redirects here). Kept out of the main nav on purpose:
  * the header is for riders, and the footer's "For business" column links
  * here, as Auto Trader does with its trade site. Ad booking and payment
@@ -103,7 +103,7 @@ export default async function ForBusinessPage() {
         <h2 className="font-display mb-6 text-4xl leading-none sm:text-[44px]">{B.whereAdAppears}</h2>
         <div className="grid gap-3 md:grid-cols-3">
           {AD_SLOT_IDS.map((id) => (
-            <div key={id} className="bg-[#0a0a0a] p-5">
+            <div key={id} className="bg-[#312924] p-5">
               <SlotDiagram slot={id} />
               <h3 className="font-display mt-4 text-[22px] font-normal">{t.slots[id].name}</h3>
               <p className="mt-1 text-sm text-[#d6d3cb]">{t.slots[id].where}</p>
@@ -140,7 +140,7 @@ export default async function ForBusinessPage() {
           body={B.bookingSoonBody}
           shard={{
             shape: "double",
-            className: "inset-y-0 right-[-6%] hidden w-[42%] rotate-180 bg-[#111] opacity-90 md:block",
+            className: "inset-y-0 right-[-6%] hidden w-[42%] rotate-180 bg-[#382f2a] opacity-90 md:block",
           }}
           action={
             <button type="button" disabled className={`${blackButton} cursor-not-allowed opacity-60`}>
@@ -156,8 +156,8 @@ export default async function ForBusinessPage() {
 /** One of the three ways in, at the top of the page. */
 function Route({ href, icon, title, children }: { href: string; icon: ReactNode; title: string; children: ReactNode }) {
   return (
-    <a href={href} className="group flex items-start gap-3.5 bg-[#0a0a0a]/85 p-4 transition hover:bg-black">
-      <span className="flex h-11 w-11 shrink-0 items-center justify-center bg-highlight text-[#111]">{icon}</span>
+    <a href={href} className="group flex items-start gap-3.5 bg-[#312924]/85 p-4 transition hover:bg-black">
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center bg-highlight text-[#382f2a]">{icon}</span>
       <span>
         <span className="font-display block text-lg leading-tight group-hover:text-highlight">{title} &gt;</span>
         <span className="mt-0.5 block text-[13px] text-[#bdbab2]">{children}</span>

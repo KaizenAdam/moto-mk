@@ -8,7 +8,7 @@ import type { Dictionary } from "./en";
  */
 const sq: Dictionary = {
   common: {
-    siteName: "Just5Up!",
+    siteName: "Moto Hut",
     home: "Kryefaqja",
     logIn: "Hyr",
     signUp: "Regjistrohu",
@@ -21,7 +21,7 @@ const sq: Dictionary = {
     signedInAs: "I identifikuar si",
     openMenu: "Hap menunë",
     closeMenu: "Mbyll menunë",
-    homeLink: "Just5Up! kryefaqja",
+    homeLink: "Moto Hut kryefaqja",
     search: "Kërko",
     clear: "Pastro",
     save: "Ruaj",
@@ -89,7 +89,7 @@ const sq: Dictionary = {
     myGarage: "Garazhi im",
     listYourBike: "Shpall motorin",
     forBusiness: "Për biznese",
-    j5ForBusiness: "Just5Up! për biznese",
+    j5ForBusiness: "Moto Hut për biznese",
     becomeDealer: "Bëhu tregtar",
     advertise: "Reklamo me ne",
     checked: "Çdo shpallje kontrollohet para se të publikohet",
@@ -97,7 +97,7 @@ const sq: Dictionary = {
     terms: "Kushtet",
   },
   meta: {
-    defaultTitle: "Just5Up! - tregu i motorëve në Maqedoninë e Veriut",
+    defaultTitle: "Moto Hut - tregu i motorëve në Maqedoninë e Veriut",
     description: "Motorë në shitje në të gjithë Maqedoninë e Veriut - nga motoristë dhe tregtarë të verifikuar. Shpallja është falas.",
     homeDescription:
       "Motorë në shitje në të gjithë Maqedoninë e Veriut nga motoristë dhe tregtarë të verifikuar - plus servise, ngjarje dhe komuniteti i motoristëve.",
@@ -118,7 +118,7 @@ const sq: Dictionary = {
     serviceDescription: "Servise për motorë dhe skuterë, servise zyrtare të markave dhe importues në Maqedoninë e Veriut.",
     eventsTitle: "Ngjarje motoristike në Maqedoninë e Veriut",
     eventsDescription: "Tubime, moto-sobore, ditë në pistë dhe udhëtime në grup në Maqedoninë e Veriut.",
-    businessTitle: "Just5Up! për biznese",
+    businessTitle: "Moto Hut për biznese",
     businessDescription:
       "Tregtarë, servise, dyqane pajisjesh dhe sigurues: shit motorë nga vitrina jote ose reklamo te motoristët në Maqedoninë e Veriut.",
     loginTitle: "Hyr",
@@ -126,16 +126,16 @@ const sq: Dictionary = {
     forgotTitle: "Fjalëkalimi i harruar",
     resetTitle: "Zgjidh një fjalëkalim të ri",
     privacyTitle: "Politika e privatësisë",
-    privacyDescription: "Si i mbledh, përdor dhe mbron Just5Up! të dhënat e tua personale.",
+    privacyDescription: "Si i mbledh, përdor dhe mbron Moto Hut të dhënat e tua personale.",
     termsTitle: "Kushtet e përdorimit",
-    termsDescription: "Rregullat për blerjen, shitjen dhe shpalljen e motorëve në Just5Up!.",
+    termsDescription: "Rregullat për blerjen, shitjen dhe shpalljen e motorëve në Moto Hut.",
   },
   legal: {
     draftBadge: "Draft",
     lastUpdated: "Përditësuar së fundi: {date}",
     updated: "[data] (draft, 4 nëntor 2026)",
     draftNote:
-      "Ky është një draft që do të përfundohet para se Just5Up! të nisë. Pjesët në [kllapa katrore] duhet ende të konfirmohen.",
+      "Ky është një draft që do të përfundohet para se Moto Hut të nisë. Pjesët në [kllapa katrore] duhet ende të konfirmohen.",
     privacy: {
       first: "Politika e",
       highlight: "privatësisë",
@@ -144,7 +144,7 @@ const sq: Dictionary = {
         {
           heading: "Kush jemi",
           blocks: [
-            "Just5Up! është një faqe interneti për blerjen dhe shitjen e motorëve në Maqedoninë e Veriut. Drejtohet nga [emri i kompanisë], [adresa e regjistruar], [numri i regjistrimit] (\"ne\"). Ne jemi përgjegjës për të dhënat personale të përshkruara këtu.",
+            "Moto Hut është një faqe interneti për blerjen dhe shitjen e motorëve në Maqedoninë e Veriut. Drejtohet nga [emri i kompanisë], [adresa e regjistruar], [numri i regjistrimit] (\"ne\"). Ne jemi përgjegjës për të dhënat personale të përshkruara këtu.",
             "Pyetje për të dhënat e tua: {email}.",
           ],
         },
@@ -227,7 +227,7 @@ const sq: Dictionary = {
         },
         {
           heading: "Fëmijët",
-          blocks: ["Just5Up! është për persona [18] vjeç e lart. Nuk mbledhim me dijeni të dhëna nga fëmijët."],
+          blocks: ["Moto Hut është për persona [18] vjeç e lart. Nuk mbledhim me dijeni të dhëna nga fëmijët."],
         },
         {
           heading: "Ndryshimet",
@@ -240,12 +240,12 @@ const sq: Dictionary = {
     terms: {
       first: "Kushtet e",
       highlight: "përdorimit",
-      intro: "Rregullat për shpalljen, blerjen dhe shitjen në Just5Up!.",
+      intro: "Rregullat për shpalljen, blerjen dhe shitjen në Moto Hut.",
       sections: [
         {
-          heading: "Rreth Just5Up!",
+          heading: "Rreth Moto Hut",
           blocks: [
-            "Just5Up! është një faqe shpalljesh, e drejtuar nga [emri i kompanisë], [adresa e regjistruar], ku motoristë dhe tregtarë shpallin motorë në shitje në Maqedoninë e Veriut. Duke përdorur faqen, pranon këto kushte.",
+            "Moto Hut është një faqe shpalljesh, e drejtuar nga [emri i kompanisë], [adresa e regjistruar], ku motoristë dhe tregtarë shpallin motorë në shitje në Maqedoninë e Veriut. Duke përdorur faqen, pranon këto kushte.",
             "**Ne nuk shesim motorë dhe nuk jemi pjesë e asnjë shitjeje.** Blerësit dhe shitësit merren vesh drejtpërdrejt. Nuk marrim pagesa dhe nuk mbajmë para për askënd.",
           ],
         },
@@ -298,7 +298,7 @@ const sq: Dictionary = {
         {
           heading: "Përmbajtja jote",
           blocks: [
-            "Fotot dhe teksti që publikon mbeten të tuat. Na lejon t'i shfaqim në Just5Up! dhe t'i përdorim për të promovuar shpalljen tënde në faqe sa kohë që është e publikuar.",
+            "Fotot dhe teksti që publikon mbeten të tuat. Na lejon t'i shfaqim në Moto Hut dhe t'i përdorim për të promovuar shpalljen tënde në faqe sa kohë që është e publikuar.",
           ],
         },
         {
@@ -316,7 +316,7 @@ const sq: Dictionary = {
         {
           heading: "Pezullimi i llogarive",
           blocks: [
-            "Mund të ndalosh së përdoruri Just5Up! në çdo kohë. Mund të pezullojmë ose mbyllim një llogari që shkel këto kushte dhe të heqim shpalljet e saj.",
+            "Mund të ndalosh së përdoruri Moto Hut në çdo kohë. Mund të pezullojmë ose mbyllim një llogari që shkel këto kushte dhe të heqim shpalljet e saj.",
           ],
         },
         {
@@ -514,7 +514,7 @@ const sq: Dictionary = {
     seeAll: "Shiko të gjithë >",
     forSale: "{name} në shitje",
     forSaleIn: "{name} në shitje në {town}",
-    metaTail: "Në Just5Up!, tregun e motorëve në Maqedoninë e Veriut.",
+    metaTail: "Në Moto Hut, tregun e motorëve në Maqedoninë e Veriut.",
     notFound: "Shpallja nuk u gjet",
   },
   contact: {
@@ -525,9 +525,9 @@ const sq: Dictionary = {
     yourListing: "Kjo është shpallja jote.",
     editIt: "Ndryshoje",
     noPhone: "Shitësi nuk ka shtuar ende numër telefoni.",
-    whatsappMessage: "Përshëndetje, jam i interesuar për {bike} tënd në Just5Up! {url}",
+    whatsappMessage: "Përshëndetje, jam i interesuar për {bike} tënd në Moto Hut {url}",
     meetSeller: "Njihu me shitësin",
-    dealerChecked: "Çdo tregtar në Just5Up! e kontrollojmë ne para se të publikohet salloni i tij.",
+    dealerChecked: "Çdo tregtar në Moto Hut e kontrollojmë ne para se të publikohet salloni i tij.",
     privateChecked: "Shet privatisht. Çdo shpallje e kontrollojmë ne para se të publikohet.",
     seeAllTheirBikes: "Shiko të gjithë motorët e tyre >",
   },
@@ -789,9 +789,9 @@ const sq: Dictionary = {
     allDealers: "Të gjithë tregtarët",
     editStorefront: "Ndrysho vitrinën",
     noBikes: "{name} nuk ka motorë të shpallur tani për tani - kontaktoji për të pyetur çfarë po vjen.",
-    whatsappMessage: "Përshëndetje {name}, ju gjeta në Just5Up!",
+    whatsappMessage: "Përshëndetje {name}, ju gjeta në Moto Hut",
     notFound: "Tregtari nuk u gjet",
-    metaDescription: "Motorë në shitje nga {name} në Just5Up!, tregun e motorëve në Maqedoninë e Veriut.",
+    metaDescription: "Motorë në shitje nga {name} në Moto Hut, tregun e motorëve në Maqedoninë e Veriut.",
   },
   parts: {
     title1: "Pjesë dhe",
@@ -853,12 +853,12 @@ const sq: Dictionary = {
     runWorkshop: "Ke një servis?",
     runPitch: "Vendose servisin tënd para motoristëve që kërkojnë servisim, riparim ose goma të reja. Shpallja është falas.",
     getListed: "Regjistrohu >>>",
-    perks: ["Falas, në hartë", "Telefono, WhatsApp dhe udhëzime në kartën tënde", "I shtuar nga ekipi i Just5Up!"],
+    perks: ["Falas, në hartë", "Telefono, WhatsApp dhe udhëzime në kartën tënde", "I shtuar nga ekipi i Moto Hut"],
     pinsSoon: "Shenjat shfaqen këtu sapo të konfirmohet vendndodhja e çdo servisi.",
     notOnMap: "Ende jo në hartë",
     verified: "I verifikuar",
     callAhead: "Nga lista publike - telefono paraprakisht për të konfirmuar të dhënat.",
-    whatsappMessage: "Përshëndetje {name}, ju gjeta në Just5Up!",
+    whatsappMessage: "Përshëndetje {name}, ju gjeta në Moto Hut",
   },
   events: {
     title1: "Udhëtime dhe",
@@ -879,7 +879,7 @@ const sq: Dictionary = {
     dateTbc: "Data do të konfirmohet",
     gotEvent: "Organizon një ngjarje?",
     gotEventBody:
-      "Organizon një tubim, ditë në pistë ose udhëtim në grup? Ekipi i Just5Up! i shton ngjarjet në kalendar. Paraqitjet online vijnë së shpejti.",
+      "Organizon një tubim, ditë në pistë ose udhëtim në grup? Ekipi i Moto Hut i shton ngjarjet në kalendar. Paraqitjet online vijnë së shpejti.",
     addToCalendar: "+ Shto në kalendar",
   },
   business: {
@@ -907,7 +907,7 @@ const sq: Dictionary = {
     howToApplyBody:
       "Krijo një llogari, pastaj kërko llogari tregtari nga Garazhi im me emrin e biznesit. E kontrollojmë çdo kërkesë para se të publikohet vitrina.",
     applyNow: "Apliko tani >>>",
-    seeDealers: "Shiko tregtarët që janë tashmë në Just5Up!",
+    seeDealers: "Shiko tregtarët që janë tashmë në Moto Hut",
     advertise: "Reklamo",
     whereAdAppears: "Ku shfaqet reklama jote",
     artwork: "Grafika: {size}",
@@ -920,7 +920,7 @@ const sq: Dictionary = {
     ],
     workshopTitle: "Shto servisin tënd",
     workshopBody:
-      "Serviset, serviset zyrtare të markave dhe importuesit janë në hartën tonë të serviseve falas, me Telefono, WhatsApp dhe udhëzime. Paraqitjet online vijnë së shpejti; deri atëherë ekipi i Just5Up! e shton dhe e kontrollon secilin.",
+      "Serviset, serviset zyrtare të markave dhe importuesit janë në hartën tonë të serviseve falas, me Telefono, WhatsApp dhe udhëzime. Paraqitjet online vijnë së shpejti; deri atëherë ekipi i Moto Hut e shton dhe e kontrollon secilin.",
     seeMap: "Shiko hartën",
     bookingSoon: "Rezervimi i reklamave hapet së shpejti",
     bookingSoonBody:

@@ -17,13 +17,13 @@ const buttonSizes = {
 
 const buttonVariants = {
   /** Solid highlight gold: the one main action. */
-  primary: "bg-highlight text-[#111] hover:brightness-110",
+  primary: "bg-highlight text-[#382f2a] hover:brightness-110",
   /** Red outline: secondary actions (Contact, Log in, Cancel…). */
   outline: "border-2 border-red text-white hover:bg-red",
   /** Red text and outline: destructive actions (Delete, Reject). */
   danger: "border-2 border-red/70 text-red hover:bg-red hover:text-white",
   success: "bg-green-700 text-white hover:bg-green-600",
-  whatsapp: "bg-[#25D366] text-[#0b0b0d] hover:brightness-110",
+  whatsapp: "bg-[#25D366] text-[#332b26] hover:brightness-110",
 } as const;
 
 export function button(
@@ -38,7 +38,7 @@ export const input =
 
 export const label = "block text-xs font-bold tracking-wide text-ink-dim uppercase";
 
-/** A plain Oswald section heading, as on the home and listing pages. */
+/** A plain display-font section heading, as on the home and listing pages. */
 export const sectionTitle = "font-display mb-4 text-2xl font-semibold";
 
 export const card = "border border-line bg-panel";
@@ -47,4 +47,4 @@ export const errorBox = "border-l-4 border-red bg-red/15 px-3 py-2 text-sm text-
 
 /** The red/gold glow behind page heroes. */
 export const heroBackground =
-  "radial-gradient(circle at 80% 0%, rgba(193,39,45,.18), transparent 55%), radial-gradient(circle at 10% 100%, rgba(212,175,55,.12), transparent 50%), #0e0e11";
+  "radial-gradient(circle at 80% 0%, rgba(193,39,45,.18), transparent 55%), radial-gradient(circle at 10% 100%, rgba(219,192,120,.12), transparent 50%), #362e28";

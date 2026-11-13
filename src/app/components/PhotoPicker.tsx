@@ -52,7 +52,7 @@ export default function PhotoPicker({
   }
 
   const tool =
-    "flex h-7 min-w-7 items-center justify-center rounded-full bg-black/75 px-2 text-xs text-white hover:bg-highlight hover:text-[#141414] disabled:opacity-30 disabled:hover:bg-black/75 disabled:hover:text-white";
+    "flex h-7 min-w-7 items-center justify-center rounded-full bg-black/75 px-2 text-xs text-white hover:bg-highlight hover:text-[#3b322c] disabled:opacity-30 disabled:hover:bg-black/75 disabled:hover:text-white";
 
   return (
     <div>
@@ -70,7 +70,7 @@ export default function PhotoPicker({
               {/* eslint-disable-next-line @next/next/no-img-element -- local object URL preview */}
               <img src={url} alt="" className="h-full w-full object-cover" />
               {coverFirst && i === 0 && (
-                <span className="font-display absolute top-2 left-2 bg-highlight px-2 py-0.5 text-[11px] font-semibold tracking-wider text-[#141414]">
+                <span className="font-display absolute top-2 left-2 bg-highlight px-2 py-0.5 text-[11px] font-semibold tracking-wider text-[#3b322c]">
                   {t.photoPicker.cover}
                 </span>
               )}

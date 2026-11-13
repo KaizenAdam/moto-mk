@@ -120,7 +120,7 @@ export default async function ListingView({
           <section>
             <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
               {isDealer ? (
-                <span className="font-display flex items-center gap-1.5 bg-highlight px-2 py-0.5 text-xs tracking-wider text-[#111]">
+                <span className="font-display flex items-center gap-1.5 bg-highlight px-2 py-0.5 text-xs tracking-wider text-[#382f2a]">
                   <StoreIcon className="h-3.5 w-3.5" />
                   {t.common.verifiedDealer}
                 </span>
@@ -140,7 +140,7 @@ export default async function ListingView({
             <h1 className="font-display text-4xl leading-none sm:text-5xl">{bikeName}</h1>
             {subtitle && <p className="mt-2 text-ink-dim">{subtitle}</p>}
             <div className="mt-5 flex flex-wrap items-baseline gap-3">
-              <span className="font-display bg-highlight px-3 py-1 text-4xl font-semibold text-[#111]">
+              <span className="font-display bg-highlight px-3 py-1 text-4xl font-semibold text-[#382f2a]">
                 {price.main}
               </span>
               <span className="text-sm text-grey">{price.alt}</span>
@@ -208,7 +208,7 @@ export default async function ListingView({
       </div>
 
       {similar.length > 0 && (
-        <section className="mt-16 border-t-2 border-dashed border-[#2a2a2e] px-4 pt-12 sm:px-0">
+        <section className="mt-16 border-t-2 border-dashed border-[#52463f] px-4 pt-12 sm:px-0">
           <div className="mb-6 flex items-baseline justify-between gap-4">
             <h2 className="font-display text-[28px] font-semibold sm:text-[34px]">{L.similar}</h2>
             <Link

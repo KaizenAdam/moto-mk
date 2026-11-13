@@ -55,7 +55,7 @@ export default function AccountMenu({ name }: { name: string | null }) {
         <div
           id="account-menu"
           role="menu"
-          className="absolute top-full right-0 z-50 mt-2 w-60 border border-line border-t-4 border-t-highlight bg-[#0e0e11] shadow-[0_12px_30px_rgba(0,0,0,0.6)]"
+          className="absolute top-full right-0 z-50 mt-2 w-60 border border-line border-t-4 border-t-highlight bg-[#362e28] shadow-[0_12px_30px_rgba(39,32,28,0.6)]"
         >
           {name && (
             <p className="border-b border-line px-4 py-3 text-xs text-grey">
